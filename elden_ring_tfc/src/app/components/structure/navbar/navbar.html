@@ -1,0 +1,125 @@
+
+<nav class="navbar navbar-expand-lg er-navbar">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a routerLink="/home">
+      <img src="/images/logo_dorado.png" class="img-logo">
+    </a>
+
+    <!-- TITULO -->
+    <a class="navbar-brand er-brand" routerLink="/home">
+      ELDEN RING WEB
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#erNavbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="erNavbar">
+
+      <ul class="navbar-nav align-items-lg-center gap-lg-4 ms-3">
+        <!-- INICIO -->
+        <li class="nav-item">
+          <a class="nav-link er-link" routerLink="/home">
+            Inicio
+          </a>
+        </li>
+        <!-- ELDEN RING MEGA MENU -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link er-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            Elden Ring
+          </a>
+          <div class="dropdown-menu er-megamenu p-4">
+            <div class="row">
+              <!-- COLUMNA 1 -->
+              <div class="col-md-4">
+                <a class="dropdown-item" routerLink="/classes">Classes</a>
+                <a class="dropdown-item" routerLink="/armors">Armors</a>
+                <a class="dropdown-item" routerLink="/weapons">Weapons</a>
+                <a class="dropdown-item" routerLink="/ashes">Ashes of War</a>
+                <a class="dropdown-item" routerLink="/bosses">Bosses</a>
+              </div>
+              <!-- COLUMNA 2 -->
+              <div class="col-md-4">
+                <a class="dropdown-item" routerLink="/creatures">Creatures</a>
+                <a class="dropdown-item" routerLink="/items">Items</a>
+                <a class="dropdown-item" routerLink="/incantations">Incantations</a>
+                <a class="dropdown-item" routerLink="/sorceries">Sorceries</a>
+                <a class="dropdown-item" routerLink="/locations">Locations</a>
+              </div>
+              <!-- COLUMNA 3 -->
+              <div class="col-md-4">
+                <a class="dropdown-item" routerLink="/shields">Shields</a>
+                <a class="dropdown-item" routerLink="/spirits">Spirits</a>
+                <a class="dropdown-item" routerLink="/talismans">Talismans</a>
+                <a class="dropdown-item" routerLink="/npcs">NPCs</a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav align-items-lg-center gap-lg-4 ms-3">
+        <!-- LOGIN / USUARIO -->
+        <li class="nav-item dropdown">
+          @if(!user){
+            <a
+              class="nav-link er-link dropdown-toggle"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              Cuenta
+            </a>
+            <ul class="dropdown-menu er-dropdown">
+              <li>
+                <a class="dropdown-item" routerLink="/login-page">
+                  Login
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/register">
+                  Register
+                </a>
+              </li>
+            </ul>
+          } @else {
+            <a
+              class="nav-link er-link dropdown-toggle"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              {{user.username}}
+            </a>
+            <ul class="dropdown-menu er-dropdown">
+              <li>
+                <a class="dropdown-item" routerLink="/profile">
+                  Perfil
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/favorites">
+                  Favoritos
+                </a>
+              </li>
+              <li>
+                <button class="dropdown-item" (click)="logout()">
+                  Logout
+                </button>
+              </li>
+            </ul>
+          }
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>

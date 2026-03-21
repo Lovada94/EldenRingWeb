@@ -1,0 +1,102 @@
+.er-navbar {
+  background: linear-gradient(
+    to bottom,
+    #0b0b0b,
+    #121212
+  );
+  border-bottom: 1px solid rgba(255,193,7,0.3);
+}
+
+/* LOGO */
+.er-brand {
+  font-family: 'Cinzel', serif;
+  color: var(--bs-warning) !important;
+  letter-spacing: 3px;
+  font-size: 1.4rem;
+}
+
+/* LINKS */
+.er-link {
+  position: relative;
+  display: inline-block; /* CLAVE */
+  color: var(--bs-light) !important;
+  letter-spacing: 1px;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+}
+
+/* SUBRAYADO */
+.er-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background-color: var(--bs-warning);
+  transition: width 0.3s ease;
+}
+
+/* HOVER */
+.er-link:hover {
+  color: var(--bs-warning) !important;
+}
+
+.er-link:hover::after {
+  width: 100%;
+}
+
+/* LINK ACTIVO */
+.er-link.active {
+  color: var(--bs-warning) !important;
+}
+
+.er-link.active::after {
+  width: 100%;
+}
+
+.container-fluid {
+  width: 80vw!important;
+}
+
+.img-logo {
+  height: 80px;
+  width: 120px;
+  border-color: var(--bs-warning);
+}
+
+/* MEGA MENU */
+
+.er-megamenu{
+  width: 600px;
+  background-color: #0f0f0f;
+  border: 1px solid rgba(255,193,7,0.3);
+}
+
+.er-megamenu .dropdown-item{
+  color:#ddd;
+  padding:6px 10px;
+  transition: all 0.2s ease;
+}
+
+.er-megamenu .dropdown-item:hover{
+  color:var(--bs-warning);
+  background:transparent;
+}
+
+
+/* USER DROPDOWN */
+
+.er-dropdown{
+  background:#0f0f0f;
+  border:1px solid rgba(255,193,7,0.3);
+}
+
+.er-dropdown .dropdown-item{
+  color:#ddd;
+}
+
+.er-dropdown .dropdown-item:hover{
+  color:var(--bs-warning);
+  background:transparent;
+}
