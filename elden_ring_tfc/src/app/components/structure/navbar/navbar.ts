@@ -17,6 +17,22 @@ export class Navbar implements OnInit {
   user: User | null = null;
   private readonly router = inject(Router);
 
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
+  constructor() {
+    this.router.events.subscribe(() => {
+      this.isMenuOpen = false;
+    });
+  }
+
   ngOnInit(){
     this.authService.user$.subscribe(user => {
       this.user = user;
