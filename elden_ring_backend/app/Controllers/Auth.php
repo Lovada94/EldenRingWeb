@@ -158,4 +158,16 @@ class Auth extends ResourceController
             'user' => $request->user
         ]);
     }
+
+    public function profile()
+    {
+        $request = service('request');
+
+        $user = $request->user;
+
+        return $this->respond([
+            'status' => 200,
+            'user' => $user
+        ]);
+    }
 }

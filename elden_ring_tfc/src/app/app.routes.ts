@@ -5,6 +5,8 @@ import {Start} from './components/web/start/start';
 import {Login} from './components/web/auth/login/login';
 import {guestGuard} from './guards/guest-guard';
 import {Register} from './components/web/auth/register/register';
+import {authGuard} from './guards/auth-guard';
+import {Profile} from './components/web/profile/profile';
 
 export const routes: Routes = [
   {
@@ -33,6 +35,11 @@ export const routes: Routes = [
     path: 'register-page',
     component: Register,
     canActivate: [guestGuard]
+  },
+  {
+    path: 'profile',
+    component: Profile,
+    canActivate: [authGuard]
   },
   {
     path: '**',

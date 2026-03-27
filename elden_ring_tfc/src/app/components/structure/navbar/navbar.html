@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg er-navbar">
   <div class="container-fluid">
 
@@ -93,10 +92,11 @@
             </ul>
           } @else {
             <a
-              class="nav-link er-link dropdown-toggle"
+              class="nav-link er-link dropdown-toggle d-flex align-items-center gap-2 er-user"
               role="button"
               data-bs-toggle="dropdown"
             >
+              <img src="/images/default_avatar.jpg" class="er-avatar">
               {{user.username}}
             </a>
             <ul class="dropdown-menu er-dropdown">
