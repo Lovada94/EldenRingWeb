@@ -3,7 +3,7 @@
 
     <!-- LOGO -->
     <a routerLink="/home">
-      <img src="/images/logo_dorado.png" class="img-logo">
+      <img src="/images/logo_dorado.png" class="img-logo" alt="Logo"/>
     </a>
 
     <!-- TITULO -->
@@ -11,45 +11,40 @@
       ELDEN RING WEB
     </a>
 
+    <!-- TOGGLER -->
     <button
-      class="navbar-toggler"
+      class="navbar-toggler bg-light"
       type="button"
-      (click)="toggleMenu()"
-    >
+      (click)="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- MENU -->
     <div class="er-mobile-menu" [class.open]="isMenuOpen" (click)="closeMenu()">
       <div class="menu-content" (click)="$event.stopPropagation()">
-        <div class="navbar-collapse" id="erNavbar">
 
-          <ul class="navbar-nav align-items-lg-center gap-lg-4 ms-3">
-            <!-- INICIO -->
+        <div class="navbar-collapse">
+
+          <!-- IZQUIERDA -->
+          <ul class="navbar-nav gap-lg-4">
             <li class="nav-item">
-              <a class="nav-link er-link" routerLink="/home">
-                Inicio
-              </a>
+              <a class="nav-link er-link" routerLink="/home">Inicio</a>
             </li>
-            <!-- ELDEN RING MEGA MENU -->
+
             <li class="nav-item dropdown">
-              <a
-                class="nav-link er-link dropdown-toggle"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
+              <a class="nav-link er-link dropdown-toggle" data-bs-toggle="dropdown">
                 Elden Ring
               </a>
+
               <div class="dropdown-menu er-megamenu p-4">
                 <div class="row">
-                  <!-- COLUMNA 1 -->
                   <div class="col-md-4">
                     <a class="dropdown-item" routerLink="/classes">Classes</a>
                     <a class="dropdown-item" routerLink="/armors">Armors</a>
                     <a class="dropdown-item" routerLink="/weapons">Weapons</a>
-                    <a class="dropdown-item" routerLink="/ashes">Ashes of War</a>
+                    <a class="dropdown-item" routerLink="/ashes">Ashes</a>
                     <a class="dropdown-item" routerLink="/bosses">Bosses</a>
                   </div>
-                  <!-- COLUMNA 2 -->
                   <div class="col-md-4">
                     <a class="dropdown-item" routerLink="/creatures">Creatures</a>
                     <a class="dropdown-item" routerLink="/items">Items</a>
@@ -57,7 +52,6 @@
                     <a class="dropdown-item" routerLink="/sorceries">Sorceries</a>
                     <a class="dropdown-item" routerLink="/locations">Locations</a>
                   </div>
-                  <!-- COLUMNA 3 -->
                   <div class="col-md-4">
                     <a class="dropdown-item" routerLink="/shields">Shields</a>
                     <a class="dropdown-item" routerLink="/spirits">Spirits</a>
@@ -68,58 +62,38 @@
               </div>
             </li>
           </ul>
-          <ul class="navbar-nav align-items-lg-center gap-lg-4 ms-3">
-            <!-- LOGIN / USUARIO -->
+
+          <!-- DERECHA -->
+          <ul class="navbar-nav gap-lg-4">
             <li class="nav-item dropdown">
+
               @if(!user){
-                <a
-                  class="nav-link er-link dropdown-toggle"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
+                <a class="nav-link er-link dropdown-toggle" data-bs-toggle="dropdown">
                   Cuenta
                 </a>
+
                 <ul class="dropdown-menu er-dropdown">
-                  <li>
-                    <a class="dropdown-item" routerLink="/login-page">
-                      Login
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" routerLink="/register">
-                      Register
-                    </a>
-                  </li>
+                  <li><a class="dropdown-item" routerLink="/login-page">Login</a></li>
+                  <li><a class="dropdown-item" routerLink="/register">Register</a></li>
                 </ul>
+
               } @else {
-                <a
-                  class="nav-link er-link dropdown-toggle d-flex align-items-center gap-2 er-user"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
+                <a class="nav-link er-link dropdown-toggle d-flex align-items-center gap-2 er-user"
+                   data-bs-toggle="dropdown">
                   <img src="/images/default_avatar.jpg" class="er-avatar">
                   {{user.username}}
                 </a>
+
                 <ul class="dropdown-menu er-dropdown">
-                  <li>
-                    <a class="dropdown-item" routerLink="/profile">
-                      Perfil
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" routerLink="/favorites">
-                      Favoritos
-                    </a>
-                  </li>
-                  <li>
-                    <button class="dropdown-item" (click)="logout()">
-                      Logout
-                    </button>
-                  </li>
+                  <li><a class="dropdown-item" routerLink="/profile">Perfil</a></li>
+                  <li><a class="dropdown-item" routerLink="/favorites">Favoritos</a></li>
+                  <li><button class="dropdown-item" (click)="logout()">Logout</button></li>
                 </ul>
               }
+
             </li>
           </ul>
+
         </div>
       </div>
     </div>
