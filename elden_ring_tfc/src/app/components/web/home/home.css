@@ -20,6 +20,16 @@
   font-size: 3rem;
   margin-bottom: 1rem;
 }
+.warning {
+  color: var(--bs-warning) !important;
+  transition: ease-in 0.3s;
+  font-family: 'Cinzel', serif;
+}
+
+.warning:hover {
+  transition: ease-in 0.3s;
+  filter: drop-shadow(0 0 10px #c9a94b);
+}
 
 .subtitle {
   font-size: 2rem;
@@ -28,7 +38,7 @@
 
 /* Info */
 .info {
-  margin-top: 3rem;
+  margin-top: 2rem;
   max-width: 800px;
   margin-inline: auto;
   line-height: 1.6;
@@ -36,6 +46,10 @@
 }
 
 /* Botones*/
+.buttons-container {
+  margin-top: 1rem;
+}
+
 .buttons {
   display: flex;
   gap: 1rem;
@@ -56,4 +70,19 @@
   background: #c9a94b;
   color: black;
   box-shadow: 0 0 10px #c9a94b;
+}
+
+@media (max-width: 991px) {
+  .home-container {
+    height: auto;
+  }
+
+  .hero{
+    margin: 2rem 0.5rem 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .buttons-container {
+    margin: 0 0.5rem 1.5rem;
+  }
 }
