@@ -72,17 +72,21 @@
   box-shadow: 0 0 10px #c9a94b;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
   .home-container {
-    height: auto;
+    height: 80vh;
   }
 
   .hero{
-    margin: 2rem 0.5rem 0.5rem;
+    margin: 2rem 1rem 0.5rem;
     font-size: 1.5rem;
   }
 
+  .info {
+    margin: 0 1rem 0.5rem;
+  }
+
   .buttons-container {
-    margin: 0 0.5rem 1.5rem;
+    margin: 0 1rem 1.5rem;
   }
 }
