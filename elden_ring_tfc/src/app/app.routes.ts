@@ -11,7 +11,7 @@ import {Profile} from './components/web/profile/profile';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'start',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

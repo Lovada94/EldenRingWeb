@@ -1,0 +1,69 @@
+.start-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: url("/assets/images/elden-bg.jpg") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Oscurecer fondo para que el texto destaque */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Contenido centrado */
+.content {
+  position: relative;
+  text-align: center;
+  color: #f5e6a3;
+}
+
+/* Logo */
+.logo {
+  width: 600px;
+  max-width: 80%;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  transition: ease 0.3s;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 10px #c9a94b);
+  transition: ease 0.5s;
+}
+
+/* Botones */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  border: 1px solid #c9a94b;
+  text-decoration: none;
+  color: #f5e6a3;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  background: #c9a94b;
+  color: black;
+  box-shadow: 0 0 10px #c9a94b;
+}
+
+.primary {
+  background: rgba(201, 169, 75, 0.1);
+}
+
+.secondary {
+  background: transparent;
+}
