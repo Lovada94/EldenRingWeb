@@ -1,0 +1,59 @@
+/* Contenedor principal */
+.home-container {
+  height: calc(100vh - 410px);
+  color: white;
+  background: url("/assets/images/elden-bg.jpg") no-repeat center center;
+  background-size: cover;
+}
+/* Fondo letras */
+.background-dark {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+/* Hero */
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+/* Info */
+.info {
+  margin-top: 3rem;
+  max-width: 800px;
+  margin-inline: auto;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Botones*/
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  border: 1px solid #c9a94b;
+  text-decoration: none;
+  color: #f5e6a3;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  background: #c9a94b;
+  color: black;
+  box-shadow: 0 0 10px #c9a94b;
+}
