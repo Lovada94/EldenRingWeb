@@ -6,7 +6,6 @@
       <p class="subtitle">
         Explora el mundo de Elden Ring como nunca antes.
       </p>
-
     </section>
 
     <section class="info">
@@ -28,8 +27,15 @@
 
     <section class="buttons-container">
       <div class="buttons">
-        <a routerLink="/npc-page" class="btn">Explorar</a>
-        <a routerLink="/login" class="btn">Iniciar sesión</a>
+        @if (!user) {
+          <a routerLink="/ammos" class="btn">Explorar</a>
+          <a (click)="handleAuthClick(true)" class="btn">Iniciar sesión</a>
+          @if (showAuthModal) {
+            <app-auth-modal (closeModal)="showAuthModal = false"></app-auth-modal>
+          }
+        } @else {
+          <a routerLink="/ammos" class="btn">Explorar</a>
+        }
       </div>
     </section>
   </div>

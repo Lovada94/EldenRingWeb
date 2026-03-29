@@ -84,9 +84,24 @@
 
   .info {
     margin: 0 1rem 0.5rem;
+    max-width: 100vw;
   }
 
   .buttons-container {
     margin: 0 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .home-container {
+    height: 100vh;
+  }
+
+  .hero{
+    margin-top: 1.5rem;
+  }
+
+  .buttons-container {
+    margin-bottom: 3rem;
   }
 }

@@ -11,7 +11,7 @@ import {Profile} from './components/web/profile/profile';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'start',
     pathMatch: 'full',
   },
   {
@@ -25,16 +25,6 @@ export const routes: Routes = [
   {
     path: 'npc-page',
     component: NPCsPage,
-  },
-  {
-    path: 'login-page',
-    component: Login,
-    canActivate: [guestGuard]
-  },
-  {
-    path: 'register-page',
-    component: Register,
-    canActivate: [guestGuard]
   },
   {
     path: 'profile',

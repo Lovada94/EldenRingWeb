@@ -32,3 +32,13 @@ export interface LoginCredentials {
   username?: string;
   password: string;
 }
+
+//Register credentials interface
+export interface RegisterCredentials {
+  name?: string;
+  surnames?: string;
+  birth_date?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+}

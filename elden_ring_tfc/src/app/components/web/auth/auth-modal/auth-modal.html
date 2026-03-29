@@ -1,0 +1,78 @@
+<div class="modal-overlay" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="close()"></button>
+
+    <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
+
+    <form (ngSubmit)="submit()">
+      <input
+        type="text"
+        [placeholder]="isLogin ? 'Usuario o email' : 'Username'"
+        [(ngModel)]="identifier"
+        name="identifier"
+        required
+      >
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        name="password"
+        required
+      >
+
+      @if (!isLogin) {
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+        >
+        <input
+          type="text"
+          placeholder="Nombre"
+          [(ngModel)]="name"
+          name="name"
+          required
+        >
+        <input
+          type="text"
+          placeholder="Apellidos"
+          [(ngModel)]="surnames"
+          name="surnames"
+          required
+        >
+        <input
+          type="date"
+          [(ngModel)]="birthDate"
+          name="birthDate"
+          required
+        >
+        <input
+          type="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        >
+      }
+
+      <button type="submit" class="btn">
+        {{ isLogin ? 'Login' : 'Register' }}
+      </button>
+    </form>
+
+    <p class="switch">
+      {{ isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}
+      <span (click)="toggleMode()">
+        {{ isLogin ? 'Regístrate' : 'Login' }}
+      </span>
+    </p>
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+  </div>
+</div>

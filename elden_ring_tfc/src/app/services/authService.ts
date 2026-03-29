@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { LoginCredentials, LoginResponse, RegisterResponse, User } from '../common/interface';
+import {LoginCredentials, LoginResponse, RegisterCredentials, RegisterResponse, User} from '../common/interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  register(data: any): Observable<RegisterResponse> {
+  register(data: RegisterCredentials): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(this.backendUrl + '/register', data);
   }
 
