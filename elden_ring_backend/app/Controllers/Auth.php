@@ -16,12 +16,19 @@ class Auth extends ResourceController
         $validation = \Config\Services::validation();
 
         $rules = [
-            'name' => 'required|min_length[2]|max_length[50]',
-            'surnames' => 'required|min_length[2]|max_length[100]',
+            'name' => 'required|min_length[2]|max_length[50]|regex_match[/\S/]',
+            'surnames' => 'required|min_length[2]|max_length[100]|regex_match[/\S/]',
             'birth_date' => 'required|valid_date',
             'email' => 'required|valid_email',
-            'username' => 'required|min_length[3]|max_length[30]',
-            'password' => 'required|min_length[6]'
+            'username' => 'required|min_length[3]|max_length[30]|regex_match[/\S/]',
+            'password' => [
+                'rules' => 'required|min_length[6]|regex_match[/^(?=.*[A-Z])(?=.*\d).+$/]',
+                'errors' => [
+                    'required' => 'La contraseña es obligatoria',
+                    'min_length' => 'Mínimo 6 caracteres',
+                    'regex_match' => 'Debe contener al menos una mayúscula y un número'
+                ]
+            ]
         ];
 
         if (!$validation->setRules($rules)->run($data)) {

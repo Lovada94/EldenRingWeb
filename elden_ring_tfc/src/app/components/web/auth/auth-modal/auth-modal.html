@@ -5,63 +5,77 @@
 
     <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
 
-    <form (ngSubmit)="submit()">
-      <input
-        type="text"
-        [placeholder]="isLogin ? 'Usuario o email' : 'Username'"
-        [(ngModel)]="identifier"
-        name="identifier"
-        required
-      >
+    @if (isLogin) {
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
 
-      <input
-        type="password"
-        placeholder="Password"
-        [(ngModel)]="password"
-        name="password"
-        required
-      >
+        <input formControlName="identifier" placeholder="Usuario o email">
+        @if (identifierCtrl?.touched && identifierCtrl?.errors?.['required']) {
+          <p class="error">El usuario o email es obligatorio</p>
+        }
 
-      @if (!isLogin) {
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          [(ngModel)]="confirmPassword"
-          name="confirmPassword"
-        >
-        <input
-          type="text"
-          placeholder="Nombre"
-          [(ngModel)]="name"
-          name="name"
-          required
-        >
-        <input
-          type="text"
-          placeholder="Apellidos"
-          [(ngModel)]="surnames"
-          name="surnames"
-          required
-        >
-        <input
-          type="date"
-          [(ngModel)]="birthDate"
-          name="birthDate"
-          required
-        >
-        <input
-          type="email"
-          placeholder="Email"
-          [(ngModel)]="email"
-          name="email"
-          required
-        >
-      }
+        <input type="password" formControlName="password" placeholder="Password">
+        @if (passwordCtrl?.touched && passwordCtrl?.errors?.['required']) {
+          <p class="error">La contraseña es obligatoria</p>
+        }
+        @if (passwordCtrl?.touched && passwordCtrl?.errors?.['minlength']) {
+          <p class="error">Mínimo 6 caracteres</p>
+        }
 
-      <button type="submit" class="btn">
-        {{ isLogin ? 'Login' : 'Register' }}
-      </button>
-    </form>
+        <button class="btn" type="submit">Login</button>
+      </form>
+    } @else {
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+
+        <input formControlName="username" placeholder="Username">
+        @if (usernameCtrl?.touched && usernameCtrl?.errors?.['required']) {
+          <p class="error">El username es obligatorio</p>
+        }
+
+        <input formControlName="name" placeholder="Nombre">
+        @if (nameCtrl?.touched && nameCtrl?.errors?.['required']) {
+          <p class="error">El nombre es obligatorio</p>
+        }
+
+        <input formControlName="surnames" placeholder="Apellidos">
+        @if (surnamesCtrl?.touched && surnamesCtrl?.errors?.['required']) {
+          <p class="error">Un apellido es obligatorio</p>
+        }
+
+        <input type="date" formControlName="birthDate">
+        @if (birthDateCtrl?.touched && birthDateCtrl?.errors?.['required']) {
+          <p class="error">La fecha de cumpleaños es obligatoria</p>
+        }
+
+        <input formControlName="email" placeholder="Email">
+        @if (emailCtrl?.touched && emailCtrl?.errors?.['required']) {
+          <p class="error">El email es obligatorio</p>
+        }
+        @if (emailCtrl?.touched && emailCtrl?.errors?.['email']) {
+          <p class="error">Email inválido</p>
+        }
+
+        <input type="password" formControlName="password" placeholder="Password">
+        @if (registerPasswordCtrl.touched && registerPasswordCtrl.errors?.['required']) {
+          <p class="error">La contraseña es obligatoria</p>
+        }
+        @if (registerPasswordCtrl.touched && registerPasswordCtrl.errors?.['minlength']) {
+          <p class="error">Mínimo 6 caracteres</p>
+        }
+        @if (registerPasswordCtrl.touched && registerPasswordCtrl.errors?.['pattern']) {
+          <p class="error">Debe tener una mayúscula y un número</p>
+        }
+
+        <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+        @if (confirmPasswordCtrl?.touched && confirmPasswordCtrl?.errors?.['required']) {
+          <p class="error">Confirma la contraseña</p>
+        }
+        @if (confirmPasswordCtrl?.touched && confirmPasswordCtrl?.errors?.['passwordMatch']) {
+          <p class="error">Las contraseñas no coinciden</p>
+        }
+
+        <button class="btn" type="submit">Register</button>
+      </form>
+    }
 
     <p class="switch">
       {{ isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}

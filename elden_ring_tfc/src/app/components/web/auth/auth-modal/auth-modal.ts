@@ -1,32 +1,71 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {AuthService} from '../../../../services/authService';
-import {FormsModule} from '@angular/forms';
 import {LoginCredentials, RegisterCredentials} from '../../../../common/interface';
 import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormValidators} from '../../../../validators/formValidators';
 
 @Component({
   selector: 'app-auth-modal',
   imports: [
-    FormsModule
+    ReactiveFormsModule
   ],
   templateUrl: './auth-modal.html',
   styleUrl: './auth-modal.css',
 })
 export class AuthModal {
 
-  identifier = '';
-  name = '';
-  surnames = '';
-  birthDate = '';
-  email = '';
-  password = '';
-  confirmPassword = '';
-  errorMessage = '';
-
   private readonly authService : AuthService = inject(AuthService);
 
   private mouseDownInside = false;
   private readonly router = inject(Router);
+
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  errorMessage = '';
+
+  loginForm: FormGroup = this.formBuilder.group({
+    identifier: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  registerForm: FormGroup = this.formBuilder.group({
+    username: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required]],
+    surnames: ['', [Validators.required]],
+    birthDate: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
+    confirmPassword: ['', [Validators.required, FormValidators.passwordMatch]]
+  });
+
+  get identifierCtrl(): any {
+    return this.loginForm.get('identifier');
+  }
+  get passwordCtrl(): any {
+    return this.loginForm.get('password');
+  }
+
+  get usernameCtrl(): any {
+    return this.registerForm.get('username');
+  }
+  get nameCtrl(): any {
+    return this.registerForm.get('name');
+  }
+  get surnamesCtrl(): any {
+    return this.registerForm.get('surname');
+  }
+  get birthDateCtrl(): any {
+    return this.registerForm.get('birthDate');
+  }
+  get emailCtrl(): any {
+    return this.registerForm.get('email');
+  }
+  get registerPasswordCtrl(): any {
+    return this.registerForm.get('confirmPassword');
+  }
+  get confirmPasswordCtrl(): any {
+    return this.registerForm.get('confirmPassword');
+  }
 
   @Output() closeModal = new EventEmitter<void>();
 
@@ -52,62 +91,77 @@ export class AuthModal {
   toggleMode() {
     this.isLogin = !this.isLogin;
     this.errorMessage = '';
-    this.identifier = '';
-    this.password = '';
-    this.confirmPassword = '';
+    this.loginForm.reset();
+    this.registerForm.reset();
   }
 
-  submit() {
-    this.errorMessage = '';
-
-    if (this.isLogin) {
-      const credentials: LoginCredentials = {
-        password: this.password
-      };
-
-      if (this.identifier.includes('@')) {
-        credentials.email = this.identifier;
-      } else {
-        credentials.username = this.identifier;
-      }
-
-      this.authService.login(credentials).subscribe({
-        next: () => {
-          this.identifier = '';
-          this.password = '';
-          this.close();
-          this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          this.errorMessage = err.error?.message || 'Error inesperado';
-        }
-      });
-
-    } else {
-      if (this.password !== this.confirmPassword) {
-        this.errorMessage = 'Las contraseñas no coinciden';
-        return;
-      }
-
-      const registerData: RegisterCredentials = {
-        name: this.name,
-        surnames: this.surnames,
-        birth_date: this.birthDate,
-        email: this.email,
-        username: this.identifier,
-        password: this.password
-      };
-
-      this.authService.register(registerData).subscribe({
-        next: () => {
-          this.errorMessage = 'Cuenta creada, inicia sesión';
-          this.toggleMode();
-        },
-        error: (err) => {
-          this.errorMessage = err.error?.message || 'Error inesperado';
-        }
-      });
+  submitLogin() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
+
+    const value = this.loginForm.value;
+
+    const credentials: LoginCredentials = {
+      password: value.password,
+      ...(value.identifier.includes('@')
+        ? { email: value.identifier }
+        : { username: value.identifier })
+    };
+
+    this.authService.login(credentials).subscribe({
+      next: () => {
+        this.close();
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Error';
+      }
+    });
+  }
+
+  submitRegister() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const value = this.registerForm.value;
+
+    if (value.password !== value.confirmPassword) {
+      this.errorMessage = 'Las contraseñas no coinciden';
+      return;
+    }
+
+    const data: RegisterCredentials = {
+      name: value.name,
+      surnames: value.surnames,
+      birth_date: value.birthDate,
+      email: value.email,
+      username: value.username,
+      password: value.password
+    };
+
+    this.authService.register(data).subscribe({
+      next: () => {
+        this.toggleMode();
+      },
+      error: (err) => {
+        if (err.error?.errors) {
+          this.errorMessage = Object.values(err.error.errors).join(', ');
+        } else {
+          this.errorMessage = err.error?.message || 'Error inesperado';
+        }
+      }
+    });
+  }
+
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirm = form.get('confirmPassword')?.value;
+
+    return password === confirm ? null : { passwordMismatch: true };
   }
 
   close() {
