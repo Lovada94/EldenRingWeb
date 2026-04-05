@@ -13,7 +13,21 @@
           <p class="error">El usuario o email es obligatorio</p>
         }
 
-        <input type="password" formControlName="password" placeholder="Password">
+        <div class="input-group">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Confirm Password"
+          >
+          <span
+            class="eye"
+            (mousedown)="showConfirmPassword = true"
+            (mouseup)="showConfirmPassword = false"
+            (mouseleave)="showConfirmPassword = false"
+          >
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
         @if (passwordCtrl?.touched && passwordCtrl?.errors?.['required']) {
           <p class="error">La contraseña es obligatoria</p>
         }
@@ -30,20 +44,29 @@
         @if (usernameCtrl?.touched && usernameCtrl?.errors?.['required']) {
           <p class="error">El username es obligatorio</p>
         }
+        @if (usernameCtrl?.touched && usernameCtrl?.errors?.['notOnlyWhiteSpace']) {
+          <p class="error">No se permiten solo espacios en blanco</p>
+        }
 
         <input formControlName="name" placeholder="Nombre">
         @if (nameCtrl?.touched && nameCtrl?.errors?.['required']) {
           <p class="error">El nombre es obligatorio</p>
+        }
+        @if (nameCtrl?.touched && nameCtrl?.errors?.['notOnlyWhiteSpace']) {
+          <p class="error">No se permiten solo espacios en blanco</p>
         }
 
         <input formControlName="surnames" placeholder="Apellidos">
         @if (surnamesCtrl?.touched && surnamesCtrl?.errors?.['required']) {
           <p class="error">Un apellido es obligatorio</p>
         }
+        @if (surnamesCtrl?.touched && surnamesCtrl?.errors?.['notOnlyWhiteSpace']) {
+          <p class="error">No se permiten solo espacios en blanco</p>
+        }
 
         <input type="date" formControlName="birthDate">
         @if (birthDateCtrl?.touched && birthDateCtrl?.errors?.['required']) {
-          <p class="error">La fecha de cumpleaños es obligatoria</p>
+          <p class="error">La fecha de nacimiento es obligatoria</p>
         }
 
         <input formControlName="email" placeholder="Email">
@@ -54,7 +77,21 @@
           <p class="error">Email inválido</p>
         }
 
-        <input type="password" formControlName="password" placeholder="Password">
+        <div class="input-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Password"
+          >
+          <span
+            class="eye"
+            (mousedown)="showPassword = true"
+            (mouseup)="showPassword = false"
+            (mouseleave)="showPassword = false"
+          >
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
         @if (registerPasswordCtrl.touched && registerPasswordCtrl.errors?.['required']) {
           <p class="error">La contraseña es obligatoria</p>
         }
@@ -65,11 +102,26 @@
           <p class="error">Debe tener una mayúscula y un número</p>
         }
 
-        <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+        <div class="input-group">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Confirm Password"
+          >
+
+          <span
+            class="eye"
+            (mousedown)="showConfirmPassword = true"
+            (mouseup)="showConfirmPassword = false"
+            (mouseleave)="showConfirmPassword = false"
+          >
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
         @if (confirmPasswordCtrl?.touched && confirmPasswordCtrl?.errors?.['required']) {
           <p class="error">Confirma la contraseña</p>
         }
-        @if (confirmPasswordCtrl?.touched && confirmPasswordCtrl?.errors?.['passwordMatch']) {
+        @if (registerForm.errors?.['passwordMismatch']) {
           <p class="error">Las contraseñas no coinciden</p>
         }
 

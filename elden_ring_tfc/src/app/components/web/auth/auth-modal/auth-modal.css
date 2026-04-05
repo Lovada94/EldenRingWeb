@@ -69,3 +69,28 @@ input {
   margin-top: 10px;
   font-size: 0.9rem;
 }
+
+/* Ver Contra*/
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.eye:hover {
+  opacity: 1;
+}

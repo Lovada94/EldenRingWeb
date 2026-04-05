@@ -15,7 +15,7 @@ import {FormValidators} from '../../../../validators/formValidators';
 })
 export class AuthModal {
 
-  private readonly authService : AuthService = inject(AuthService);
+  private readonly authService: AuthService = inject(AuthService);
 
   private mouseDownInside = false;
   private readonly router = inject(Router);
@@ -29,18 +29,24 @@ export class AuthModal {
   });
 
   registerForm: FormGroup = this.formBuilder.group({
-    username: ['', [Validators.required, Validators.minLength(3)]],
-    name: ['', [Validators.required]],
-    surnames: ['', [Validators.required]],
+    username: ['', [Validators.required, Validators.minLength(3), FormValidators.notOnlyWhiteSpace]],
+    name: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
+    surnames: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
     birthDate: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
-    confirmPassword: ['', [Validators.required, FormValidators.passwordMatch]]
+    confirmPassword: ['', [Validators.required]]
+  }, {
+    validators: FormValidators.passwordMatch
   });
+
+  showPassword = false;
+  showConfirmPassword = false;
 
   get identifierCtrl(): any {
     return this.loginForm.get('identifier');
   }
+
   get passwordCtrl(): any {
     return this.loginForm.get('password');
   }
@@ -48,21 +54,27 @@ export class AuthModal {
   get usernameCtrl(): any {
     return this.registerForm.get('username');
   }
+
   get nameCtrl(): any {
     return this.registerForm.get('name');
   }
+
   get surnamesCtrl(): any {
-    return this.registerForm.get('surname');
+    return this.registerForm.get('surnames');
   }
+
   get birthDateCtrl(): any {
     return this.registerForm.get('birthDate');
   }
+
   get emailCtrl(): any {
     return this.registerForm.get('email');
   }
+
   get registerPasswordCtrl(): any {
-    return this.registerForm.get('confirmPassword');
+    return this.registerForm.get('password');
   }
+
   get confirmPasswordCtrl(): any {
     return this.registerForm.get('confirmPassword');
   }
@@ -106,8 +118,8 @@ export class AuthModal {
     const credentials: LoginCredentials = {
       password: value.password,
       ...(value.identifier.includes('@')
-        ? { email: value.identifier }
-        : { username: value.identifier })
+        ? {email: value.identifier}
+        : {username: value.identifier})
     };
 
     this.authService.login(credentials).subscribe({
@@ -129,15 +141,10 @@ export class AuthModal {
 
     const value = this.registerForm.value;
 
-    if (value.password !== value.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden';
-      return;
-    }
-
     const data: RegisterCredentials = {
       name: value.name,
       surnames: value.surnames,
-      birth_date: value.birthDate,
+      birth_date: new Date(value.birthDate).toISOString().split('T')[0],
       email: value.email,
       username: value.username,
       password: value.password
@@ -155,13 +162,6 @@ export class AuthModal {
         }
       }
     });
-  }
-
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password')?.value;
-    const confirm = form.get('confirmPassword')?.value;
-
-    return password === confirm ? null : { passwordMismatch: true };
   }
 
   close() {
