@@ -216,7 +216,7 @@ export interface Item {
 // LOCATIONS
 // ============================================================
 
-export interface Location {
+export interface EldenLocation {
   id: string;
   name: string;
   image: string;

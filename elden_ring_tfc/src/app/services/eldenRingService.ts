@@ -9,7 +9,7 @@ import {
   Ash,
   Boss,
   Creature,
-  EldenClass,
+  EldenClass, EldenLocation,
   Incantation,
   Item, Npc, Shield, Sorcery, Spirit, Talisman,
   Weapon
@@ -143,8 +143,8 @@ export class EldenRingApiService {
 
   // ── Locations ────────────────────────────────────────────────────────────
 
-  getLocations(page?: number, limit?: number, name?: string): Observable<ApiResponse<Location>> {
-    return this.getList<Location>('locations', page, limit, name);
+  getLocations(page?: number, limit?: number, name?: string): Observable<ApiResponse<EldenLocation>> {
+    return this.getList<EldenLocation>('locations', page, limit, name);
   }
 
   getOneLocation(id: string): Observable<Location> {
