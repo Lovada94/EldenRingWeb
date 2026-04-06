@@ -36,6 +36,15 @@ export class ArmorsPage implements OnInit {
     'Sleep':    { label: 'Sueño',  emoji: '💤' },
     'Madness':  { label: 'Locura', emoji: '🌀' },
     'Death':    { label: 'Muerte', emoji: '💀' },
+    'Strike':     { label: 'Golpe',      emoji: '🪨' },
+    'Slash':      { label: 'Corte',      emoji: '🗡️' },
+    'Pierce':     { label: 'Pierce',     emoji: '🔱' },
+    'Magic':      { label: 'Mag',        emoji: '✨' },
+    'Immunity':   { label: 'Inmunidad',  emoji: '🛡️' },
+    'Robustness': { label: 'Robustez',   emoji: '💪' },
+    'Focus':      { label: 'Foco',       emoji: '🧠' },
+    'Vitality':   { label: 'Vitalidad',  emoji: '❤️' },
+    'Poise':      { label: 'Equilibrio', emoji: '⚖️' },
   };
 
   getStat(name: string): { label: string; emoji: string } {

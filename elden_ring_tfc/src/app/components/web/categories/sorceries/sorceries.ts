@@ -24,11 +24,9 @@ export class SorceriesPage implements OnInit {
   private apiPage = computed(() => this.currentPage() - 1);
 
   readonly statIcons: Record<string, { label: string; emoji: string }> = {
-    'Str': { label: 'Fuer', emoji: '💪' },
-    'Dex': { label: 'Dest', emoji: '🤸' },
-    'Int': { label: 'Int',  emoji: '📖' },
-    'Fai': { label: 'Fe',   emoji: '🙏' },
-    'Arc': { label: 'Arc',  emoji: '🌀' },
+    'Intelligence': { label: 'Int',    emoji: '📖' },
+    'Faith':        { label: 'Fe',     emoji: '🙏' },
+    'Arcane':       { label: 'Arc',    emoji: '🌀' },
   };
 
   getStat(name: string): { label: string; emoji: string } {
