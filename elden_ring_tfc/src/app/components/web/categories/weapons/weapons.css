@@ -70,6 +70,7 @@
 }
 
 .weapon-card {
+  position: relative;
   height: 100%;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(201, 169, 75, 0.25);
@@ -127,6 +128,26 @@
   background: #c9a94b;
   color: black;
   box-shadow: 0 0 8px #c9a94b;
+}
+
+/* ── Botón de favoritos ───────────────────────────────────────────────── */
+.btn-fav {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #c9a94b;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  z-index: 1;
+  transition: color 0.3s;
+}
+
+.btn-fav:hover {
+  color: white;
 }
 
 /* ── Sin resultados ───────────────────────────────────────────────────── */
@@ -210,11 +231,24 @@
 }
 
 .modal-image {
-  width: 100px;
-  height: 100px;
+  width: 180px;
+  height: 180px;
+  min-width: 180px;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(201, 169, 75, 0.4));
   flex-shrink: 0;
+}
+
+/* ── Fila título + favoritos en modal ─────────────────────────────────── */
+.modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.modal-title-row .modal-title {
+  margin: 0;
 }
 
 .modal-title {
@@ -312,9 +346,22 @@
     gap: 1rem;
   }
 
+  .modal-image {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+  }
+
   .modal-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
+}
+
+/* ── Posición del favorito en modal (esquina superior izquierda) ──────── */
+.modal-content .btn-fav {
+  top: 1rem;
+  left: 1rem;
+  right: auto;
 }
