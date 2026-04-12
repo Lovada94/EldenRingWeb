@@ -62,41 +62,44 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
 
       <button class="modal-close" (click)="closeDetail()">✕</button>
-      <button class="btn-fav"><i class="bi bi-heart"></i></button>
 
-      <div class="modal-header">
-        <img [src]="selectedAmmo()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedAmmo()!.name" class="modal-image"/>
-        <div>
-          <h2 class="modal-title">{{ selectedAmmo()!.name }}</h2>
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedAmmo()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedAmmo()!.name" class="modal-image"/>
           <span class="modal-category">{{ selectedAmmo()!.type }}</span>
+          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedAmmo()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedAmmo()!.description }}</p>
+
+          @if (selectedAmmo()!.passive) {
+            <div class="modal-section">
+              <h4>Efecto pasivo</h4>
+              <p class="modal-effect">{{ selectedAmmo()!.passive }}</p>
+            </div>
+          }
+
+          @if (selectedAmmo()!.attackPower?.length) {
+            <div class="modal-section">
+              <h4>Poder de ataque</h4>
+              <div class="stats-grid">
+                @for (stat of selectedAmmo()!.attackPower; track stat.name) {
+                  @if (stat.amount > 0) {
+                    <div class="stat-item">
+                      <span class="stat-emoji">{{ getStat(stat.name).emoji }}</span>
+                      <span class="stat-name">{{ getStat(stat.name).label }}</span>
+                      <span class="stat-value">{{ stat.amount }}</span>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+
         </div>
       </div>
-
-      <p class="modal-description">{{ selectedAmmo()!.description }}</p>
-
-      @if (selectedAmmo()!.passive) {
-        <div class="modal-section">
-          <h4>Efecto pasivo</h4>
-          <p class="modal-effect">{{ selectedAmmo()!.passive }}</p>
-        </div>
-      }
-
-      @if (selectedAmmo()!.attackPower?.length) {
-        <div class="modal-section">
-          <h4>Poder de ataque</h4>
-          <div class="stats-grid">
-            @for (stat of selectedAmmo()!.attackPower; track stat.name) {
-              @if (stat.amount > 0) {
-                <div class="stat-item">
-                  <span class="stat-emoji">{{ getStat(stat.name).emoji }}</span>
-                  <span class="stat-name">{{ getStat(stat.name).label }}</span>
-                  <span class="stat-value">{{ stat.amount }}</span>
-                </div>
-              }
-            }
-          </div>
-        </div>
-      }
 
     </div>
   </div>
