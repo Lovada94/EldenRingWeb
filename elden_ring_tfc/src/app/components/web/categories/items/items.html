@@ -1,0 +1,89 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Objetos</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar objeto..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (item of items(); track item.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="$event.stopPropagation()"><i class="bi bi-heart"></i></button>
+              <img [src]="item.image ?? '/assets/images/sin_imagen.png'" [alt]="item.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ item.name }}</h3>
+                <p class="item-subtitle">{{ item.type }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(item)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron objetos.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedItem()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedItem()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedItem()!.name" class="modal-image"/>
+          <span class="modal-category">{{ selectedItem()!.type }}</span>
+          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedItem()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedItem()!.description }}</p>
+
+          @if (selectedItem()!.effect) {
+            <div class="modal-section">
+              <h4>Efecto</h4>
+              <p class="modal-effect">{{ selectedItem()!.effect }}</p>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

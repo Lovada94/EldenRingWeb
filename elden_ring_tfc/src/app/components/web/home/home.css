@@ -1,0 +1,98 @@
+/* Contenedor principal */
+.home-container {
+  height: 100vh;
+  color: white;
+  background: url("/assets/images/elden-bg.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+/* Fondo letras */
+.background-dark {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Hero */
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.warning {
+  color: var(--bs-warning) !important;
+  font-family: 'Cinzel', serif;
+  transition: ease-in 0.3s;
+}
+
+.warning:hover {
+  filter: drop-shadow(0 0 10px #c9a94b);
+}
+
+.subtitle {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+/* Info */
+.info {
+  margin-top: 2rem;
+  max-width: 800px;
+  margin-inline: auto;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Botones */
+.buttons-container {
+  margin-top: 1rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  border: 1px solid #c9a94b;
+  text-decoration: none;
+  color: #f5e6a3;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  background: #c9a94b;
+  color: black;
+  box-shadow: 0 0 10px #c9a94b;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    margin: 2rem 1rem 0.5rem;
+    font-size: 1.5rem;
+  }
+  .info {
+    margin: 0 1rem 0.5rem;
+    max-width: 100vw;
+  }
+  .buttons-container {
+    margin: 0 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .hero {
+    margin-top: 1.5rem;
+  }
+  .buttons-container {
+    margin-bottom: 3rem;
+  }
+}

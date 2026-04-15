@@ -13,3 +13,4 @@ $routes->post('register', 'Auth::register');
 $routes->post('login', 'Auth::login');
 
 $routes->get('test-auth', 'Auth::testAuth', ['filter' => 'jwt']);
+$routes->get('profile', 'Auth::profile', ['filter' => 'jwt']);

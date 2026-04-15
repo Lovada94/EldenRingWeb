@@ -1,0 +1,82 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Localizaciones</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar localización..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (location of locations(); track location.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="$event.stopPropagation()"><i class="bi bi-heart"></i></button>
+              <img [src]="location.image ?? '/assets/images/sin_imagen.png'" [alt]="location.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ location.name }}</h3>
+                <p class="item-subtitle">{{ location.region }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(location)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron localizaciones.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedLocation()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedLocation()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedLocation()!.name" class="modal-image"/>
+          <span class="modal-category">{{ selectedLocation()!.region }}</span>
+          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedLocation()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedLocation()!.description }}</p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

@@ -1,0 +1,128 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Clases</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar clase..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (cls of classes(); track cls.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="$event.stopPropagation()"><i class="bi bi-heart"></i></button>
+              <img [src]="cls.image ?? '/assets/images/sin_imagen.png'" [alt]="cls.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ cls.name }}</h3>
+                <p class="item-subtitle">Lv. {{ cls.stats.level }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(cls)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron clases.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedClass()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedClass()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedClass()!.name" class="modal-image"/>
+          <span class="modal-category">⭐ Nivel {{ selectedClass()!.stats.level }}</span>
+          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedClass()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedClass()!.description }}</p>
+
+          <div class="modal-section">
+            <h4>Estadísticas base</h4>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('vigor').emoji }}</span>
+                <span class="stat-name">{{ getStat('vigor').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.vigor }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('mind').emoji }}</span>
+                <span class="stat-name">{{ getStat('mind').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.mind }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('endurance').emoji }}</span>
+                <span class="stat-name">{{ getStat('endurance').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.endurance }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('strength').emoji }}</span>
+                <span class="stat-name">{{ getStat('strength').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.strength }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('dexterity').emoji }}</span>
+                <span class="stat-name">{{ getStat('dexterity').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.dexterity }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('intelligence').emoji }}</span>
+                <span class="stat-name">{{ getStat('intelligence').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.intelligence }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('faith').emoji }}</span>
+                <span class="stat-name">{{ getStat('faith').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.faith }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">{{ getStat('arcane').emoji }}</span>
+                <span class="stat-name">{{ getStat('arcane').label }}</span>
+                <span class="stat-value">{{ selectedClass()!.stats.arcane }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

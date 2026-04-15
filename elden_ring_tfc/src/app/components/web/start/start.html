@@ -1,1 +1,19 @@
-<p>start works!</p>
+<div class="start-container">
+  <div class="overlay"></div>
+
+  <div class="content">
+    <a routerLink="home"><img src="/assets/images/logo.png" class="logo" alt="Elden Ring Web" /></a>
+
+    <div class="buttons">
+      <a routerLink="/home" class="btn primary">Entrar</a>
+      @if (!user) {
+        <a (click)="handleAuthClick(true)" class="btn secondary">Login / Register</a>
+        @if (showAuthModal) {
+          <app-auth-modal (closeModal)="showAuthModal = false"></app-auth-modal>
+        }
+      } @else {
+        <a routerLink="/home" class="btn secondary">Sesión Iniciada</a>
+      }
+    </div>
+  </div>
+</div>
