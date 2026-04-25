@@ -25,8 +25,7 @@ export class AuthModal {
 
   loginForm: FormGroup = this.formBuilder.group({
     identifier: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]]
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   registerForm: FormGroup = this.formBuilder.group({
