@@ -1,0 +1,43 @@
+<div class="home-container">
+
+  <div class="background-dark">
+    <section class="hero">
+      <h1>Bienvenido a <span class="warning">Elden Ring Web</span></h1>
+      <p class="subtitle">
+        Explora el mundo de Elden Ring como nunca antes.
+      </p>
+    </section>
+
+    <section class="info">
+      <p>
+        Esta web está basada en una API de Elden Ring que permite consultar información
+        sobre armas, enemigos, objetos, misiones de personajes y mucho más.
+      </p>
+
+      <p>
+        Todos los derechos pertenecen a FromSoftware y Kadokawa Corporation.
+        Este proyecto es únicamente con fines educativos.
+      </p>
+
+      <p>
+        Los usuarios registrados pueden guardar elementos en favoritos y, próximamente,
+        crear y compartir builds personalizadas.
+      </p>
+    </section>
+
+    <section class="buttons-container">
+      <div class="buttons">
+        @if (!user) {
+          <a routerLink="/ammos" class="btn">Explorar</a>
+          <a (click)="handleAuthClick(true)" class="btn">Iniciar sesión</a>
+          @if (showAuthModal) {
+            <app-auth-modal (closeModal)="showAuthModal = false"></app-auth-modal>
+          }
+        } @else {
+          <a routerLink="/ammos" class="btn">Explorar</a>
+        }
+      </div>
+    </section>
+  </div>
+
+</div>

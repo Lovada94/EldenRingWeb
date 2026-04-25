@@ -1,0 +1,92 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">NPCs</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar NPC..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (npc of npcs(); track npc.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="toggleFav(npc)">
+                <i class="bi" [class.bi-heart-fill]="isFav(npc.id)" [class.bi-heart]="!isFav(npc.id)"></i>
+              </button>
+              <img [src]="npc.image ?? '/assets/images/sin_imagen.png'" [alt]="npc.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ npc.name }}</h3>
+                <p class="item-subtitle">{{ npc.role }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(npc)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron NPCs.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedNpc()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedNpc()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedNpc()!.name" class="modal-image"/>
+          <span class="modal-category">{{ selectedNpc()!.role }}</span>
+          <p class="modal-weight">📍 {{ selectedNpc()!.location }}</p>
+          <button class="btn-fav" (click)="toggleFav(selectedNpc()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedNpc()!.id)"
+               [class.bi-heart]="!isFav(selectedNpc()!.id)">
+            </i>
+          </button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedNpc()!.name }}</h2>
+
+          @if (selectedNpc()!.quote) {
+            <p class="modal-description">"{{ selectedNpc()!.quote }}"</p>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

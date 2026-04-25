@@ -1,0 +1,111 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Espíritus</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar espíritu..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (spirit of spirits(); track spirit.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="toggleFav(spirit)">
+                <i class="bi" [class.bi-heart-fill]="isFav(spirit.id)" [class.bi-heart]="!isFav(spirit.id)"></i>
+              </button>
+              <img [src]="spirit.image ?? '/assets/images/sin_imagen.png'" [alt]="spirit.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ spirit.name }}</h3>
+                <p class="item-subtitle">FP: {{ spirit.fpCost }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(spirit)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron espíritus.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedSpirit()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedSpirit()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedSpirit()!.name" class="modal-image"/>
+          <button class="btn-fav" (click)="toggleFav(selectedSpirit()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedSpirit()!.id)"
+               [class.bi-heart]="!isFav(selectedSpirit()!.id)">
+            </i>
+          </button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedSpirit()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedSpirit()!.description }}</p>
+
+          <div class="modal-section">
+            <h4>Coste de invocación</h4>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-emoji">💧</span>
+                <span class="stat-name">FP</span>
+                <span class="stat-value">{{ selectedSpirit()!.fpCost }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-emoji">❤️</span>
+                <span class="stat-name">HP</span>
+                <span class="stat-value">{{ selectedSpirit()!.hpCost }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (selectedSpirit()!.effect) {
+            <div class="modal-section">
+              <h4>Efecto</h4>
+              <p class="modal-effect">{{ selectedSpirit()!.effect }}</p>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

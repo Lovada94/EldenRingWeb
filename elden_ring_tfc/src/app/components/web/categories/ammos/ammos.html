@@ -1,0 +1,113 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Munición</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar munición..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (ammo of ammos(); track ammo.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="toggleFav(ammo)">
+                <i class="bi" [class.bi-heart-fill]="isFav(ammo.id)" [class.bi-heart]="!isFav(ammo.id)"></i>
+              </button>
+              <img [src]="ammo.image ?? '/assets/images/sin_imagen.png'" [alt]="ammo.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ ammo.name }}</h3>
+                <p class="item-subtitle">{{ ammo.type }}</p>
+              </div>
+              <button class="btn-detail" (click)="openDetail(ammo)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontró munición.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedAmmo()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedAmmo()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedAmmo()!.name" class="modal-image"/>
+          <span class="modal-category">{{ selectedAmmo()!.type }}</span>
+          <button class="btn-fav" (click)="toggleFav(selectedAmmo()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedAmmo()!.id)"
+               [class.bi-heart]="!isFav(selectedAmmo()!.id)">
+            </i>
+          </button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedAmmo()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedAmmo()!.description }}</p>
+
+          @if (selectedAmmo()!.passive) {
+            <div class="modal-section">
+              <h4>Efecto pasivo</h4>
+              <p class="modal-effect">{{ selectedAmmo()!.passive }}</p>
+            </div>
+          }
+
+          @if (selectedAmmo()!.attackPower.length) {
+            <div class="modal-section">
+              <h4>Poder de ataque</h4>
+              <div class="stats-grid">
+                @for (stat of selectedAmmo()!.attackPower; track stat.name) {
+                  @if (stat.amount > 0) {
+                    <div class="stat-item">
+                      <span class="stat-emoji">{{ getStat(stat.name).emoji }}</span>
+                      <span class="stat-name">{{ getStat(stat.name).label }}</span>
+                      <span class="stat-value">{{ stat.amount }}</span>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

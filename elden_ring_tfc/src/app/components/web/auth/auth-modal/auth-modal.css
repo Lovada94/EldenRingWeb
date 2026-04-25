@@ -1,0 +1,96 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  user-select: none;
+}
+
+.modal-box {
+  background: #0f0f0f;
+  border: 1px solid rgba(201,169,75,0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 320px;
+  color: #f5e6a3;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(201,169,75,0.2);
+  position: relative;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: white;
+}
+
+/* Botón */
+.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.6rem;
+  border: 1px solid #c9a94b;
+  background: transparent;
+  color: #c9a94b;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #c9a94b;
+  color: black;
+}
+
+/* Switch */
+.switch {
+  margin-top: 1rem;
+}
+
+.switch span {
+  color: #c9a94b;
+  cursor: pointer;
+}
+
+/* Errores*/
+.error {
+  color: #ff4d4d;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+/* Ver Contra*/
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.eye:hover {
+  opacity: 1;
+}

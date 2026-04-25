@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-lg er-navbar">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a routerLink="/home">
+      <img src="/assets/images/logo_dorado.png" class="img-logo" alt="Logo"/>
+    </a>
+
+    <!-- TITULO -->
+    <a class="navbar-brand er-brand" routerLink="/home">
+      ELDEN RING WEB
+    </a>
+
+    <!-- TOGGLER -->
+    <button
+      class="navbar-toggler bg-light"
+      type="button"
+      (click)="toggleMenu()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- MENU -->
+    <div class="er-mobile-menu" [class.open]="isMenuOpen" (click)="closeMenu()">
+      <div class="menu-content" (click)="$event.stopPropagation()">
+
+        <a routerLink="/home">
+          <img src="/assets/images/logo_titulo.png" class="img-logo-mobile" alt="Logo"/>
+        </a>
+
+        <div class="navbar-collapse">
+
+          <!-- IZQUIERDA -->
+          <ul class="navbar-nav gap-lg-4">
+            <li class="nav-item">
+              <a class="nav-link er-link" routerLink="/home">Inicio</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link er-link dropdown-toggle" data-bs-toggle="dropdown">
+                Elden Ring
+              </a>
+
+              <div class="dropdown-menu er-megamenu p-4">
+                <div class="row">
+                  <div class="col-md-4">
+                    <a class="dropdown-item" routerLink="/ammos">Ammos</a>
+                    <a class="dropdown-item" routerLink="/armors">Armors</a>
+                    <a class="dropdown-item" routerLink="/ashes">Ashes of War</a>
+                    <a class="dropdown-item" routerLink="/bosses">Bosses</a>
+                    <a class="dropdown-item" routerLink="/classes">Classes</a>
+                  </div>
+                  <div class="col-md-4">
+                    <a class="dropdown-item" routerLink="/creatures">Creatures</a>
+                    <a class="dropdown-item" routerLink="/incantations">Incantations</a>
+                    <a class="dropdown-item" routerLink="/items">Items</a>
+                    <a class="dropdown-item" routerLink="/locations">Locations</a>
+                    <a class="dropdown-item" routerLink="/npcs">NPCs</a>
+                  </div>
+                  <div class="col-md-4">
+                    <a class="dropdown-item" routerLink="/shields">Shields</a>
+                    <a class="dropdown-item" routerLink="/sorceries">Sorceries</a>
+                    <a class="dropdown-item" routerLink="/spirits">Spirits</a>
+                    <a class="dropdown-item" routerLink="/talismans">Talismans</a>
+                    <a class="dropdown-item" routerLink="/weapons">Weapons</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- DERECHA -->
+          <ul class="navbar-nav gap-lg-4">
+            <li class="nav-item dropdown">
+
+              @if (!user) {
+                <a class="nav-link er-link dropdown-toggle" data-bs-toggle="dropdown">
+                  Cuenta
+                </a>
+
+                <ul class="dropdown-menu er-dropdown">
+                  <li><a class="dropdown-item" (click)="handleAuthClick(true)">Login</a></li>
+                  <li><a class="dropdown-item" (click)="handleAuthClick(false)">Register</a></li>
+                </ul>
+
+                @if (showAuthModal) {
+                  <app-auth-modal [mode]="authMode" (closeModal)="showAuthModal = false"></app-auth-modal>
+                }
+
+              } @else {
+                <a class="nav-link er-link dropdown-toggle d-flex align-items-center gap-2 er-user"
+                   data-bs-toggle="dropdown">
+                  <img src="/assets/images/default_avatar.jpg" class="er-avatar">
+                  {{ user.username }}
+                </a>
+
+                <ul class="dropdown-menu er-dropdown">
+                  <li><a class="dropdown-item" routerLink="/profile">Perfil</a></li>
+                  <li><a class="dropdown-item" routerLink="/favorites">Favoritos</a></li>
+                  <li>
+                    <button class="dropdown-item" (click)="logout()">Logout</button>
+                  </li>
+                </ul>
+              }
+
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>

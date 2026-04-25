@@ -1,0 +1,35 @@
+.er-footer {
+  background: radial-gradient(
+    ellipse at top,
+    #1a1a1a 0%,
+    #0b0b0b 60%
+  );
+  border-top: 1px solid rgba(255, 193, 7, 0.25);
+  padding: 60px 20px 40px;
+}
+
+.er-footer-logo {
+  width: 140px;
+  max-width: 60%;
+  margin-bottom: 24px;
+  opacity: 0.85;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.er-footer-logo:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.er-footer-text {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.er-footer-copy {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+}

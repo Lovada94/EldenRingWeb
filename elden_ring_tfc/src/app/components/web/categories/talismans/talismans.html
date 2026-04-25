@@ -1,0 +1,94 @@
+<!-- ── Página principal ─────────────────────────────────────────────────── -->
+<div class="page-container">
+
+  <div class="cabecera-grid-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">Talismanes</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar talismán..."
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="grid-wrapper">
+      <div class="row my-3 justify-content-center">
+        @for (talisman of talismans(); track talisman.id) {
+          <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
+            <div class="item-card h-100">
+              <button class="btn-fav" (click)="toggleFav(talisman)">
+                <i class="bi" [class.bi-heart-fill]="isFav(talisman.id)" [class.bi-heart]="!isFav(talisman.id)"></i>
+              </button>
+              <img [src]="talisman.image ?? '/assets/images/sin_imagen.png'" [alt]="talisman.name" class="item-image"/>
+              <div class="item-info">
+                <h3 class="item-name">{{ talisman.name }}</h3>
+              </div>
+              <button class="btn-detail" (click)="openDetail(talisman)">Ver detalle</button>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="no-results">No se encontraron talismanes.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pagination-wrapper">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [(page)]="currentPage"
+        [pageSize]="limit"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)"
+      />
+    </div>
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedTalisman()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-left-col">
+          <img [src]="selectedTalisman()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedTalisman()!.name" class="modal-image"/>
+          <button class="btn-fav" (click)="toggleFav(selectedTalisman()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedTalisman()!.id)"
+               [class.bi-heart]="!isFav(selectedTalisman()!.id)">
+            </i>
+          </button>
+        </div>
+        <div class="modal-right-col">
+          <h2 class="modal-title">{{ selectedTalisman()!.name }}</h2>
+
+          <p class="modal-description">{{ selectedTalisman()!.description }}</p>
+
+          @if (selectedTalisman()!.effect) {
+            <div class="modal-section">
+              <h4>Efecto</h4>
+              <p class="modal-effect">{{ selectedTalisman()!.effect }}</p>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+}
