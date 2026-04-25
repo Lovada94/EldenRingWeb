@@ -11,7 +11,7 @@ class Favorites extends ResourceController
     public function index()
     {
         $request  = service('request');
-        $userId   = $request->user['id_user'];
+        $userId   = $request->user->id_user;
 
         $favoriteModel = new FavoriteModel();
         $favorites     = $favoriteModel->getByUser($userId);
@@ -26,7 +26,7 @@ class Favorites extends ResourceController
     public function create()
     {
         $request = service('request');
-        $userId  = $request->user['id_user'];
+        $userId  = $request->user->id_user;
         $data    = $this->request->getJSON(true);
 
         // Validación
@@ -73,7 +73,7 @@ class Favorites extends ResourceController
     public function delete($id = null)
     {
         $request  = service('request');
-        $userId   = $request->user['id_user'];
+        $userId   = $request->user->id_user;
         $data     = $this->request->getJSON(true);
 
         if (empty($data['api_id']) || empty($data['category'])) {

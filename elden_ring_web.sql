@@ -35,3 +35,6 @@ COLLATE utf8mb4_unicode_ci;
 ALTER TABLE favorites
 ADD COLUMN quest_status ENUM('pending', 'in_progress', 'completed')
 DEFAULT 'pending' NULL;
+
+
+KILL QUERY 1;

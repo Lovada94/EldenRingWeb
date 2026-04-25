@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Creature } from '../../../../common/interface';
-import { FavoritesService } from '../../../../services/favorite-service';
+import { FavoritesService } from '../../../../services/favoritesService';
 import { AuthService } from '../../../../services/authService';
 
 @Component({

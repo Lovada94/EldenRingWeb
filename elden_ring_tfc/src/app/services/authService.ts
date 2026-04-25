@@ -1,25 +1,28 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, Injector} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {LoginCredentials, LoginResponse, RegisterCredentials, RegisterResponse, User} from '../common/interface';
-import {FavoritesService} from './favorite-service';
+import {FavoritesService} from './favoritesService';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly http: HttpClient = inject(HttpClient);
-  private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
+  private readonly injector: Injector = inject(Injector);
+  private readonly backendUrl = '...';
 
   private userSubject = new BehaviorSubject<User | null>(this.getUser());
   user$ = this.userSubject.asObservable();
 
-  private readonly favoritesService: FavoritesService = inject(FavoritesService);
-
   constructor() {
     if (this.isLogged()) {
-      this.favoritesService.loadFavorites().subscribe();
+      this.getFavoritesService().loadFavorites().subscribe();
     }
+  }
+
+  private getFavoritesService() {
+    return this.injector.get(FavoritesService);
   }
 
   login(credentials: LoginCredentials) {
@@ -28,7 +31,7 @@ export class AuthService {
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
         this.userSubject.next(res.user);
-        this.favoritesService.loadFavorites().subscribe();
+        this.getFavoritesService().loadFavorites().subscribe();
       }),
     );
   }
