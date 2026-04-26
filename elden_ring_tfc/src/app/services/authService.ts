@@ -10,7 +10,7 @@ import {FavoritesService} from './favoritesService';
 export class AuthService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly injector: Injector = inject(Injector);
-  private readonly backendUrl = '...';
+  private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
   private userSubject = new BehaviorSubject<User | null>(this.getUser());
   user$ = this.userSubject.asObservable();

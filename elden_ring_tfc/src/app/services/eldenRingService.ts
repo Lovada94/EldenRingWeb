@@ -44,10 +44,10 @@ export class EldenRingApiService {
   }
 
   private getOne<T>(category: string, id: string): Observable<T> {
-    return this.httpClient.get<ApiResponse<T>>(
+    return this.httpClient.get<any>(
       `${this.baseUrl}/${category}/${id}`
     ).pipe(
-      map(response => response.data[0])
+      map(response => Array.isArray(response.data) ? response.data[0] : response.data)
     );
   }
 

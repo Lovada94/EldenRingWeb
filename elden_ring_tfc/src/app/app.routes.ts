@@ -18,6 +18,7 @@ import { SorceriesPage } from './components/web/categories/sorceries/sorceries';
 import { SpiritsPage } from './components/web/categories/spirits/spirits';
 import { TalismansPage } from './components/web/categories/talismans/talismans';
 import {NpcsPage} from './components/web/categories/npcs/npcs';
+import {FavoritesPage} from './components/web/favorites-page/favorites-page';
 
 export const routes: Routes = [
   {
@@ -96,6 +97,11 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: Profile,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'favorites',
+    component: FavoritesPage,
     canActivate: [authGuard]
   },
   {

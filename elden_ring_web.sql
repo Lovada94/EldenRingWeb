@@ -37,4 +37,4 @@ ADD COLUMN quest_status ENUM('pending', 'in_progress', 'completed')
 DEFAULT 'pending' NULL;
 
 
-KILL QUERY 1;
+select * from users
