@@ -17,8 +17,21 @@ export class AuthService {
 
   constructor() {
     if (this.isLogged()) {
-      this.getFavoritesService().loadFavorites().subscribe();
+      if (this.isTokenExpired()) {
+        this.logout();
+      } else {
+        setTimeout(() => {
+          this.getFavoritesService().loadFavorites().subscribe();
+        }, 100);
+      }
     }
+  }
+
+  private isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 < Date.now();
   }
 
   private getFavoritesService() {
@@ -61,5 +74,10 @@ export class AuthService {
 
   getProfile() {
     return this.http.get(`${this.backendUrl}/profile`);
+  }
+
+  updateLocalUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.userSubject.next(user);
   }
 }

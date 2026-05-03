@@ -18,6 +18,7 @@ export class Navbar implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   user: User | null = null;
   private readonly router = inject(Router);
+  private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
   showAuthModal = false;
   authMode: 'login' | 'register' = 'login';
@@ -56,6 +57,10 @@ export class Navbar implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/home']);
+  }
+
+  getAvatarUrl(avatar: string): string {
+    return `${this.backendUrl}/uploads/avatars/${avatar}`;
   }
 
 }

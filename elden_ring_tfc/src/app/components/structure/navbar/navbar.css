@@ -136,8 +136,8 @@
 }
 
 .er-avatar {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 2px solid var(--bs-warning);
   object-fit: cover;

@@ -1,0 +1,249 @@
+/* ── Contenedor ───────────────────────────────────────────────────────── */
+.profile-container {
+  min-height: 100vh;
+  background-color: #0e0e0e;
+  color: white;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────────── */
+.page-header { margin-bottom: 2rem; }
+
+.page-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: #c9a94b;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(201, 169, 75, 0.4);
+}
+
+/* ── Layout principal ─────────────────────────────────────────────────── */
+.profile-layout {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* ── Columna avatar ───────────────────────────────────────────────────── */
+.avatar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 180px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.avatar-img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(201, 169, 75, 0.4);
+  filter: drop-shadow(0 0 10px rgba(201, 169, 75, 0.3));
+}
+
+.avatar-edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: #c9a94b;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: black;
+  font-size: 0.85rem;
+  transition: background 0.3s;
+}
+
+.avatar-edit:hover { background: #f5e6a3; }
+
+.avatar-username {
+  font-family: 'Cinzel', serif;
+  color: #f5e6a3;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── Columna formularios ──────────────────────────────────────────────── */
+.forms-col { flex: 1; min-width: 0; }
+
+/* ── Datos solo lectura ───────────────────────────────────────────────── */
+.readonly-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.readonly-field {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.field-label {
+  color: rgba(255, 255, 255, 0.5);
+  min-width: 150px;
+  flex-shrink: 0;
+}
+
+.field-value { color: #f5e6a3; }
+
+/* ── Divisor ──────────────────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, rgba(201, 169, 75, 0.4), transparent);
+  margin: 1.5rem 0;
+}
+
+/* ── Títulos de sección ───────────────────────────────────────────────── */
+.section-title {
+  font-family: 'Cinzel', serif;
+  color: #c9a94b;
+  font-size: 1rem;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.danger-title { color: #e74c3c; }
+
+/* ── Formularios ──────────────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.4rem;
+}
+
+.er-input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 169, 75, 0.4);
+  color: white;
+  outline: none;
+  font-size: 0.95rem;
+  transition: box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.er-input:focus { box-shadow: 0 0 8px rgba(201, 169, 75, 0.5); }
+
+.er-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+/* ── Input con ojo ────────────────────────────────────────────────────── */
+.input-group {
+  position: relative;
+  display: flex;
+}
+
+.input-group .er-input { padding-right: 2.5rem; }
+
+.eye {
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
+  user-select: none;
+}
+
+/* ── Mensajes ─────────────────────────────────────────────────────────── */
+.error { color: #e74c3c; font-size: 0.8rem; margin: 0.3rem 0 0; }
+
+.success-msg {
+  color: #2ecc71;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+/* ── Botones ──────────────────────────────────────────────────────────── */
+.btn-primary {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #c9a94b;
+  background: transparent;
+  color: #f5e6a3;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background: #c9a94b;
+  color: black;
+}
+
+.btn-danger {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #e74c3c;
+  background: transparent;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-secondary {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover { border-color: white; color: white; }
+
+/* ── Eliminar cuenta ──────────────────────────────────────────────────── */
+.delete-warning {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .profile-container { padding: 1rem; }
+
+  .profile-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .forms-col { width: 100%; }
+
+  .readonly-field { flex-direction: column; gap: 0.2rem; }
+
+  .field-label { min-width: unset; }
+}

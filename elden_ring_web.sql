@@ -10,7 +10,7 @@ CREATE TABLE users (
     email VARCHAR(150) NOT NULL UNIQUE,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255) DEFAULT 'default.png',
+    avatar VARCHAR(255) DEFAULT 'default_avatar.jpg',
     role ENUM('user','admin') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
