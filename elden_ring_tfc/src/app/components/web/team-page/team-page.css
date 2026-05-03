@@ -70,11 +70,27 @@
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(201, 169, 75, 0.15);
   padding: 1rem;
+  max-height: 75vh;
   overflow-y: auto;
-  max-height: calc(100vh - 10rem);
-  position: sticky;
-  top: 2rem;
-  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 169, 75, 0.4) transparent;
+}
+
+.favorites-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.favorites-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.favorites-panel::-webkit-scrollbar-thumb {
+  background: rgba(201, 169, 75, 0.4);
+  border-radius: 2px;
+}
+
+.favorites-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 169, 75, 0.7);
 }
 
 .panel-title {

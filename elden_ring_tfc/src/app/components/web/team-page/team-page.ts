@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import {Component, inject, OnInit, signal, computed} from '@angular/core';
 import { TeamService, EMPTY_TEAM } from '../../../services/teamService';
 import { FavoritesService} from '../../../services/favoritesService';
 import { EldenRingApiService } from '../../../services/eldenRingService';
@@ -236,10 +236,6 @@ export class TeamPage implements OnInit {
     const apiId = team[slot];
     if (!apiId) return null;
     return this.itemsData()[apiId] ?? null;
-  }
-
-  getSlotLabel(slot: string): string {
-    return this.slotDefs.find(d => d.slot === slot)?.label ?? slot;
   }
 
   removeSlot(slot: string): void {
