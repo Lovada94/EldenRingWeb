@@ -1,15 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
-export interface Favorite {
-  id_favorite?: number;
-  id_user?: number;
-  api_id: string;
-  category: string;
-  name: string;
-  image: string | null;
-}
+import {Favorite} from '../common/interface';
 
 @Injectable({
   providedIn: 'root'

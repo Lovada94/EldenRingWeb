@@ -296,6 +296,49 @@ export interface Talisman {
   effect: string;
 }
 
+export interface Favorite {
+  id_favorite?: number;
+  id_user?: number;
+  api_id: string;
+  category: string;
+  name: string;
+  image: string | null;
+  subcategory?: string | null;
+}
+
+export interface Team {
+  id_team?: number;
+  id_user?: number;
+  weapon_r1: string | null;
+  weapon_r2: string | null;
+  weapon_r3: string | null;
+  weapon_l1: string | null;
+  weapon_l2: string | null;
+  weapon_l3: string | null;
+  arrow1: string | null;
+  arrow2: string | null;
+  bolt1: string | null;
+  bolt2: string | null;
+  armor_head:  string | null;
+  armor_chest: string | null;
+  armor_hands: string | null;
+  armor_legs:  string | null;
+  talisman1: string | null;
+  talisman2: string | null;
+  talisman3: string | null;
+  talisman4: string | null;
+  item1:  string | null;
+  item2:  string | null;
+  item3:  string | null;
+  item4:  string | null;
+  item5:  string | null;
+  item6:  string | null;
+  item7:  string | null;
+  item8:  string | null;
+  item9:  string | null;
+  item10: string | null;
+}
+
 // ============================================================
 // TIPOS DE RESPUESTA POR ENDPOINT (listos para usar en servicios)
 // ============================================================

@@ -56,11 +56,12 @@ class Favorites extends ResourceController
         }
 
         $favoriteModel->insert([
-            'id_user'  => $userId,
-            'api_id'   => $data['api_id'],
-            'category' => $data['category'],
-            'name'     => $data['name'],
-            'image'    => $data['image'] ?? null
+            'id_user'     => $userId,
+            'api_id'      => $data['api_id'],
+            'category'    => $data['category'],
+            'subcategory' =>$data['subcategory'] ?? null,
+            'name'        => $data['name'],
+            'image'       => $data['image'] ?? null
         ]);
 
         return $this->respond([

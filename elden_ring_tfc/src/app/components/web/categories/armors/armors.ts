@@ -103,7 +103,8 @@ export class ArmorsPage implements OnInit {
       api_id: armor.id,
       category: 'armors',
       name: armor.name,
-      image: armor.image
+      image: armor.image,
+      subcategory: armor.category
     }).subscribe();
   }
 }

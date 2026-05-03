@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {LoginCredentials, LoginResponse, RegisterCredentials, RegisterResponse, User} from '../common/interface';
 import {FavoritesService} from './favoritesService';
+import {TeamService} from './teamService';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class AuthService {
       } else {
         setTimeout(() => {
           this.getFavoritesService().loadFavorites().subscribe();
+          this.injector.get(TeamService).loadTeam().subscribe();
         }, 100);
       }
     }

@@ -25,3 +25,7 @@ $routes->put('profile',             'Profile::update',         ['filter' => 'jwt
 $routes->put('profile/password',    'Profile::updatePassword', ['filter' => 'jwt']);
 $routes->post('profile/avatar',     'Profile::updateAvatar',   ['filter' => 'jwt']);
 $routes->delete('profile',          'Profile::delete',         ['filter' => 'jwt']);
+
+// Equipo
+$routes->get('team', 'Team::index', ['filter' => 'jwt']);
+$routes->put('team', 'Team::update', ['filter' => 'jwt']);

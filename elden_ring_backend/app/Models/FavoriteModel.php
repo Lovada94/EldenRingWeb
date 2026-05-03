@@ -13,6 +13,7 @@ class FavoriteModel extends Model
         'id_user',
         'api_id',
         'category',
+        'subcategory',
         'name',
         'image'
     ];

@@ -59,8 +59,9 @@
             <div class="fav-actions" (click)="$event.stopPropagation()">
               @if (hasTeamButton(fav.category)) {
                 <button class="btn-team" (click)="addToTeam(fav)" title="Añadir al equipo">
-                  <i class="bi bi-shield-plus"></i>
-                  <span>Equipo</span>
+                  <i class="bi" [class.bi-shield-plus]="!teamService.isInTeam(fav.api_id)"
+                     [class.bi-shield-check]="teamService.isInTeam(fav.api_id)"></i>
+                  <span>{{ teamService.isInTeam(fav.api_id) ? 'En equipo' : 'Equipo' }}</span>
                 </button>
               }
               <button class="btn-remove" (click)="removeFavorite(fav)" title="Eliminar de favoritos">

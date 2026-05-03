@@ -88,7 +88,8 @@ export class AmmosPage implements OnInit {
       api_id: ammo.id,
       category: 'ammos',
       name: ammo.name,
-      image: ammo.image
+      image: ammo.image,
+      subcategory: ammo.name
     }).subscribe();
   }
 }

@@ -1,0 +1,414 @@
+/* ── Contenedor ───────────────────────────────────────────────────────── */
+.team-container {
+  min-height: 100vh;
+  background-color: #0e0e0e;
+  color: white;
+  padding: 2rem;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: #c9a94b;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(201, 169, 75, 0.4);
+}
+
+.header-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+.btn-save, .btn-print, .btn-clear {
+  padding: 0.5rem 1rem;
+  border: 1px solid #c9a94b;
+  background: transparent;
+  color: #f5e6a3;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-save:hover, .btn-print:hover { background: #c9a94b; color: black; }
+.btn-clear { border-color: rgba(231, 76, 60, 0.6); color: #e74c3c; }
+.btn-clear:hover { background: #e74c3c; color: white; border-color: #e74c3c; }
+
+/* ── Loading ──────────────────────────────────────────────────────────── */
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Cinzel', serif;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.team-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.preview-and-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Panel favoritos izquierda ────────────────────────────────────────── */
+.favorites-panel {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 169, 75, 0.15);
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 10rem);
+  position: sticky;
+  top: 2rem;
+  box-sizing: border-box;
+}
+
+.panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #c9a94b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 1rem;
+}
+
+.empty-msg {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.fav-group { margin-bottom: 1.2rem; }
+
+.fav-group-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  color: rgba(201, 169, 75, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem;
+  border-bottom: 1px solid rgba(201, 169, 75, 0.1);
+  padding-bottom: 0.3rem;
+}
+
+.fav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.2s;
+}
+
+.fav-item:hover { background: rgba(201, 169, 75, 0.05); }
+
+.fav-item.in-team { opacity: 0.5; }
+
+.fav-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 3px rgba(201, 169, 75, 0.3));
+}
+
+.fav-name {
+  flex: 1;
+  font-size: 0.75rem;
+  color: #f5e6a3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-btns { display: flex; gap: 0.3rem; flex-shrink: 0; }
+
+.btn-add-slot {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(201, 169, 75, 0.5);
+  background: transparent;
+  color: #c9a94b;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-add-slot.slot-used {
+  opacity: 0.35;
+}
+
+.btn-add-slot:hover { background: #c9a94b; color: black; }
+
+/* ── Previsualización ─────────────────────────────────────────────────── */
+.team-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 169, 75, 0.15);
+  padding: 1.5rem;
+}
+
+.preview-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #c9a94b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.preview-two-cols {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.preview-col-left, .preview-col-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.preview-ammos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.preview-ammos-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* Armadura */
+.preview-armor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.preview-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.preview-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.preview-label, .preview-group-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.preview-img-box {
+  width: 90px;
+  height: 90px;
+  border: 1px solid rgba(201, 169, 75, 0.3);
+  background: rgba(201, 169, 75, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.preview-img-box:hover {
+  border-color: rgba(231, 76, 60, 0.5);
+  box-shadow: 0 0 6px rgba(231, 76, 60, 0.2);
+}
+
+.preview-img-box.small { width: 65px; height: 65px; }
+
+.preview-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(201, 169, 75, 0.3));
+}
+
+.slot-placeholder {
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 1.2rem;
+}
+
+/* Armas */
+.preview-weapons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.preview-weapons-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Talismanes */
+.preview-talismans {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.preview-talisman-row { display: flex; gap: 0.5rem; }
+
+/* Objetos */
+.preview-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.preview-items-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+}
+
+/* ── Estadísticas ─────────────────────────────────────────────────────── */
+.team-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 169, 75, 0.15);
+  padding: 1.5rem;
+}
+
+.stats-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #c9a94b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem;
+  width: 100%;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(201, 169, 75, 0.2);
+  background: rgba(201, 169, 75, 0.05);
+  flex: 1;
+  min-width: 150px;
+}
+
+.stat-icon { font-size: 1.5rem; }
+
+.stat-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.stat-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  color: #f5e6a3;
+}
+
+/* ── Estilos de impresión ─────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+
+  .team-container {
+    background: white;
+    color: black;
+    padding: 1rem;
+  }
+
+  .team-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-and-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100%;
+  }
+
+  .team-preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(201, 169, 75, 0.15);
+    padding: 1.5rem;
+  }
+
+  .team-stats {
+    background: white;
+    border-color: #ccc;
+    flex-direction: column;
+    min-width: 200px;
+  }
+
+  .stat-card { background: #f5f5f5; border-color: #ddd; }
+  .stat-val, .page-title, .preview-title, .stats-title { color: #333; }
+  .preview-label, .preview-group-label, .stat-label { color: #666; }
+  .preview-img-box { border-color: #ccc; background: #f9f9f9; }
+  .slot-placeholder { color: #ccc; }
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .team-layout { grid-template-columns: 1fr; }
+  .favorites-panel { max-height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .team-container { padding: 1rem; }
+  .preview-and-stats { gap: 1rem; }
+}

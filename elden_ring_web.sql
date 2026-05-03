@@ -35,6 +35,55 @@ COLLATE utf8mb4_unicode_ci;
 ALTER TABLE favorites
 ADD COLUMN quest_status ENUM('pending', 'in_progress', 'completed')
 DEFAULT 'pending' NULL;
+ALTER TABLE favorites ADD COLUMN subcategory VARCHAR(100) NULL;
 
+CREATE TABLE team (
+    id_team INT AUTO_INCREMENT PRIMARY KEY,
+    id_user INT NOT NULL UNIQUE,
 
-select * from users
+    -- Armas mano derecha (max 3)
+    weapon_r1 VARCHAR(50) NULL,
+    weapon_r2 VARCHAR(50) NULL,
+    weapon_r3 VARCHAR(50) NULL,
+
+    -- Armas mano izquierda (max 3)
+    weapon_l1 VARCHAR(50) NULL,
+    weapon_l2 VARCHAR(50) NULL,
+    weapon_l3 VARCHAR(50) NULL,
+
+    -- Flechas (max 2)
+    arrow1 VARCHAR(50) NULL,
+    arrow2 VARCHAR(50) NULL,
+
+    -- Saetas (max 2)
+    bolt1 VARCHAR(50) NULL,
+    bolt2 VARCHAR(50) NULL,
+
+    -- Armadura (1 por slot)
+    armor_head  VARCHAR(50) NULL,
+    armor_chest VARCHAR(50) NULL,
+    armor_hands VARCHAR(50) NULL,
+    armor_legs  VARCHAR(50) NULL,
+
+    -- Talismanes (max 4)
+    talisman1 VARCHAR(50) NULL,
+    talisman2 VARCHAR(50) NULL,
+    talisman3 VARCHAR(50) NULL,
+    talisman4 VARCHAR(50) NULL,
+
+    -- Objetos rápidos (max 10)
+    item1  VARCHAR(50) NULL,
+    item2  VARCHAR(50) NULL,
+    item3  VARCHAR(50) NULL,
+    item4  VARCHAR(50) NULL,
+    item5  VARCHAR(50) NULL,
+    item6  VARCHAR(50) NULL,
+    item7  VARCHAR(50) NULL,
+    item8  VARCHAR(50) NULL,
+    item9  VARCHAR(50) NULL,
+    item10 VARCHAR(50) NULL,
+
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
+) ENGINE=InnoDB
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
