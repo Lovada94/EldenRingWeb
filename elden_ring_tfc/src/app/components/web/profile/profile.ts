@@ -1,9 +1,18 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/authService';
 import { ProfileService } from '../../../services/profileService';
+import { FormValidators } from '../../../validators/formValidators';
 import { User } from '../../../common/interface';
+
+// Validator personalizado para el formulario de contraseña
+function passwordMatchProfile(form: FormGroup) {
+  const np = form.get('new_password')?.value;
+  const cp = form.get('confirm_password')?.value;
+  if (!np || !cp) return null;
+  return np === cp ? null : { passwordMismatch: true };
+}
 
 @Component({
   selector: 'app-profile',
@@ -32,16 +41,24 @@ export class Profile implements OnInit {
   private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
   profileForm: FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.minLength(3)]],
+    username: ['', [Validators.required, Validators.minLength(3), FormValidators.notOnlyWhiteSpace]],
     email:    ['', [Validators.required, Validators.email]],
   });
 
   passwordForm: FormGroup = this.fb.group({
     current_password: ['', [Validators.required]],
-    new_password:     ['', [Validators.required, Validators.minLength(6),
-      Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
+    new_password:     ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
     confirm_password: ['', [Validators.required]],
-  }, { validators: this.passwordMatchValidator });
+  }, { validators: passwordMatchProfile });
+
+  // ── Getters profileForm ───────────────────────────────────────────────
+  get usernameCtrl(): any { return this.profileForm.get('username'); }
+  get emailCtrl(): any    { return this.profileForm.get('email'); }
+
+  // ── Getters passwordForm ──────────────────────────────────────────────
+  get currentPasswordCtrl(): any  { return this.passwordForm.get('current_password'); }
+  get newPasswordCtrl(): any      { return this.passwordForm.get('new_password'); }
+  get confirmPasswordCtrl(): any  { return this.passwordForm.get('confirm_password'); }
 
   ngOnInit(): void {
     this.profileService.getProfile().subscribe({
@@ -53,12 +70,6 @@ export class Profile implements OnInit {
         });
       }
     });
-  }
-
-  private passwordMatchValidator(form: FormGroup) {
-    const np = form.get('new_password')?.value;
-    const cp = form.get('confirm_password')?.value;
-    return np === cp ? null : { passwordMismatch: true };
   }
 
   getAvatarUrl(avatar: string): string {

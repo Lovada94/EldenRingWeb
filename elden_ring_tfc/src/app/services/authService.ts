@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   register(data: RegisterCredentials): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(this.backendUrl + '/register', data);
+    return this.http.post<RegisterResponse>(`${this.backendUrl}/register`, data);
   }
 
   getUser(): User | null {

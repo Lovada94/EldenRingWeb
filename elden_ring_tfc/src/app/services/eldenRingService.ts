@@ -44,8 +44,7 @@ export class EldenRingApiService {
   }
 
   private getOne<T>(category: string, id: string): Observable<T> {
-    return this.httpClient.get<any>(
-      `${this.baseUrl}/${category}/${id}`
+    return this.httpClient.get<any>(`${this.baseUrl}/${category}/${id}`
     ).pipe(
       map(response => Array.isArray(response.data) ? response.data[0] : response.data)
     );

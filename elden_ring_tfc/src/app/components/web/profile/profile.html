@@ -47,21 +47,24 @@
           <div class="form-group">
             <label>Username</label>
             <input formControlName="username" class="er-input" placeholder="Username"/>
-            @if (profileForm.get('username')?.touched && profileForm.get('username')?.errors?.['required']) {
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['required']) {
               <p class="error">El username es obligatorio</p>
             }
-            @if (profileForm.get('username')?.touched && profileForm.get('username')?.errors?.['minlength']) {
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['minlength']) {
               <p class="error">Mínimo 3 caracteres</p>
+            }
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['notOnlyWhiteSpace']) {
+              <p class="error">No puede contener solo espacios en blanco</p>
             }
           </div>
 
           <div class="form-group">
             <label>Email</label>
             <input formControlName="email" class="er-input" placeholder="Email"/>
-            @if (profileForm.get('email')?.touched && profileForm.get('email')?.errors?.['required']) {
+            @if (emailCtrl?.touched && emailCtrl?.errors?.['required']) {
               <p class="error">El email es obligatorio</p>
             }
-            @if (profileForm.get('email')?.touched && profileForm.get('email')?.errors?.['email']) {
+            @if (emailCtrl?.touched && emailCtrl?.errors?.['email']) {
               <p class="error">Email inválido</p>
             }
           </div>
@@ -92,7 +95,7 @@
                 <i class="bi bi-eye"></i>
               </span>
             </div>
-            @if (passwordForm.get('current_password')?.touched && passwordForm.get('current_password')?.errors?.['required']) {
+            @if (currentPasswordCtrl?.touched && currentPasswordCtrl?.errors?.['required']) {
               <p class="error">La contraseña actual es obligatoria</p>
             }
           </div>
@@ -107,10 +110,10 @@
                 <i class="bi bi-eye"></i>
               </span>
             </div>
-            @if (passwordForm.get('new_password')?.touched && passwordForm.get('new_password')?.errors?.['minlength']) {
+            @if (newPasswordCtrl?.touched && newPasswordCtrl?.errors?.['minlength']) {
               <p class="error">Mínimo 6 caracteres</p>
             }
-            @if (passwordForm.get('new_password')?.touched && passwordForm.get('new_password')?.errors?.['pattern']) {
+            @if (newPasswordCtrl?.touched && newPasswordCtrl?.errors?.['pattern']) {
               <p class="error">Debe tener una mayúscula y un número</p>
             }
           </div>
@@ -125,7 +128,7 @@
                 <i class="bi bi-eye"></i>
               </span>
             </div>
-            @if (passwordForm.errors?.['passwordMismatch'] && passwordForm.get('confirm_password')?.touched) {
+            @if (passwordForm.errors?.['passwordMismatch'] && confirmPasswordCtrl?.touched) {
               <p class="error">Las contraseñas no coinciden</p>
             }
           </div>

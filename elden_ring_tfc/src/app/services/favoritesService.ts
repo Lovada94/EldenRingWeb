@@ -24,8 +24,7 @@ export class FavoritesService {
 
   // Cargar favoritos del usuario (llamar al iniciar sesión)
   loadFavorites(): Observable<{ status: number; favorites: Favorite[] }> {
-    return this.http.get<{ status: number; favorites: Favorite[] }>(
-      `${this.backendUrl}/favorites`
+    return this.http.get<{ status: number; favorites: Favorite[] }>(`${this.backendUrl}/favorites`
     ).pipe(
       tap(res => this.favorites.set(res.favorites))
     );
