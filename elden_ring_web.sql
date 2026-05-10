@@ -87,3 +87,25 @@ CREATE TABLE team (
 ) ENGINE=InnoDB
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE posts (
+    id_post INT AUTO_INCREMENT PRIMARY KEY,
+    id_user INT NOT NULL,
+    id_team INT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (id_team) REFERENCES team(id_team) ON DELETE SET NULL
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE comments (
+    id_comment INT AUTO_INCREMENT PRIMARY KEY,
+    id_post INT NOT NULL,
+    id_user INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_post) REFERENCES posts(id_post) ON DELETE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
