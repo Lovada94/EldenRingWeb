@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Npc } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-npcs',
@@ -12,6 +14,8 @@ import { Npc } from '../../../../common/interface';
 export class NpcsPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   npcs        = signal<Npc[]>([]);
   totalItems  = signal<number>(0);
@@ -19,6 +23,8 @@ export class NpcsPage implements OnInit {
   loaded      = signal<boolean>(false);
   searchTerm  = signal<string>('');
   selectedNpc = signal<Npc | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class NpcsPage implements OnInit {
 
   openDetail(npc: Npc): void { this.selectedNpc.set(npc); }
   closeDetail(): void { this.selectedNpc.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'npcs');
+  }
+
+  toggleFav(npc: Npc): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: npc.id,
+      category: 'npcs',
+      name: npc.name,
+      image: npc.image
+    }).subscribe();
+  }
 }

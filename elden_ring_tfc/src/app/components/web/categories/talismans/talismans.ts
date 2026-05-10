@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Talisman } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-talismans',
@@ -12,6 +14,8 @@ import { Talisman } from '../../../../common/interface';
 export class TalismansPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   talismans         = signal<Talisman[]>([]);
   totalItems        = signal<number>(0);
@@ -19,6 +23,8 @@ export class TalismansPage implements OnInit {
   loaded            = signal<boolean>(false);
   searchTerm        = signal<string>('');
   selectedTalisman  = signal<Talisman | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class TalismansPage implements OnInit {
 
   openDetail(talisman: Talisman): void { this.selectedTalisman.set(talisman); }
   closeDetail(): void { this.selectedTalisman.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'talismans');
+  }
+
+  toggleFav(talisman: Talisman): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: talisman.id,
+      category: 'talismans',
+      name: talisman.name,
+      image: talisman.image
+    }).subscribe();
+  }
 }

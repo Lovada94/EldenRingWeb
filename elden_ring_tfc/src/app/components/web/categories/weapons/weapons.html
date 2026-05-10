@@ -32,8 +32,10 @@
         @for (weapon of weapons(); track weapon.id) {
           <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
             <div class="weapon-card h-100">
-              <button class="btn-fav" (click)="$event.stopPropagation()"><i class="bi bi-heart"></i></button>
-              <img [src]="weapon.image !== null ? weapon.image : '/assets/images/sin_imagen.png'" [alt]="weapon.name" class="weapon-image"/>
+              <button class="btn-fav" (click)="toggleFav(weapon)">
+                <i class="bi" [class.bi-heart-fill]="isFav(weapon.id)" [class.bi-heart]="!isFav(weapon.id)"></i>
+              </button>
+              <img [src]="weapon.image ?? '/assets/images/sin_imagen.png'" [alt]="weapon.name" class="weapon-image"/>
               <div class="weapon-info">
                 <h3 class="weapon-name">{{ weapon.name }}</h3>
                 <p class="weapon-category">{{ weapon.category }}</p>
@@ -76,10 +78,15 @@
 
       <div class="modal-body">
         <div class="modal-left-col">
-          <img [src]="selectedWeapon()!.image !== null ? selectedWeapon()!.image : '/assets/images/sin_imagen.png'" [alt]="selectedWeapon()!.name" class="modal-image"/>
+          <img [src]="selectedWeapon()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedWeapon()!.name" class="modal-image"/>
           <span class="modal-category">{{ selectedWeapon()!.category }}</span>
           <p class="modal-weight">Peso: {{ selectedWeapon()!.weight }}</p>
-          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+          <button class="btn-fav" (click)="toggleFav(selectedWeapon()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedWeapon()!.id)"
+               [class.bi-heart]="!isFav(selectedWeapon()!.id)">
+            </i>
+          </button>
         </div>
         <div class="modal-right-col">
           <h2 class="modal-title">{{ selectedWeapon()!.name }}</h2>
@@ -87,7 +94,7 @@
           <p class="modal-description">{{ selectedWeapon()!.description }}</p>
 
           <!-- Ataque -->
-          @if (selectedWeapon()!.attack?.length) {
+          @if (selectedWeapon()!.attack.length) {
             <div class="modal-section">
               <h4>Ataque</h4>
               <div class="stats-grid">
@@ -105,7 +112,7 @@
           }
 
           <!-- Defensa -->
-          @if (selectedWeapon()!.defence?.length) {
+          @if (selectedWeapon()!.defence.length) {
             <div class="modal-section">
               <h4>Defensa</h4>
               <div class="stats-grid">
@@ -123,7 +130,7 @@
           }
 
           <!-- Escalado -->
-          @if (selectedWeapon()!.scalesWith?.length) {
+          @if (selectedWeapon()!.scalesWith.length) {
             <div class="modal-section">
               <h4>Escalado</h4>
               <div class="stats-grid">
@@ -141,7 +148,7 @@
           }
 
           <!-- Atributos requeridos -->
-          @if (selectedWeapon()!.requiredAttributes?.length) {
+          @if (selectedWeapon()!.requiredAttributes.length) {
             <div class="modal-section">
               <h4>Atributos requeridos</h4>
               <div class="stats-grid">

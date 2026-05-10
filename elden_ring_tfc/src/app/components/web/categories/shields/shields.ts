@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Shield } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-shields',
@@ -12,6 +14,8 @@ import { Shield } from '../../../../common/interface';
 export class ShieldsPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   shields         = signal<Shield[]>([]);
   totalItems      = signal<number>(0);
@@ -19,6 +23,8 @@ export class ShieldsPage implements OnInit {
   loaded          = signal<boolean>(false);
   searchTerm      = signal<string>('');
   selectedShield  = signal<Shield | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -78,4 +84,18 @@ export class ShieldsPage implements OnInit {
 
   openDetail(shield: Shield): void { this.selectedShield.set(shield); }
   closeDetail(): void { this.selectedShield.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'shields');
+  }
+
+  toggleFav(shield: Shield): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: shield.id,
+      category: 'shields',
+      name: shield.name,
+      image: shield.image
+    }).subscribe();
+  }
 }

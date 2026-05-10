@@ -8,43 +8,36 @@ use CodeIgniter\Filters\FilterInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class JWTFilter implements FilterInterface
+class JwtFilter implements FilterInterface
 {
+
     public function before(RequestInterface $request, $arguments = null)
     {
-        $header = $request->getHeaderLine('Authorization');
 
-        // No hay token
-        if (!$header) {
+        $authHeader = $request->getHeaderLine('Authorization');
+
+        if (!$authHeader) {
             return response()->setJSON([
                 'status' => 401,
                 'message' => 'Token requerido'
             ])->setStatusCode(401);
         }
 
-        // Extraer token
-        $token = str_replace('Bearer ', '', $header);
+        $token = str_replace('Bearer ', '', $authHeader);
 
         try {
-            $secretKey = getenv('JWT_SECRET');
 
-            $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+            $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
 
-            // 🔥 CLAVE: guardar usuario en la request
             $request->user = $decoded->data;
-
         } catch (\Exception $e) {
 
             return response()->setJSON([
                 'status' => 401,
-                'message' => 'Token inválido o expirado',
-                'error' => $e->getMessage() // opcional (quitar en producción)
+                'message' => 'Token inválido'
             ])->setStatusCode(401);
         }
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-        // Nada
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Creature } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-creatures',
@@ -12,6 +14,8 @@ import { Creature } from '../../../../common/interface';
 export class CreaturesPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   creatures         = signal<Creature[]>([]);
   totalItems        = signal<number>(0);
@@ -19,6 +23,8 @@ export class CreaturesPage implements OnInit {
   loaded            = signal<boolean>(false);
   searchTerm        = signal<string>('');
   selectedCreature  = signal<Creature | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class CreaturesPage implements OnInit {
 
   openDetail(creature: Creature): void { this.selectedCreature.set(creature); }
   closeDetail(): void { this.selectedCreature.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'creatures');
+  }
+
+  toggleFav(creature: Creature): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: creature.id,
+      category: 'creatures',
+      name: creature.name,
+      image: creature.image
+    }).subscribe();
+  }
 }

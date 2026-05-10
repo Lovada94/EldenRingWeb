@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Sorcery } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-sorceries',
@@ -12,6 +14,8 @@ import { Sorcery } from '../../../../common/interface';
 export class SorceriesPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   sorceries         = signal<Sorcery[]>([]);
   totalItems        = signal<number>(0);
@@ -19,6 +23,8 @@ export class SorceriesPage implements OnInit {
   loaded            = signal<boolean>(false);
   searchTerm        = signal<string>('');
   selectedSorcery   = signal<Sorcery | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -68,4 +74,18 @@ export class SorceriesPage implements OnInit {
 
   openDetail(sorcery: Sorcery): void { this.selectedSorcery.set(sorcery); }
   closeDetail(): void { this.selectedSorcery.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'sorceries');
+  }
+
+  toggleFav(sorcery: Sorcery): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: sorcery.id,
+      category: 'sorceries',
+      name: sorcery.name,
+      image: sorcery.image
+    }).subscribe();
+  }
 }

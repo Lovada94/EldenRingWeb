@@ -8,9 +8,24 @@ use CodeIgniter\Router\RouteCollection;
 $routes->options('(:any)', static function () {
     return response()->setStatusCode(200);
 });
-$routes->get('/', 'Home::index');
+
 $routes->post('register', 'Auth::register');
 $routes->post('login', 'Auth::login');
 
 $routes->get('test-auth', 'Auth::testAuth', ['filter' => 'jwt']);
-$routes->get('profile', 'Auth::profile', ['filter' => 'jwt']);
+
+// Favoritos
+$routes->get('favorites',    'Favorites::index',  ['filter' => 'jwt']);
+$routes->post('favorites',   'Favorites::create', ['filter' => 'jwt']);
+$routes->delete('favorites', 'Favorites::delete', ['filter' => 'jwt']);
+
+// Perfil
+$routes->get('profile',             'Profile::index',          ['filter' => 'jwt']);
+$routes->put('profile',             'Profile::update',         ['filter' => 'jwt']);
+$routes->put('profile/password',    'Profile::updatePassword', ['filter' => 'jwt']);
+$routes->post('profile/avatar',     'Profile::updateAvatar',   ['filter' => 'jwt']);
+$routes->delete('profile',          'Profile::delete',         ['filter' => 'jwt']);
+
+// Equipo
+$routes->get('team', 'Team::index', ['filter' => 'jwt']);
+$routes->put('team', 'Team::update', ['filter' => 'jwt']);

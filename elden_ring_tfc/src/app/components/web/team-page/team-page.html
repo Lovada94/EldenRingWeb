@@ -1,0 +1,237 @@
+<div class="team-container">
+
+  <div class="page-header no-print">
+    <h1 class="page-title">Mi Equipo</h1>
+    <div class="header-actions">
+      <button class="btn-print" (click)="printTeam()">
+        <i class="bi bi-printer"></i> Imprimir
+      </button>
+      <button class="btn-save" (click)="teamService.saveTeam().subscribe()">
+        <i class="bi bi-floppy"></i> Guardar
+      </button>
+      <button class="btn-clear" (click)="clearTeam()">
+        <i class="bi bi-trash"></i> Limpiar
+      </button>
+    </div>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading no-print"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+    <div class="team-layout">
+
+      <!-- ── Columna izquierda: Favoritos disponibles ──────────────────── -->
+      <div class="favorites-panel no-print">
+        <h3 class="panel-title">Añadir desde favoritos</h3>
+
+        @if (categories().length === 0) {
+          <p class="empty-msg">No tienes favoritos disponibles para el equipo.</p>
+        }
+
+        @for (category of categories(); track category) {
+          <div class="fav-group">
+            <h4 class="fav-group-title">{{ getCategoryLabel(category) }}</h4>
+
+            @for (fav of groupedFavorites()[category]; track fav.api_id) {
+              <div class="fav-item">
+                <img [src]="fav.image ?? '/assets/images/sin_imagen.png'"
+                     [alt]="fav.name" class="fav-img"/>
+                <span class="fav-name">{{ fav.name }}</span>
+
+                <div class="fav-btns">
+                  @if (isWeaponOrShield(fav.category)) {
+                    <button class="btn-add-slot"
+                            (click)="addRight(fav)"
+                            title="Mano derecha"
+                            [class.slot-used]="isInRightHand(fav.api_id)">D</button>
+                    <button class="btn-add-slot"
+                            (click)="addLeft(fav)"
+                            title="Mano izquierda"
+                            [class.slot-used]="isInLeftHand(fav.api_id)">I</button>
+                  } @else {
+                    <button class="btn-add-slot"
+                            (click)="addGeneric(fav)"
+                            title="Añadir"
+                            [class.slot-used]="isInTeam(fav.api_id)">+</button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- ── Columna derecha: Previsualización + Stats ─────────────────── -->
+      <div class="preview-and-stats">
+
+        <!-- Previsualización -->
+        <div class="team-preview print-section">
+          <h3 class="preview-title no-print">Previsualización</h3>
+
+          <div class="preview-two-cols">
+
+            <!-- Col izquierda: Armadura + Armas -->
+            <div class="preview-col-left">
+
+              <!-- Armadura -->
+              <div class="preview-armor">
+                <div class="preview-slot">
+                  <span class="preview-label">Casco</span>
+                  <div class="preview-img-box" (click)="removeSlot('armor_head')" [title]="getSlotItem('armor_head') ? 'Quitar' : ''">
+                    @if (getSlotItem('armor_head')) {
+                      <img [src]="getSlotItem('armor_head').image ?? '/assets/images/sin_imagen.png'" alt="Casco"/>
+                    } @else { <i class="bi bi-question slot-placeholder"></i> }
+                  </div>
+                </div>
+
+                <div class="preview-row">
+                  <div class="preview-slot">
+                    <span class="preview-label">Pechera</span>
+                    <div class="preview-img-box" (click)="removeSlot('armor_chest')" [title]="getSlotItem('armor_chest') ? 'Quitar' : ''">
+                      @if (getSlotItem('armor_chest')) {
+                        <img [src]="getSlotItem('armor_chest').image ?? '/assets/images/sin_imagen.png'" alt="Pechera"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  </div>
+                  <div class="preview-slot">
+                    <span class="preview-label">Guantes</span>
+                    <div class="preview-img-box" (click)="removeSlot('armor_hands')" [title]="getSlotItem('armor_hands') ? 'Quitar' : ''">
+                      @if (getSlotItem('armor_hands')) {
+                        <img [src]="getSlotItem('armor_hands').image ?? '/assets/images/sin_imagen.png'" alt="Guantes"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="preview-slot">
+                  <span class="preview-label">Piernas</span>
+                  <div class="preview-img-box" (click)="removeSlot('armor_legs')" [title]="getSlotItem('armor_legs') ? 'Quitar' : ''">
+                    @if (getSlotItem('armor_legs')) {
+                      <img [src]="getSlotItem('armor_legs').image ?? '/assets/images/sin_imagen.png'" alt="Piernas"/>
+                    } @else { <i class="bi bi-question slot-placeholder"></i> }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Armas -->
+              <div class="preview-weapons">
+                <div class="preview-weapons-col">
+                  <span class="preview-group-label">Mano derecha</span>
+                  @for (slot of ['weapon_r1','weapon_r2','weapon_r3']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+                <div class="preview-weapons-col">
+                  <span class="preview-group-label">Mano izquierda</span>
+                  @for (slot of ['weapon_l1','weapon_l2','weapon_l3']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Col derecha: Flechas + Saetas + Talismanes + Objetos -->
+            <div class="preview-col-right">
+
+              <!-- Flechas -->
+              <div class="preview-ammos">
+                <span class="preview-group-label">Flechas</span>
+                <div class="preview-ammos-row">
+                  @for (slot of ['arrow1','arrow2']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Saetas -->
+              <div class="preview-ammos">
+                <span class="preview-group-label">Saetas</span>
+                <div class="preview-ammos-row">
+                  @for (slot of ['bolt1','bolt2']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Talismanes -->
+              <div class="preview-talismans">
+                <span class="preview-group-label">Talismanes</span>
+                <div class="preview-talisman-row">
+                  @for (slot of ['talisman1','talisman2','talisman3','talisman4']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Objetos rápidos -->
+              <div class="preview-items">
+                <span class="preview-group-label">Objetos rápidos</span>
+                <div class="preview-items-grid">
+                  @for (slot of ['item1','item2','item3','item4','item5','item6','item7','item8','item9','item10']; track slot) {
+                    <div class="preview-img-box small" (click)="removeSlot(slot)" [title]="getSlotItem(slot) ? 'Quitar' : ''">
+                      @if (getSlotItem(slot)) {
+                        <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name"/>
+                      } @else { <i class="bi bi-question slot-placeholder"></i> }
+                    </div>
+                  }
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="team-stats print-section">
+          <h3 class="stats-title">Estadísticas</h3>
+          <div class="stat-card">
+            <span class="stat-icon">⚖️</span>
+            <div class="stat-info">
+              <span class="stat-label">Peso total</span>
+              <span class="stat-val">{{ totalWeight() }}</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">⚔️</span>
+            <div class="stat-info">
+              <span class="stat-label">Ataque total</span>
+              <span class="stat-val">{{ totalAttack() }}</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🛡️</span>
+            <div class="stat-info">
+              <span class="stat-label">Defensa total</span>
+              <span class="stat-val">{{ totalDefense() }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

@@ -73,14 +73,8 @@
             <li class="nav-item dropdown">
 
               @if (!user) {
-                <a class="nav-link er-link dropdown-toggle" data-bs-toggle="dropdown">
-                  Cuenta
-                </a>
-
-                <ul class="dropdown-menu er-dropdown">
-                  <li><a class="dropdown-item" (click)="handleAuthClick(true)">Login</a></li>
-                  <li><a class="dropdown-item" (click)="handleAuthClick(false)">Register</a></li>
-                </ul>
+                <button class="btn-auth" (click)="handleAuthClick(true)">Iniciar sesión</button>
+                <button class="btn-auth btn-auth-register" (click)="handleAuthClick(false)">Regístrate</button>
 
                 @if (showAuthModal) {
                   <app-auth-modal [mode]="authMode" (closeModal)="showAuthModal = false"></app-auth-modal>
@@ -89,13 +83,14 @@
               } @else {
                 <a class="nav-link er-link dropdown-toggle d-flex align-items-center gap-2 er-user"
                    data-bs-toggle="dropdown">
-                  <img src="/assets/images/default_avatar.jpg" class="er-avatar">
+                  <img [src]="getAvatarUrl(user.avatar)" class="er-avatar">
                   {{ user.username }}
                 </a>
 
                 <ul class="dropdown-menu er-dropdown">
                   <li><a class="dropdown-item" routerLink="/profile">Perfil</a></li>
                   <li><a class="dropdown-item" routerLink="/favorites">Favoritos</a></li>
+                  <li><a class="dropdown-item" routerLink="/team">Equipo</a></li>
                   <li>
                     <button class="dropdown-item" (click)="logout()">Logout</button>
                   </li>

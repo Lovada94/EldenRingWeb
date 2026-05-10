@@ -3,7 +3,7 @@
 
     <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="close()"></button>
 
-    <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
+    <h2>{{ isLogin ? 'Login' : 'Regístrate' }}</h2>
 
     @if (isLogin) {
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
@@ -16,8 +16,8 @@
         <div class="input-group">
           <input
             [type]="showConfirmPassword ? 'text' : 'password'"
-            formControlName="confirmPassword"
-            placeholder="Confirm Password"
+            formControlName="password"
+            placeholder="Password"
           >
           <span
             class="eye"

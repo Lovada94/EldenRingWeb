@@ -1,7 +1,168 @@
-@if (user){
-  <h2>Perfil</h2>
+<div class="profile-container">
 
-  <p><strong>Usuario:</strong> {{ user.username }}</p>
-  <p><strong>Email:</strong> {{ user.email }}</p>
-  <p><strong>Rol:</strong> {{ user.role }}</p>
-}
+  <div class="page-header">
+    <h1 class="page-title">Mi Perfil</h1>
+  </div>
+
+  @if (user()) {
+    <div class="profile-layout">
+
+      <!-- ── Columna izquierda: Avatar ─────────────────────────────────── -->
+      <div class="avatar-col">
+        <div class="avatar-wrapper">
+          <img [src]="getAvatarUrl(user()!.avatar)" [alt]="user()!.username" class="avatar-img"/>
+          <label class="avatar-edit" title="Cambiar avatar">
+            <i class="bi bi-pencil-fill"></i>
+            <input type="file" accept="image/*" (change)="onAvatarChange($event)" hidden/>
+          </label>
+        </div>
+        <p class="avatar-username">{{ user()!.username }}</p>
+      </div>
+
+      <!-- ── Columna derecha ───────────────────────────────────────────── -->
+      <div class="forms-col">
+
+        <!-- Datos de solo lectura -->
+        <div class="readonly-section">
+          <div class="readonly-field">
+            <span class="field-label">Nombre</span>
+            <span class="field-value">{{ user()!.name }}</span>
+          </div>
+          <div class="readonly-field">
+            <span class="field-label">Apellidos</span>
+            <span class="field-value">{{ user()!.surnames }}</span>
+          </div>
+          <div class="readonly-field">
+            <span class="field-label">Fecha de nacimiento</span>
+            <span class="field-value">{{ user()!.birth_date }}</span>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Formulario de edición -->
+        <form [formGroup]="profileForm" (ngSubmit)="submitProfile()">
+          <h3 class="section-title">Datos de cuenta</h3>
+
+          <div class="form-group">
+            <label>Username</label>
+            <input formControlName="username" class="er-input" placeholder="Username"/>
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['required']) {
+              <p class="error">El username es obligatorio</p>
+            }
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['minlength']) {
+              <p class="error">Mínimo 3 caracteres</p>
+            }
+            @if (usernameCtrl?.touched && usernameCtrl?.errors?.['notOnlyWhiteSpace']) {
+              <p class="error">No puede contener solo espacios en blanco</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input formControlName="email" class="er-input" placeholder="Email"/>
+            @if (emailCtrl?.touched && emailCtrl?.errors?.['required']) {
+              <p class="error">El email es obligatorio</p>
+            }
+            @if (emailCtrl?.touched && emailCtrl?.errors?.['email']) {
+              <p class="error">Email inválido</p>
+            }
+          </div>
+
+          @if (successMsg()) {
+            <p class="success-msg">{{ successMsg() }}</p>
+          }
+          @if (errorMsg()) {
+            <p class="error">{{ errorMsg() }}</p>
+          }
+
+          <button type="submit" class="btn-primary">Guardar cambios</button>
+        </form>
+
+        <div class="section-divider"></div>
+
+        <!-- Cambiar contraseña -->
+        <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+          <h3 class="section-title">Cambiar contraseña</h3>
+
+          <div class="form-group">
+            <label>Contraseña actual</label>
+            <div class="input-group">
+              <input [type]="showPassword ? 'text' : 'password'"
+                     formControlName="current_password" class="er-input" placeholder="Contraseña actual"/>
+              <span class="eye" (mousedown)="showPassword = true" (mouseup)="showPassword = false"
+                    (mouseleave)="showPassword = false">
+                <i class="bi bi-eye"></i>
+              </span>
+            </div>
+            @if (currentPasswordCtrl?.touched && currentPasswordCtrl?.errors?.['required']) {
+              <p class="error">La contraseña actual es obligatoria</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Nueva contraseña</label>
+            <div class="input-group">
+              <input [type]="showNewPassword ? 'text' : 'password'"
+                     formControlName="new_password" class="er-input" placeholder="Nueva contraseña"/>
+              <span class="eye" (mousedown)="showNewPassword = true" (mouseup)="showNewPassword = false"
+                    (mouseleave)="showNewPassword = false">
+                <i class="bi bi-eye"></i>
+              </span>
+            </div>
+            @if (newPasswordCtrl?.touched && newPasswordCtrl?.errors?.['minlength']) {
+              <p class="error">Mínimo 6 caracteres</p>
+            }
+            @if (newPasswordCtrl?.touched && newPasswordCtrl?.errors?.['pattern']) {
+              <p class="error">Debe tener una mayúscula y un número</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Confirmar nueva contraseña</label>
+            <div class="input-group">
+              <input [type]="showConfirmPassword ? 'text' : 'password'"
+                     formControlName="confirm_password" class="er-input" placeholder="Confirmar contraseña"/>
+              <span class="eye" (mousedown)="showConfirmPassword = true" (mouseup)="showConfirmPassword = false"
+                    (mouseleave)="showConfirmPassword = false">
+                <i class="bi bi-eye"></i>
+              </span>
+            </div>
+            @if (passwordForm.errors?.['passwordMismatch'] && confirmPasswordCtrl?.touched) {
+              <p class="error">Las contraseñas no coinciden</p>
+            }
+          </div>
+
+          @if (pwSuccessMsg()) {
+            <p class="success-msg">{{ pwSuccessMsg() }}</p>
+          }
+          @if (pwErrorMsg()) {
+            <p class="error">{{ pwErrorMsg() }}</p>
+          }
+
+          <button type="submit" class="btn-primary">Cambiar contraseña</button>
+        </form>
+
+        <div class="section-divider"></div>
+
+        <!-- Eliminar cuenta -->
+        <div class="delete-section">
+          <h3 class="section-title danger-title">Zona de peligro</h3>
+          @if (!showDeleteConfirm()) {
+            <button class="btn-danger" (click)="showDeleteConfirm.set(true)">
+              Eliminar cuenta
+            </button>
+          } @else {
+            <p class="delete-warning">¿Estás seguro? Esta acción no se puede deshacer.</p>
+            <div class="delete-actions">
+              <button class="btn-danger" (click)="deleteAccount()">Sí, eliminar</button>
+              <button class="btn-secondary" (click)="showDeleteConfirm.set(false)">Cancelar</button>
+            </div>
+          }
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

@@ -105,14 +105,39 @@
   width: 600px;
 }
 
+/* BOTONES */
+.btn-auth {
+  padding: 0.4rem 1rem;
+  border: 1px solid #c9a94b;
+  background: transparent;
+  color: #f5e6a3;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+  background: #c9a94b;
+  color: black;
+}
+
+.btn-auth-register {
+  background: #c9a94b;
+  color: black;
+}
+
+.btn-auth-register:hover {
+  background: #f5e6a3;
+}
+
 /* USER */
 .er-user {
   color: var(--bs-warning) !important;
 }
 
 .er-avatar {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 2px solid var(--bs-warning);
   object-fit: cover;

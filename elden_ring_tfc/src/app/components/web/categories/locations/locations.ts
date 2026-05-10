@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { EldenLocation } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-locations',
@@ -12,6 +14,8 @@ import { EldenLocation } from '../../../../common/interface';
 export class LocationsPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   locations        = signal<EldenLocation[]>([]);
   totalItems             = signal<number>(0);
@@ -19,6 +23,8 @@ export class LocationsPage implements OnInit {
   loaded                = signal<boolean>(false);
   searchTerm              = signal<string>('');
   selectedLocation  = signal<EldenLocation | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class LocationsPage implements OnInit {
 
   openDetail(location: EldenLocation): void { this.selectedLocation.set(location); }
   closeDetail(): void { this.selectedLocation.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'locations');
+  }
+
+  toggleFav(location: EldenLocation): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: location.id,
+      category: 'locations',
+      name: location.name,
+      image: location.image
+    }).subscribe();
+  }
 }

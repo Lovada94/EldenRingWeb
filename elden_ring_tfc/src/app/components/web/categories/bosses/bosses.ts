@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Boss } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-bosses',
@@ -12,6 +14,8 @@ import { Boss } from '../../../../common/interface';
 export class BossesPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   bosses       = signal<Boss[]>([]);
   totalItems   = signal<number>(0);
@@ -19,6 +23,8 @@ export class BossesPage implements OnInit {
   loaded       = signal<boolean>(false);
   searchTerm   = signal<string>('');
   selectedBoss = signal<Boss | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class BossesPage implements OnInit {
 
   openDetail(boss: Boss): void { this.selectedBoss.set(boss); }
   closeDetail(): void { this.selectedBoss.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'bosses');
+  }
+
+  toggleFav(boss: Boss): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: boss.id,
+      category: 'bosses',
+      name: boss.name,
+      image: boss.image
+    }).subscribe();
+  }
 }

@@ -25,7 +25,9 @@
         @for (shield of shields(); track shield.id) {
           <div class="col-xl-2 col-lg-3 col-sm-4 col-6 my-2">
             <div class="item-card h-100">
-              <button class="btn-fav" (click)="$event.stopPropagation()"><i class="bi bi-heart"></i></button>
+              <button class="btn-fav" (click)="toggleFav(shield)">
+                <i class="bi" [class.bi-heart-fill]="isFav(shield.id)" [class.bi-heart]="!isFav(shield.id)"></i>
+              </button>
               <img [src]="shield.image ?? '/assets/images/sin_imagen.png'" [alt]="shield.name" class="item-image"/>
               <div class="item-info">
                 <h3 class="item-name">{{ shield.name }}</h3>
@@ -68,14 +70,19 @@
           <img [src]="selectedShield()!.image ?? '/assets/images/sin_imagen.png'" [alt]="selectedShield()!.name" class="modal-image"/>
           <span class="modal-category">{{ selectedShield()!.category }}</span>
           <p class="modal-weight">Peso: {{ selectedShield()!.weight }}</p>
-          <button class="btn-fav"><i class="bi bi-heart"></i></button>
+          <button class="btn-fav" (click)="toggleFav(selectedShield()!)">
+            <i class="bi"
+               [class.bi-heart-fill]="isFav(selectedShield()!.id)"
+               [class.bi-heart]="!isFav(selectedShield()!.id)">
+            </i>
+          </button>
         </div>
         <div class="modal-right-col">
           <h2 class="modal-title">{{ selectedShield()!.name }}</h2>
 
           <p class="modal-description">{{ selectedShield()!.description }}</p>
 
-          @if (selectedShield()!.attack?.length) {
+          @if (selectedShield()!.attack.length) {
             <div class="modal-section">
               <h4>Ataque</h4>
               <div class="stats-grid">
@@ -92,7 +99,7 @@
             </div>
           }
 
-          @if (selectedShield()!.defence?.length) {
+          @if (selectedShield()!.defence.length) {
             <div class="modal-section">
               <h4>Defensa</h4>
               <div class="stats-grid">
@@ -109,7 +116,7 @@
             </div>
           }
 
-          @if (selectedShield()!.scalesWith?.length) {
+          @if (selectedShield()!.scalesWith.length) {
             <div class="modal-section">
               <h4>Escalado</h4>
               <div class="stats-grid">
@@ -126,7 +133,7 @@
             </div>
           }
 
-          @if (selectedShield()!.requiredAttributes?.length) {
+          @if (selectedShield()!.requiredAttributes.length) {
             <div class="modal-section">
               <h4>Atributos requeridos</h4>
               <div class="stats-grid">

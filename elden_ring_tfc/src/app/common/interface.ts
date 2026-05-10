@@ -79,7 +79,7 @@ export interface Requirement {
 export interface Weapon {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   attack: Stat[];
   defence: Stat[];
@@ -96,7 +96,7 @@ export interface Weapon {
 export interface Ammo {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   type: string;
   attackPower: Stat[];
@@ -110,7 +110,7 @@ export interface Ammo {
 export interface Armor {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   category: string;
   dmgNegation: Stat[];
@@ -125,7 +125,7 @@ export interface Armor {
 export interface Ash {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   affinity: string;
   skill: string;
@@ -138,7 +138,7 @@ export interface Ash {
 export interface Boss {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   location: string;
   region: string;
@@ -165,7 +165,7 @@ export interface ClassStats {
 export interface EldenClass {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   stats: ClassStats;
 }
@@ -177,7 +177,7 @@ export interface EldenClass {
 export interface Creature {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   location: string;
   drops: string[];
@@ -190,7 +190,7 @@ export interface Creature {
 export interface Incantation {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   type: string;
   cost: number;
@@ -206,7 +206,7 @@ export interface Incantation {
 export interface Item {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   type: string;
   effect: string;
@@ -219,7 +219,7 @@ export interface Item {
 export interface EldenLocation {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   region: string;
 }
@@ -231,7 +231,7 @@ export interface EldenLocation {
 export interface Npc {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   quote: string | null;
   location: string;
   role: string;
@@ -244,7 +244,7 @@ export interface Npc {
 export interface Shield {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   attack: Stat[];
   defence: Stat[];
@@ -261,7 +261,7 @@ export interface Shield {
 export interface Sorcery {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   type: string;
   cost: number;
@@ -277,7 +277,7 @@ export interface Sorcery {
 export interface Spirit {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   fpCost: string;
   hpCost: string;
@@ -291,9 +291,52 @@ export interface Spirit {
 export interface Talisman {
   id: string;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   effect: string;
+}
+
+export interface Favorite {
+  id_favorite?: number;
+  id_user?: number;
+  api_id: string;
+  category: string;
+  name: string;
+  image: string | null;
+  subcategory?: string | null;
+}
+
+export interface Team {
+  id_team?: number;
+  id_user?: number;
+  weapon_r1: string | null;
+  weapon_r2: string | null;
+  weapon_r3: string | null;
+  weapon_l1: string | null;
+  weapon_l2: string | null;
+  weapon_l3: string | null;
+  arrow1: string | null;
+  arrow2: string | null;
+  bolt1: string | null;
+  bolt2: string | null;
+  armor_head:  string | null;
+  armor_chest: string | null;
+  armor_hands: string | null;
+  armor_legs:  string | null;
+  talisman1: string | null;
+  talisman2: string | null;
+  talisman3: string | null;
+  talisman4: string | null;
+  item1:  string | null;
+  item2:  string | null;
+  item3:  string | null;
+  item4:  string | null;
+  item5:  string | null;
+  item6:  string | null;
+  item7:  string | null;
+  item8:  string | null;
+  item9:  string | null;
+  item10: string | null;
 }
 
 // ============================================================
@@ -309,7 +352,7 @@ export type ClassesResponse   = ApiResponse<EldenClass>;
 export type CreaturesResponse = ApiResponse<Creature>;
 export type IncantationsResponse = ApiResponse<Incantation>;
 export type ItemsResponse     = ApiResponse<Item>;
-export type LocationsResponse = ApiResponse<Location>;
+export type LocationsResponse = ApiResponse<EldenLocation>;
 export type NpcsResponse      = ApiResponse<Npc>;
 export type ShieldsResponse   = ApiResponse<Shield>;
 export type SorceriesResponse = ApiResponse<Sorcery>;

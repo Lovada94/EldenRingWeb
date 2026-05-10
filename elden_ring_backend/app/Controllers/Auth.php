@@ -16,55 +16,12 @@ class Auth extends ResourceController
         $validation = \Config\Services::validation();
 
         $rules = [
-            'name' => [
-                'rules' => 'required|min_length[2]|max_length[50]|regex_match[/\S/]',
-                'errors' => [
-                    'required' => 'El nombre es obligatorio',
-                    'min_length' => 'Mínimo 6 caracteres',
-                    'max_length' => 'Máximo 50 caracteres',
-                    'regex_match' => 'No puede contener solo espacios en blanco'
-                ]
-            ],
-            'surnames' => [
-                'rules' => 'required|min_length[2]|max_length[100]|regex_match[/\S/]',
-                'errors' => [
-                    'required' => 'Un apellido es obligatorio',
-                    'min_length' => 'Mínimo 2 caracteres',
-                    'max_length' => 'Máximo 100 caracteres',
-                    'regex_match' => 'No puede contener solo espacios en blanco'
-                ]
-            ],
-            'birth_date' => [
-                'rules' => 'required|valid_date',
-                'errors' => [
-                    'required' => 'La fecha de nacimiento es obligatoria',
-                    'valid_date' => 'Debe ser una fecha válida'
-                ]
-            ],
-            'email' => [
-                'rules' => 'required|valid_email',
-                'errors' => [
-                    'required' => 'El email es obligatorio',
-                    'valid_email' => 'Debe ser un email válido'
-                ]
-            ],
-            'username' => [
-                'rules' => 'required|min_length[3]|max_length[30]|regex_match[/\S/]',
-                'errors' => [
-                    'required' => 'El nombre de usuario es obligatorio',
-                    'min_length' => 'Mínimo 3 caracteres',
-                    'max_length' => 'Máximo 30 caracteres',
-                    'regex_match' => 'No puede contener solo espacios en blanco'
-                ]
-            ],
-            'password' => [
-                'rules' => 'required|min_length[6]|regex_match[/^(?=.*[A-Z])(?=.*\d)[^\s]+$/]',
-                'errors' => [
-                    'required' => 'La contraseña es obligatoria',
-                    'min_length' => 'Mínimo 6 caracteres',
-                    'regex_match' => 'Debe contener al menos una mayúscula y un número'
-                ]
-            ]
+            'name' => 'required|min_length[2]|max_length[50]',
+            'surnames' => 'required|min_length[2]|max_length[100]',
+            'birth_date' => 'required|valid_date',
+            'email' => 'required|valid_email',
+            'username' => 'required|min_length[3]|max_length[30]',
+            'password' => 'required|min_length[6]'
         ];
 
         if (!$validation->setRules($rules)->run($data)) {
@@ -199,18 +156,6 @@ class Auth extends ResourceController
             'status' => 200,
             'message' => 'Token válido',
             'user' => $request->user
-        ]);
-    }
-
-    public function profile()
-    {
-        $request = service('request');
-
-        $user = $request->user;
-
-        return $this->respond([
-            'status' => 200,
-            'user' => $user
         ]);
     }
 }

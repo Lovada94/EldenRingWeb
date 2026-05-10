@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Ammo } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-ammos',
@@ -12,6 +14,8 @@ import { Ammo } from '../../../../common/interface';
 export class AmmosPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   ammos        = signal<Ammo[]>([]);
   totalItems   = signal<number>(0);
@@ -19,6 +23,8 @@ export class AmmosPage implements OnInit {
   loaded       = signal<boolean>(false);
   searchTerm   = signal<string>('');
   selectedAmmo = signal<Ammo | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -71,4 +77,19 @@ export class AmmosPage implements OnInit {
 
   openDetail(ammo: Ammo): void { this.selectedAmmo.set(ammo); }
   closeDetail(): void { this.selectedAmmo.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'ammos');
+  }
+
+  toggleFav(ammo: Ammo): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: ammo.id,
+      category: 'ammos',
+      name: ammo.name,
+      image: ammo.image,
+      subcategory: ammo.name
+    }).subscribe();
+  }
 }

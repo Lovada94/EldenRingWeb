@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { Ash } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-ashes',
@@ -12,6 +14,8 @@ import { Ash } from '../../../../common/interface';
 export class AshesPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
 
   ashes       = signal<Ash[]>([]);
   totalItems  = signal<number>(0);
@@ -19,6 +23,8 @@ export class AshesPage implements OnInit {
   loaded      = signal<boolean>(false);
   searchTerm  = signal<string>('');
   selectedAsh = signal<Ash | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -58,4 +64,18 @@ export class AshesPage implements OnInit {
 
   openDetail(ash: Ash): void { this.selectedAsh.set(ash); }
   closeDetail(): void { this.selectedAsh.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'ashes');
+  }
+
+  toggleFav(ash: Ash): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: ash.id,
+      category: 'ashes',
+      name: ash.name,
+      image: ash.image
+    }).subscribe();
+  }
 }

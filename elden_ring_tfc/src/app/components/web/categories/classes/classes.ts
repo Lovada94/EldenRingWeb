@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { EldenRingApiService } from '../../../../services/eldenRingService';
 import { EldenClass } from '../../../../common/interface';
+import { FavoritesService } from '../../../../services/favoritesService';
+import { AuthService } from '../../../../services/authService';
 
 @Component({
   selector: 'app-classes',
@@ -13,12 +15,17 @@ export class ClassesPage implements OnInit {
 
   private readonly apiService = inject(EldenRingApiService);
 
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
+
   classes         = signal<EldenClass[]>([]);
   totalItems      = signal<number>(0);
   currentPage     = signal<number>(1);
   loaded          = signal<boolean>(false);
   searchTerm      = signal<string>('');
   selectedClass   = signal<EldenClass | null>(null);
+
+  isLogged = computed(() => this.authService.isLogged());
 
   readonly limit = 20;
   private apiPage = computed(() => this.currentPage() - 1);
@@ -74,4 +81,18 @@ export class ClassesPage implements OnInit {
 
   openDetail(cls: EldenClass): void { this.selectedClass.set(cls); }
   closeDetail(): void { this.selectedClass.set(null); }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'classes');
+  }
+
+  toggleFav(cls: EldenClass): void {
+    if (!this.isLogged()) return;
+    this.favoritesService.toggleFavorite({
+      api_id: cls.id,
+      category: 'classes',
+      name: cls.name,
+      image: cls.image
+    }).subscribe();
+  }
 }

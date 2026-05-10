@@ -1,0 +1,171 @@
+<div class="favorites-container">
+
+  <div class="page-header">
+    <h1 class="page-title">Mis Favoritos</h1>
+  </div>
+
+  @if (!loaded()) {
+    <div class="loading"><p>Cargando...</p></div>
+  }
+
+  @if (loaded()) {
+
+    @if (categories().length === 0) {
+      <div class="empty-state">
+        <p>No tienes favoritos guardados todavía.</p>
+        <a routerLink="/weapons" class="btn-explore">Explorar</a>
+      </div>
+    }
+
+    @for (category of categories(); track category) {
+      <div class="category-group">
+        <h2 class="category-title">{{ getCategoryLabel(category) }}</h2>
+        <div class="category-divider"></div>
+
+        @for (fav of groupedFavorites()[category]; track fav.api_id) {
+          <div class="fav-row" (click)="openDetail(fav)">
+
+            <!-- Imagen clicable -->
+            <img
+              [src]="fav.image ?? '/assets/images/sin_imagen.png'"
+              [alt]="fav.name"
+              class="fav-image"
+              title="Ver detalle"
+            />
+
+            <!-- Nombre clicable -->
+            <div class="fav-info">
+              <h3 class="fav-name">{{ fav.name }}</h3>
+              <span class="fav-category">{{ getCategoryLabel(fav.category) }}</span>
+            </div>
+
+            <!-- Estado misión NPCs -->
+            @if (fav.category === 'npcs') {
+              <div class="quest-status" (click)="$event.stopPropagation()">
+                @for (status of questStatuses; track status.value) {
+                  <button
+                    class="quest-btn"
+                    [class.active]="getQuestStatus(fav) === status.value"
+                    (click)="updateQuestStatus(fav, status.value)"
+                    [title]="status.label"
+                  >
+                    {{ status.emoji }} {{ status.label }}
+                  </button>
+                }
+              </div>
+            }
+
+            <!-- Botones -->
+            <div class="fav-actions" (click)="$event.stopPropagation()">
+              @if (hasTeamButton(fav.category)) {
+                <button class="btn-team" (click)="addToTeam(fav)" title="Añadir al equipo">
+                  <i class="bi" [class.bi-shield-plus]="!teamService.isInTeam(fav.api_id)"
+                     [class.bi-shield-check]="teamService.isInTeam(fav.api_id)"></i>
+                  <span>{{ teamService.isInTeam(fav.api_id) ? 'En equipo' : 'Equipo' }}</span>
+                </button>
+              }
+              <button class="btn-remove" (click)="removeFavorite(fav)" title="Eliminar de favoritos">
+                <i class="bi bi-heart-fill"></i>
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+  }
+
+</div>
+
+<!-- ── Modal de detalle ──────────────────────────────────────────────────── -->
+@if (selectedFav()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <button class="modal-close" (click)="closeDetail()">✕</button>
+
+      <!-- Loading del detalle -->
+      @if (loadingDetail()) {
+        <div class="loading"><p>Cargando...</p></div>
+      }
+
+      <!-- Contenido del detalle -->
+      @if (selectedItem()) {
+        <div class="modal-body">
+
+          <!-- Columna izquierda -->
+          <div class="modal-left-col">
+            <img
+              [src]="selectedItem().image ?? '/assets/images/sin_imagen.png'"
+              [alt]="selectedItem().name"
+              class="modal-image"
+            />
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="modal-right-col">
+            <h2 class="modal-title">{{ selectedItem().name }}</h2>
+
+            @for (field of getDetailFields(selectedItem()); track field.label) {
+              @if (field.label === 'Descripción') {
+                <p class="modal-description">{{ field.value }}</p>
+              } @else {
+                <div class="modal-field">
+                  <span class="field-label">{{ field.label }}</span>
+                  <span class="field-value">{{ field.value }}</span>
+                </div>
+              }
+            }
+
+            <!-- Arrays: drops, requires, attack, defence, etc. -->
+            @if (selectedItem().drops?.length) {
+              <div class="modal-section">
+                <h4>Drops</h4>
+                <ul class="drops-list">
+                  @for (drop of selectedItem().drops; track drop) {
+                    <li>{{ drop }}</li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (selectedItem().attack?.length) {
+              <div class="modal-section">
+                <h4>Ataque</h4>
+                <div class="stats-grid">
+                  @for (stat of selectedItem().attack; track stat.name) {
+                    @if (stat.amount > 0) {
+                      <div class="stat-item">
+                        <span class="stat-name">{{ stat.name }}</span>
+                        <span class="stat-value">{{ stat.amount }}</span>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            }
+
+            @if (selectedItem().requires?.length) {
+              <div class="modal-section">
+                <h4>Requisitos</h4>
+                <div class="stats-grid">
+                  @for (req of selectedItem().requires; track req.name) {
+                    @if (req.amount > 0) {
+                      <div class="stat-item">
+                        <span class="stat-name">{{ req.name }}</span>
+                        <span class="stat-value">{{ req.amount }}</span>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+}

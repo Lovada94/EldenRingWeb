@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import {EldenRingApiService} from '../../../../services/eldenRingService';
 import {Weapon} from '../../../../common/interface';
+import {FavoritesService} from '../../../../services/favoritesService';
+import {AuthService} from '../../../../services/authService';
 
 @Component({
   selector: 'app-weapons',
@@ -15,7 +17,9 @@ export class WeaponsPage implements OnInit {
 
   private readonly apiService: EldenRingApiService = inject(EldenRingApiService);
 
-  // ── State ────────────────────────────────────────────────────────────────
+  private readonly favoritesService: FavoritesService = inject(FavoritesService);
+  private readonly authService: AuthService = inject(AuthService);
+
   weapons     = signal<Weapon[]>([]);
   totalItems   = signal<number>(0);
   currentPage  = signal<number>(1);
@@ -24,9 +28,10 @@ export class WeaponsPage implements OnInit {
 
   selectedWeapon = signal<Weapon | null>(null);
 
+  isLogged = computed(() => this.authService.isLogged());
+
   readonly limit = 20;
 
-  // Página que le manda a la API (base 0)
   private apiPage = computed(() => this.currentPage() - 1);
 
   readonly statIcons: Record<string, { label: string; emoji: string }> = {
@@ -51,12 +56,10 @@ export class WeaponsPage implements OnInit {
     return this.statIcons[name] ?? { label: name, emoji: '•' };
   }
 
-  // ── Lifecycle ────────────────────────────────────────────────────────────
   ngOnInit(): void {
     this.loadWeapons();
   }
 
-  // ── Data ─────────────────────────────────────────────────────────────────
   private loadWeapons(): void {
     this.loaded.set(false);
     const name = this.searchTerm().trim() || undefined;
@@ -74,7 +77,6 @@ export class WeaponsPage implements OnInit {
     });
   }
 
-  // ── Eventos ──────────────────────────────────────────────────────────────
   onPageChange(page: number): void {
     this.currentPage.set(page);
     this.loadWeapons();
@@ -95,4 +97,20 @@ export class WeaponsPage implements OnInit {
   closeDetail(): void {
     this.selectedWeapon.set(null);
   }
+
+  isFav(apiId: string): boolean {
+    return this.favoritesService.isFavorite(apiId, 'weapons');
+  }
+
+  toggleFav(weapon: Weapon): void {
+    if (!this.isLogged()) return;
+
+    this.favoritesService.toggleFavorite({
+      api_id: weapon.id,
+      category: 'weapons',
+      name: weapon.name,
+      image: weapon.image
+    }).subscribe();
+  }
+
 }
