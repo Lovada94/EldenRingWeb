@@ -23,7 +23,6 @@ export class AuthService {
       } else {
         setTimeout(() => {
           this.getFavoritesService().loadFavorites().subscribe();
-          this.injector.get(TeamService).loadTeam().subscribe();
         }, 100);
       }
     }

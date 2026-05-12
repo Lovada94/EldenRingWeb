@@ -10,7 +10,12 @@
 
 /* ── Cabecera ─────────────────────────────────────────────────────────── */
 .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .page-title {
@@ -19,6 +24,24 @@
   color: #c9a94b;
   margin: 0;
   text-shadow: 0 0 10px rgba(201, 169, 75, 0.4);
+}
+
+.btn-go-team {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(201,169,75,0.6);
+  color: #f5e6a3;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-go-team:hover {
+  background: #c9a94b;
+  color: black;
+  border-color: #c9a94b;
 }
 
 /* ── Loading ──────────────────────────────────────────────────────────── */

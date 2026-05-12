@@ -27,5 +27,18 @@ $routes->post('profile/avatar',     'Profile::updateAvatar',   ['filter' => 'jwt
 $routes->delete('profile',          'Profile::delete',         ['filter' => 'jwt']);
 
 // Equipo
-$routes->get('team', 'Team::index', ['filter' => 'jwt']);
-$routes->put('team', 'Team::update', ['filter' => 'jwt']);
+$routes->get('team',           'Team::index',    ['filter' => 'jwt']);
+$routes->get('team/all',       'Team::all',      ['filter' => 'jwt']);
+$routes->put('team',           'Team::update',   ['filter' => 'jwt']);
+$routes->post('team/save-as',  'Team::saveAs',   ['filter' => 'jwt']);
+$routes->post('team/load',     'Team::loadTeam', ['filter' => 'jwt']);
+$routes->delete('team/(:num)', 'Team::delete/$1', ['filter' => 'jwt']);
+$routes->patch('team/(:num)',  'Team::rename/$1', ['filter' => 'jwt']);
+
+// Blog
+$routes->get('posts',                   'Posts::index',                       ['filter' => 'jwt']);
+$routes->post('posts',                  'Posts::create',                      ['filter' => 'jwt']);
+$routes->get('posts/(:num)',            'Posts::show/$1',                     ['filter' => 'jwt']);
+$routes->delete('posts/(:num)',         'Posts::destroy/$1',                  ['filter' => 'jwt']);
+$routes->post('posts/(:num)/comments',  'Posts::addComment/$1',               ['filter' => 'jwt']);
+$routes->delete('comments/(:num)',      'Posts::deleteComment/$1',            ['filter' => 'jwt']);

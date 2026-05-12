@@ -1,43 +1,70 @@
 <div class="home-container">
-
   <div class="background-dark">
+
+    <!-- Hero -->
     <section class="hero">
-      <h1>Bienvenido a <span class="warning">Elden Ring Web</span></h1>
+      <p class="hero-eyebrow">Proyecto educativo · Fan Site</p>
+      <h1>Bienvenido a <span class="brand">Elden Ring Web</span></h1>
       <p class="subtitle">
-        Explora el mundo de Elden Ring como nunca antes.
+        Tu enciclopedia interactiva del Lands Between.<br>
+        Explora, organiza y comparte todo lo que el juego tiene para ofrecer.
       </p>
     </section>
 
-    <section class="info">
-      <p>
-        Esta web está basada en una API de Elden Ring que permite consultar información
-        sobre armas, enemigos, objetos, misiones de personajes y mucho más.
-      </p>
-
-      <p>
-        Todos los derechos pertenecen a FromSoftware y Kadokawa Corporation.
-        Este proyecto es únicamente con fines educativos.
-      </p>
-
-      <p>
-        Los usuarios registrados pueden guardar elementos en favoritos y, próximamente,
-        crear y compartir builds personalizadas.
-      </p>
+    <!-- Feature cards -->
+    <section class="features">
+      <div class="feature-card">
+        <i class="bi bi-journal-text feature-icon"></i>
+        <h3>Enciclopedia completa</h3>
+        <p>Consulta armas, armaduras, hechizos, talismanes, cenizas de guerra, objetos, jefes, NPCs, criaturas y ubicaciones directamente desde la API oficial.</p>
+      </div>
+      <div class="feature-card">
+        <i class="bi bi-bookmark-heart feature-icon"></i>
+        <h3>Favoritos</h3>
+        <p>Guarda los elementos que más te interesen para tenerlos siempre a mano y usarlos al construir tu equipo.</p>
+      </div>
+      <div class="feature-card">
+        <i class="bi bi-shield-shaded feature-icon"></i>
+        <h3>Constructor de builds</h3>
+        <p>Crea y guarda múltiples equipos con armas, armadura, talismanes, hechizos y objetos. Visualiza tu build, consulta las estadísticas e imprímela.</p>
+      </div>
+      <div class="feature-card">
+        <i class="bi bi-people feature-icon"></i>
+        <h3>Blog de la comunidad</h3>
+        <p>Publica tus builds, comenta las de otros jugadores y descubre nuevas formas de jugar gracias a la experiencia de la comunidad.</p>
+      </div>
     </section>
 
+    <!-- Botones -->
     <section class="buttons-container">
       <div class="buttons">
         @if (!user) {
-          <a routerLink="/ammos" class="btn">Explorar</a>
-          <a (click)="handleAuthClick(true)" class="btn">Iniciar sesión</a>
+          <a routerLink="/weapons" class="btn btn-primary-er">
+            <i class="bi bi-compass"></i> Explorar
+          </a>
+          <a (click)="handleAuthClick(true)" class="btn btn-secondary-er">
+            <i class="bi bi-person"></i> Iniciar sesión
+          </a>
           @if (showAuthModal) {
             <app-auth-modal (closeModal)="showAuthModal = false"></app-auth-modal>
           }
         } @else {
-          <a routerLink="/ammos" class="btn">Explorar</a>
+          <a routerLink="/weapons" class="btn btn-primary-er">
+            <i class="bi bi-compass"></i> Explorar
+          </a>
+          <a routerLink="/team" class="btn btn-secondary-er">
+            <i class="bi bi-shield-shaded"></i> Mi Equipo
+          </a>
+          <a routerLink="/blog" class="btn btn-secondary-er">
+            <i class="bi bi-people"></i> Blog
+          </a>
         }
       </div>
+      <p class="disclaimer">
+        Todos los derechos del juego pertenecen a FromSoftware y Kadokawa Corporation.
+        Este proyecto es únicamente con fines educativos.
+      </p>
     </section>
-  </div>
 
+  </div>
 </div>

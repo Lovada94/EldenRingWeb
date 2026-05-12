@@ -1,98 +1,173 @@
-/* Contenedor principal */
+/* ── Contenedor principal ─────────────────────────────────────────────── */
 .home-container {
-  height: 100vh;
+  min-height: 100vh;
   color: white;
   background: url("/assets/images/elden-bg.jpg") no-repeat center center;
   background-size: cover;
 }
 
-/* Fondo letras */
 .background-dark {
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.75) 100%);
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 3rem 1.5rem 2rem;
   text-align: center;
 }
 
-/* Hero */
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+.hero {
+  margin-bottom: 2.5rem;
+}
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(201,169,75,0.6);
+  margin-bottom: 0.8rem;
+}
+
 .hero h1 {
   font-size: 3rem;
+  font-weight: 700;
   margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
-.warning {
-  color: var(--bs-warning) !important;
+.brand {
+  color: #c9a94b;
   font-family: 'Cinzel', serif;
-  transition: ease-in 0.3s;
+  transition: filter 0.3s ease;
 }
 
-.warning:hover {
-  filter: drop-shadow(0 0 10px #c9a94b);
+.brand:hover {
+  filter: drop-shadow(0 0 12px #c9a94b);
 }
 
 .subtitle {
-  font-size: 2rem;
-  opacity: 0.8;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0 auto;
 }
 
-/* Info */
-.info {
-  margin-top: 2rem;
-  max-width: 800px;
-  margin-inline: auto;
+/* ── Feature cards ────────────────────────────────────────────────────── */
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.feature-card {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(201,169,75,0.2);
+  padding: 1.4rem 1rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.feature-card:hover {
+  border-color: rgba(201,169,75,0.55);
+  background: rgba(201,169,75,0.06);
+}
+
+.feature-icon {
+  font-size: 1.8rem;
+  color: #c9a94b;
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.feature-card h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  color: #f5e6a3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
   line-height: 1.6;
-  opacity: 0.9;
+  margin: 0;
 }
 
-/* Botones */
+/* ── Botones ──────────────────────────────────────────────────────────── */
 .buttons-container {
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .btn {
-  padding: 0.8rem 1.8rem;
-  border: 1px solid #c9a94b;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.5rem;
   text-decoration: none;
-  color: #f5e6a3;
+  font-size: 0.88rem;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
+  border: none;
 }
 
-.btn:hover {
+.btn-primary-er {
+  background: rgba(201,169,75,0.15);
+  border: 1px solid #c9a94b;
+  color: #f5e6a3;
+}
+
+.btn-primary-er:hover {
   background: #c9a94b;
-  color: black;
-  box-shadow: 0 0 10px #c9a94b;
+  color: #0e0e0e;
+  box-shadow: 0 0 14px rgba(201,169,75,0.5);
 }
 
-@media (max-width: 1024px) {
-  .hero {
-    margin: 2rem 1rem 0.5rem;
-    font-size: 1.5rem;
-  }
-  .info {
-    margin: 0 1rem 0.5rem;
-    max-width: 100vw;
-  }
-  .buttons-container {
-    margin: 0 1rem 1.5rem;
-  }
+.btn-secondary-er {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
 }
 
-@media (max-width: 991px) {
-  .hero {
-    margin-top: 1.5rem;
-  }
-  .buttons-container {
-    margin-bottom: 3rem;
-  }
+.btn-secondary-er:hover {
+  border-color: #c9a94b;
+  color: #f5e6a3;
+}
+
+/* ── Disclaimer ───────────────────────────────────────────────────────── */
+.disclaimer {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.3);
+  max-width: 500px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .features { grid-template-columns: repeat(2, 1fr); }
+  .hero h1  { font-size: 2.2rem; }
+}
+
+@media (max-width: 540px) {
+  .features  { grid-template-columns: 1fr; }
+  .hero h1   { font-size: 1.8rem; }
+  .subtitle  { font-size: 1rem; }
 }

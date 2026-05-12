@@ -20,6 +20,7 @@ import { TalismansPage } from './components/web/categories/talismans/talismans';
 import {NpcsPage} from './components/web/categories/npcs/npcs';
 import {FavoritesPage} from './components/web/favorites-page/favorites-page';
 import {TeamPage} from './components/web/team-page/team-page';
+import {BlogPage} from './components/web/blog-page/blog-page';
 
 export const routes: Routes = [
   {
@@ -108,6 +109,11 @@ export const routes: Routes = [
   {
     path: 'team',
     component: TeamPage,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'blog',
+    component: BlogPage,
     canActivate: [authGuard]
   },
   {

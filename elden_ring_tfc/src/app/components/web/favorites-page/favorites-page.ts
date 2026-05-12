@@ -3,10 +3,7 @@ import { FavoritesService} from '../../../services/favoritesService';
 import { EldenRingApiService } from '../../../services/eldenRingService';
 import { RouterLink } from '@angular/router';
 import {Observable} from 'rxjs';
-import {TeamService} from '../../../services/teamService';
 import {Favorite} from '../../../common/interface';
-
-const NO_TEAM_CATEGORIES = ['locations', 'bosses', 'classes', 'npcs'];
 
 const QUEST_STATUSES = [
   { value: 'pending',     label: 'Sin empezar', emoji: '⭕' },
@@ -42,7 +39,6 @@ export class FavoritesPage implements OnInit {
 
   private readonly favoritesService = inject(FavoritesService);
   private readonly apiService       = inject(EldenRingApiService);
-  protected readonly teamService: TeamService = inject(TeamService);
 
   loaded        = signal<boolean>(false);
   loadingDetail = signal<boolean>(false);
@@ -67,15 +63,10 @@ export class FavoritesPage implements OnInit {
       next: () => this.loaded.set(true),
       error: () => this.loaded.set(true)
     });
-    this.teamService.loadTeam().subscribe();
   }
 
   getCategoryLabel(category: string): string {
     return CATEGORY_LABELS[category] ?? category;
-  }
-
-  hasTeamButton(category: string): boolean {
-    return !NO_TEAM_CATEGORIES.includes(category);
   }
 
   getQuestStatus(fav: Favorite): string {
@@ -109,16 +100,6 @@ export class FavoritesPage implements OnInit {
   closeDetail(): void {
     this.selectedItem.set(null);
     this.selectedFav.set(null);
-  }
-
-  addToTeam(fav: Favorite): void {
-    const added = this.teamService.addToTeam(fav.api_id, fav.category);
-    if (added) {
-      this.teamService.saveTeam().subscribe();
-      // opcional: mostrar mensaje de éxito
-    } else {
-      // opcional: mostrar mensaje de que no hay slots libres o ya está en el equipo
-    }
   }
 
   private getOneByCategory(category: string, id: string): Observable<any> {

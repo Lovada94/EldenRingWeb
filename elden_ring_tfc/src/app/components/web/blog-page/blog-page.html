@@ -1,0 +1,386 @@
+<div class="blog-container">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       VISTA LISTA
+  ═══════════════════════════════════════════════════════════════════════ -->
+  @if (view() === 'list') {
+
+    <div class="page-header">
+      <h1 class="page-title">Blog de la Comunidad</h1>
+      <button class="btn-action"
+              [class.btn-create]="!showCreateForm()"
+              [class.btn-danger]="showCreateForm()"
+              (click)="toggleCreateForm()">
+        <i class="bi bi-pencil-square"></i>
+        {{ showCreateForm() ? 'Cancelar' : 'Nuevo Post' }}
+      </button>
+    </div>
+
+    <!-- Formulario de creación -->
+    @if (showCreateForm()) {
+      <div class="create-form">
+        <h3 class="form-title">Crear nuevo post</h3>
+        <div class="team-picker-row">
+          @if (pendingTeamId) {
+            <div class="team-linked-badge">
+              <i class="bi bi-shield-check"></i> Equipo adjunto: <strong>{{ pendingTeamName ?? 'Equipo ' + pendingTeamId }}</strong>
+              <button class="btn-clear-team" (click)="clearPendingTeam()" title="Quitar equipo">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          } @else {
+            <button class="btn-action btn-pick-team" (click)="showTeamModal.set(true)"
+                    [disabled]="teamService.teams().length === 0">
+              <i class="bi bi-shield-shaded"></i> Añadir equipo
+            </button>
+          }
+        </div>
+        <input class="er-input" [(ngModel)]="newTitle" placeholder="Título del post" maxlength="120"/>
+        <textarea class="er-textarea" [(ngModel)]="newContent" placeholder="Contenido (opcional)..." rows="4"></textarea>
+        <div class="form-actions">
+          <button class="btn-action btn-save-as" (click)="submitPost()" [disabled]="submitting()">
+            <i class="bi bi-send"></i> {{ submitting() ? 'Publicando...' : 'Publicar' }}
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Buscador -->
+    <div class="search-bar">
+      <i class="bi bi-search search-icon"></i>
+      <input class="search-input" [(ngModel)]="searchTerm" placeholder="Buscar posts..."/>
+    </div>
+
+    <!-- Estado de carga -->
+    @if (!loaded()) {
+      <div class="loading"><p>Cargando posts...</p></div>
+    }
+
+    @if (loaded()) {
+      @if (filteredPosts().length === 0) {
+        <p class="empty-msg">
+          {{ searchTerm ? 'No hay posts que coincidan con la búsqueda.' : 'Todavía no hay posts. ¡Sé el primero en publicar!' }}
+        </p>
+      }
+
+      <div class="posts-grid">
+        @for (post of filteredPosts(); track post.id_post) {
+          <div class="post-card">
+
+            <!-- Cabecera del post -->
+            <div class="post-card-header">
+              <img class="post-avatar" [src]="avatarUrl(post.avatar)" [alt]="post.username"/>
+              <div class="post-meta">
+                <span class="post-author">{{ post.username }}</span>
+                <span class="post-date">{{ post.created_at | date:'dd/MM/yyyy' }}</span>
+              </div>
+              @if (post.id_team) {
+                <span class="team-badge" title="Incluye equipo"><i class="bi bi-shield-shaded"></i></span>
+              }
+            </div>
+
+            <!-- Título -->
+            <h2 class="post-title">{{ post.title }}</h2>
+
+            <!-- Pie del post -->
+            <div class="post-card-footer">
+              <span class="comment-count">
+                <i class="bi bi-chat"></i> {{ post.comment_count }}
+              </span>
+              <div class="post-card-actions">
+                @if (currentUser()?.id_user === post.id_user) {
+                  <button class="btn-icon btn-danger" (click)="deletePost(post.id_post)" title="Eliminar post">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                }
+                <button class="btn-action btn-ver" (click)="openPost(post.id_post)">
+                  Ver <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  }
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       VISTA DETALLE
+  ═══════════════════════════════════════════════════════════════════════ -->
+  @if (view() === 'detail') {
+
+    <div class="detail-header">
+      <button class="btn-back" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Volver
+      </button>
+    </div>
+
+    @if (!detailLoaded()) {
+      <div class="loading"><p>Cargando post...</p></div>
+    }
+
+    @if (detailLoaded() && blogService.detail()) {
+
+      <div class="detail-wrapper">
+
+        <!-- Cabecera del post -->
+        <div class="detail-post-header">
+          <img class="post-avatar lg" [src]="avatarUrl(blogService.detail()!.avatar)" [alt]="blogService.detail()!.username"/>
+          <div class="detail-post-meta">
+            <span class="post-author">{{ blogService.detail()!.username }}</span>
+            <span class="post-date">{{ blogService.detail()!.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          @if (currentUser()?.id_user === blogService.detail()!.id_user) {
+            <button class="btn-icon btn-danger" (click)="deletePostFromDetail()" title="Eliminar post">
+              <i class="bi bi-trash"></i>
+            </button>
+          }
+        </div>
+
+        <h1 class="detail-title">{{ blogService.detail()!.title }}</h1>
+
+        @if (blogService.detail()!.content) {
+          <p class="detail-content">{{ blogService.detail()!.content }}</p>
+        }
+
+        <!-- ── Equipo del post ──────────────────────────────────────────── -->
+        @if (blogService.detail()!.team) {
+          <div class="team-section">
+            <h3 class="section-title"><i class="bi bi-shield-shaded"></i> Equipo</h3>
+
+            @if (!teamLoaded()) {
+              <div class="loading"><p>Cargando equipo...</p></div>
+            }
+
+            @if (teamLoaded()) {
+              <div class="preview-area">
+
+                <!-- Armadura -->
+                <div class="armor-layout">
+                  <div class="armor-col-side">
+                    <div class="weapons-col">
+                      <span class="preview-label">Mano izq.</span>
+                      @for (slot of ['weapon_l1','weapon_l2','weapon_l3']; track slot) {
+                        <div class="img-box sm">
+                          @if (getSlotItem(slot)) {
+                            <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/>
+                          } @else {
+                            <i class="bi bi-question ph"></i>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="armor-col-center">
+                    <div class="img-box md center-item">
+                      @if (getSlotItem('armor_head')) {
+                        <img [src]="getSlotItem('armor_head').image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem('armor_head').name" [title]="getSlotItem('armor_head').name"/>
+                      } @else {
+                        <i class="bi bi-question ph"></i>
+                      }
+                    </div>
+                    <span class="preview-label">Casco</span>
+
+                    <div class="armor-mid-row">
+                      <div class="armor-piece">
+                        <div class="img-box md">
+                          @if (getSlotItem('armor_chest')) {
+                            <img [src]="getSlotItem('armor_chest').image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem('armor_chest').name" [title]="getSlotItem('armor_chest').name"/>
+                          } @else {
+                            <i class="bi bi-question ph"></i>
+                          }
+                        </div>
+                        <span class="preview-label">Pechera</span>
+                      </div>
+                      <div class="armor-piece">
+                        <div class="img-box md">
+                          @if (getSlotItem('armor_hands')) {
+                            <img [src]="getSlotItem('armor_hands').image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem('armor_hands').name" [title]="getSlotItem('armor_hands').name"/>
+                          } @else {
+                            <i class="bi bi-question ph"></i>
+                          }
+                        </div>
+                        <span class="preview-label">Guantes</span>
+                      </div>
+                    </div>
+
+                    <div class="img-box md center-item">
+                      @if (getSlotItem('armor_legs')) {
+                        <img [src]="getSlotItem('armor_legs').image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem('armor_legs').name" [title]="getSlotItem('armor_legs').name"/>
+                      } @else {
+                        <i class="bi bi-question ph"></i>
+                      }
+                    </div>
+                    <span class="preview-label">Piernas</span>
+                  </div>
+
+                  <div class="armor-col-side">
+                    <div class="weapons-col">
+                      <span class="preview-label">Mano der.</span>
+                      @for (slot of ['weapon_r1','weapon_r2','weapon_r3']; track slot) {
+                        <div class="img-box sm">
+                          @if (getSlotItem(slot)) {
+                            <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/>
+                          } @else {
+                            <i class="bi bi-question ph"></i>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Fila inferior -->
+                <div class="bottom-row">
+                  <div class="bottom-group">
+                    <span class="preview-label">Flechas</span>
+                    <div class="img-row">
+                      @for (slot of ['arrow1','arrow2']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="bottom-group">
+                    <span class="preview-label">Saetas</span>
+                    <div class="img-row">
+                      @for (slot of ['bolt1','bolt2']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="bottom-group">
+                    <span class="preview-label">Cenizas</span>
+                    <div class="img-row">
+                      @for (slot of ['ash1','ash2','ash3']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="bottom-group">
+                    <span class="preview-label">Talismanes</span>
+                    <div class="img-row">
+                      @for (slot of ['talisman1','talisman2','talisman3','talisman4']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bottom-row">
+                  <div class="bottom-group full-width">
+                    <span class="preview-label">Hechizos / Incantaciones</span>
+                    <div class="img-row">
+                      @for (slot of ['spell1','spell2','spell3','spell4','spell5']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bottom-row">
+                  <div class="bottom-group full-width">
+                    <span class="preview-label">Objetos rápidos</span>
+                    <div class="img-row wrap">
+                      @for (slot of ['item1','item2','item3','item4','item5','item6','item7','item8','item9','item10']; track slot) {
+                        <div class="img-box xs">
+                          @if (getSlotItem(slot)) { <img [src]="getSlotItem(slot).image ?? '/assets/images/sin_imagen.png'" [alt]="getSlotItem(slot).name" [title]="getSlotItem(slot).name"/> }
+                          @else { <i class="bi bi-question ph"></i> }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            }
+          </div>
+        }
+
+        <!-- ── Comentarios ─────────────────────────────────────────────── -->
+        <div class="comments-section">
+          <h3 class="section-title">
+            <i class="bi bi-chat-square-text"></i>
+            Comentarios ({{ blogService.detail()!.comments.length }})
+          </h3>
+
+          @if (blogService.detail()!.comments.length === 0) {
+            <p class="empty-msg">Sé el primero en comentar.</p>
+          }
+
+          <div class="comments-list">
+            @for (comment of blogService.detail()!.comments; track comment.id_comment) {
+              <div class="comment-item">
+                <img class="post-avatar" [src]="avatarUrl(comment.avatar)" [alt]="comment.username"/>
+                <div class="comment-body">
+                  <div class="comment-header">
+                    <span class="post-author">{{ comment.username }}</span>
+                    <span class="post-date">{{ comment.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+                    @if (currentUser()?.id_user === comment.id_user) {
+                      <button class="btn-icon btn-danger sm" (click)="deleteComment(comment.id_comment)" title="Eliminar">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    }
+                  </div>
+                  <p class="comment-text">{{ comment.content }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Formulario de comentario -->
+          <div class="comment-form">
+            <textarea class="er-textarea" [(ngModel)]="newComment" placeholder="Escribe un comentario..." rows="3"></textarea>
+            <button class="btn-action btn-save-as" (click)="submitComment()" [disabled]="submitting()">
+              <i class="bi bi-send"></i> {{ submitting() ? 'Enviando...' : 'Comentar' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    }
+  }
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       MODAL ELEGIR EQUIPO
+  ═══════════════════════════════════════════════════════════════════════ -->
+  @if (showTeamModal()) {
+    <div class="modal-overlay" (click)="showTeamModal.set(false)">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3 class="modal-title"><i class="bi bi-shield-shaded"></i> Selecciona un equipo</h3>
+        <div class="team-modal-list">
+          @for (t of teamService.teams(); track t.id_team) {
+            <button class="team-modal-item" (click)="selectTeam(t.id_team, t.name)">
+              <i class="bi bi-shield"></i>
+              <span>{{ t.name }}</span>
+              @if (t.is_active == 1) {
+                <span class="active-chip">activo</span>
+              }
+            </button>
+          }
+        </div>
+        <div class="modal-actions">
+          <button class="btn-action btn-danger" (click)="showTeamModal.set(false)">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

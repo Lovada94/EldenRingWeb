@@ -309,6 +309,8 @@ export interface Favorite {
 export interface Team {
   id_team?: number;
   id_user?: number;
+  name?: string;
+  is_active?: number;
   weapon_r1: string | null;
   weapon_r2: string | null;
   weapon_r3: string | null;
@@ -337,6 +339,14 @@ export interface Team {
   item8:  string | null;
   item9:  string | null;
   item10: string | null;
+  ash1: string | null;
+  ash2: string | null;
+  ash3: string | null;
+  spell1: string | null;
+  spell2: string | null;
+  spell3: string | null;
+  spell4: string | null;
+  spell5: string | null;
 }
 
 // ============================================================
