@@ -136,13 +136,23 @@ class Profile extends ResourceController
         }
 
         // Generar nombre único y mover el archivo
-        $newName  = 'avatar_' . $userId . '_' . time() . '.' . $file->getExtension();
+        $newName    = 'avatar_' . $userId . '_' . time() . '.' . $file->getExtension();
         $uploadPath = FCPATH . 'uploads/avatars/';
 
         $file->move($uploadPath, $newName);
 
-        // Actualizar en la BD
-        $userModel = new UserModel();
+        // Borrar el avatar anterior si no es el predeterminado
+        $userModel   = new UserModel();
+        $currentUser = $userModel->find($userId);
+        $oldAvatar   = $currentUser['avatar'] ?? 'default.png';
+
+        if ($oldAvatar !== 'default.png') {
+            $oldPath = $uploadPath . $oldAvatar;
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+        }
+
         $userModel->update($userId, ['avatar' => $newName]);
 
         return $this->respond([
