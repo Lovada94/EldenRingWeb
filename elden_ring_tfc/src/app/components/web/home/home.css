@@ -1,4 +1,4 @@
-/* ── Contenedor principal ─────────────────────────────────────────────── */
+/* Contenedor principal */
 .home-container {
   min-height: 100vh;
   color: white;
@@ -18,7 +18,7 @@
   text-align: center;
 }
 
-/* ── Hero ─────────────────────────────────────────────────────────────── */
+/* Hero */
 .hero {
   margin-bottom: 2.5rem;
 }
@@ -56,7 +56,7 @@
   margin: 0 auto;
 }
 
-/* ── Feature cards ────────────────────────────────────────────────────── */
+/* Feature cards */
 .features {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -101,7 +101,7 @@
   margin: 0;
 }
 
-/* ── Botones ──────────────────────────────────────────────────────────── */
+/* Botones */
 .buttons-container {
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@
   color: #f5e6a3;
 }
 
-/* ── Disclaimer ───────────────────────────────────────────────────────── */
+/* Disclaimer */
 .disclaimer {
   font-size: 0.68rem;
   color: rgba(255,255,255,0.3);
@@ -160,7 +160,7 @@
   margin: 0;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 900px) {
   .features { grid-template-columns: repeat(2, 1fr); }
   .hero h1  { font-size: 2.2rem; }

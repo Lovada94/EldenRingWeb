@@ -1,7 +1,12 @@
+<!-- Navbar: se oculta en la pantalla de inicio /start -->
 @if (showLayout()) {
   <app-navbar/>
 }
+
+<!-- Punto de inserción del router: aquí se renderiza la página activa -->
 <router-outlet/>
+
+<!-- Footer: se oculta en la pantalla de inicio /start -->
 @if (showLayout()) {
   <app-footer/>
 }

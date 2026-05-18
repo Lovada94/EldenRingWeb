@@ -1,8 +1,6 @@
 <div class="blog-container">
 
-  <!-- ══════════════════════════════════════════════════════════════════════
-       VISTA LISTA
-  ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- VISTA LISTA -->
   @if (view() === 'list') {
 
     <div class="page-header">
@@ -106,9 +104,7 @@
   }
 
 
-  <!-- ══════════════════════════════════════════════════════════════════════
-       VISTA DETALLE
-  ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- VISTA DETALLE -->
   @if (view() === 'detail') {
 
     <div class="detail-header">
@@ -145,7 +141,7 @@
           <p class="detail-content">{{ blogService.detail()!.content }}</p>
         }
 
-        <!-- ── Equipo del post ──────────────────────────────────────────── -->
+        <!-- Equipo del post -->
         @if (blogService.detail()!.team) {
           <div class="team-section">
             <h3 class="section-title"><i class="bi bi-shield-shaded"></i> Equipo</h3>
@@ -314,7 +310,7 @@
           </div>
         }
 
-        <!-- ── Comentarios ─────────────────────────────────────────────── -->
+        <!-- Comentarios -->
         <div class="comments-section">
           <h3 class="section-title">
             <i class="bi bi-chat-square-text"></i>

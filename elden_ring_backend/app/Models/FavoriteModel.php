@@ -4,9 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/* Modelo de la tabla favorites: gestiona los elementos favoritos de cada usuario */
 class FavoriteModel extends Model
 {
-    protected $table = 'favorites';
+    protected $table      = 'favorites';
     protected $primaryKey = 'id_favorite';
 
     protected $allowedFields = [
@@ -20,13 +21,13 @@ class FavoriteModel extends Model
 
     protected $useTimestamps = false;
 
-    // Obtener todos los favoritos de un usuario
+    /* Obtener todos los favoritos de un usuario */
     public function getByUser(int $userId): array
     {
         return $this->where('id_user', $userId)->findAll();
     }
 
-    // Comprobar si un item ya es favorito del usuario
+    /* Comprobar si un elemento ya está en favoritos del usuario */
     public function isFavorite(int $userId, string $apiId, string $category): bool
     {
         return $this->where('id_user', $userId)
@@ -35,7 +36,7 @@ class FavoriteModel extends Model
                     ->first() !== null;
     }
 
-    // Eliminar favorito por api_id y category
+    /* Eliminar un favorito identificado por api_id y category */
     public function removeByApiId(int $userId, string $apiId, string $category): bool
     {
         return $this->where('id_user', $userId)

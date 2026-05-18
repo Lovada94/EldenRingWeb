@@ -1,4 +1,4 @@
-/* ── Contenedor ───────────────────────────────────────────────────────── */
+/* Contenedor */
 .profile-container {
   min-height: 100vh;
   background-color: #0e0e0e;
@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-/* ── Cabecera ─────────────────────────────────────────────────────────── */
+/* Cabecera */
 .page-header { margin-bottom: 2rem; }
 
 .page-title {
@@ -19,14 +19,14 @@
   text-shadow: 0 0 10px rgba(201, 169, 75, 0.4);
 }
 
-/* ── Layout principal ─────────────────────────────────────────────────── */
+/* Layout principal */
 .profile-layout {
   display: flex;
   gap: 3rem;
   align-items: flex-start;
 }
 
-/* ── Columna avatar ───────────────────────────────────────────────────── */
+/* Columna avatar */
 .avatar-col {
   display: flex;
   flex-direction: column;
@@ -76,10 +76,10 @@
   margin: 0;
 }
 
-/* ── Columna formularios ──────────────────────────────────────────────── */
+/* Columna formularios */
 .forms-col { flex: 1; min-width: 0; }
 
-/* ── Datos solo lectura ───────────────────────────────────────────────── */
+/* Datos solo lectura */
 .readonly-section {
   display: flex;
   flex-direction: column;
@@ -101,14 +101,14 @@
 
 .field-value { color: #f5e6a3; }
 
-/* ── Divisor ──────────────────────────────────────────────────────────── */
+/* Divisor */
 .section-divider {
   height: 1px;
   background: linear-gradient(to right, rgba(201, 169, 75, 0.4), transparent);
   margin: 1.5rem 0;
 }
 
-/* ── Títulos de sección ───────────────────────────────────────────────── */
+/* Títulos de sección */
 .section-title {
   font-family: 'Cinzel', serif;
   color: #c9a94b;
@@ -120,7 +120,7 @@
 
 .danger-title { color: #e74c3c; }
 
-/* ── Formularios ──────────────────────────────────────────────────────── */
+/* Formularios */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -148,7 +148,7 @@
 
 .er-input::placeholder { color: rgba(255, 255, 255, 0.3); }
 
-/* ── Input con ojo ────────────────────────────────────────────────────── */
+/* Input con ojo */
 .input-group {
   position: relative;
   display: flex;
@@ -166,7 +166,7 @@
   user-select: none;
 }
 
-/* ── Mensajes ─────────────────────────────────────────────────────────── */
+/* Mensajes */
 .error { color: #e74c3c; font-size: 0.8rem; margin: 0.3rem 0 0; }
 
 .success-msg {
@@ -175,7 +175,7 @@
   margin: 0.5rem 0;
 }
 
-/* ── Botones ──────────────────────────────────────────────────────────── */
+/* Botones */
 .btn-primary {
   padding: 0.6rem 1.5rem;
   border: 1px solid #c9a94b;
@@ -219,7 +219,7 @@
 
 .btn-secondary:hover { border-color: white; color: white; }
 
-/* ── Eliminar cuenta ──────────────────────────────────────────────────── */
+/* Eliminar cuenta */
 .delete-warning {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
@@ -231,7 +231,7 @@
   gap: 1rem;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 768px) {
   .profile-container { padding: 1rem; }
 

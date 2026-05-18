@@ -5,12 +5,14 @@ import { RouterLink } from '@angular/router';
 import {Observable} from 'rxjs';
 import {Favorite} from '../../../common/interface';
 
+/* Estados posibles del seguimiento de misiones asociado a cada favorito */
 const QUEST_STATUSES = [
   { value: 'pending',     label: 'Sin empezar', emoji: '⭕' },
   { value: 'in_progress', label: 'En proceso',  emoji: '🔄' },
   { value: 'completed',   label: 'Completada',  emoji: '✅' },
 ];
 
+/* Etiquetas en español para cada categoría de favoritos */
 const CATEGORY_LABELS: Record<string, string> = {
   weapons:      'Armas',
   ammos:        'Munición',
@@ -29,6 +31,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   talismans:    'Talismanes',
 };
 
+/* Página de favoritos: lista los elementos guardados del usuario agrupados por categoría */
 @Component({
   selector: 'app-favorites-page',
   imports: [RouterLink],
@@ -40,13 +43,21 @@ export class FavoritesPage implements OnInit {
   private readonly favoritesService = inject(FavoritesService);
   private readonly apiService       = inject(EldenRingApiService);
 
+  /* Indica si los favoritos han terminado de cargarse desde el backend */
   loaded        = signal<boolean>(false);
+
+  /* Indica si el detalle de un ítem está siendo cargado desde la API externa */
   loadingDetail = signal<boolean>(false);
+
+  /* Ítem seleccionado cuyo detalle se muestra en el modal */
   selectedItem  = signal<any | null>(null);
+
+  /* Favorito seleccionado, necesario para mostrar controles en el modal */
   selectedFav   = signal<Favorite | null>(null);
 
   questStatuses = QUEST_STATUSES;
 
+  /* Favoritos del usuario agrupados por categoría para renderizar las secciones */
   groupedFavorites = computed(() => {
     const groups: Record<string, Favorite[]> = {};
     for (const fav of this.favoritesService.favorites()) {
@@ -56,6 +67,7 @@ export class FavoritesPage implements OnInit {
     return groups;
   });
 
+  /* Lista ordenada de categorías presentes en los favoritos del usuario */
   categories = computed(() => Object.keys(this.groupedFavorites()).sort());
 
   ngOnInit(): void {
@@ -65,24 +77,29 @@ export class FavoritesPage implements OnInit {
     });
   }
 
+  /* Obtener la etiqueta en español de una categoría */
   getCategoryLabel(category: string): string {
     return CATEGORY_LABELS[category] ?? category;
   }
 
+  /* Obtener el estado de quest del favorito (campo extendido, no guardado en backend) */
   getQuestStatus(fav: Favorite): string {
     return (fav as any).quest_status ?? 'pending';
   }
 
+  /* Eliminar un favorito de la lista del usuario */
   removeFavorite(fav: Favorite): void {
     this.favoritesService.removeFavorite(fav.api_id, fav.category).subscribe();
   }
 
+  /* Actualizar el estado de quest de un favorito en memoria */
   updateQuestStatus(fav: Favorite, status: string): void {
     (fav as any).quest_status = status;
   }
 
-  // ── Modal de detalle ──────────────────────────────────────────────────────
+  /* Modal de detalle */
 
+  /* Abrir el modal de detalle y cargar los datos del ítem desde la API */
   openDetail(fav: Favorite): void {
     this.selectedFav.set(fav);
     this.loadingDetail.set(true);
@@ -97,11 +114,13 @@ export class FavoritesPage implements OnInit {
     });
   }
 
+  /* Cerrar el modal de detalle y limpiar el ítem seleccionado */
   closeDetail(): void {
     this.selectedItem.set(null);
     this.selectedFav.set(null);
   }
 
+  /* Seleccionar el método de la API adecuado según la categoría del favorito */
   private getOneByCategory(category: string, id: string): Observable<any> {
     switch (category) {
       case 'weapons':      return this.apiService.getOneWeapon(id);
@@ -123,6 +142,7 @@ export class FavoritesPage implements OnInit {
     }
   }
 
+  /* Extraer los campos relevantes del ítem para mostrarlos en el modal de detalle */
   getDetailFields(item: any): { label: string; value: any }[] {
     const fields: { label: string; value: any }[] = [];
     if (item.description)  fields.push({ label: 'Descripción', value: item.description });

@@ -23,6 +23,14 @@ export class Navbar implements OnInit {
   showAuthModal = false;
   authMode: 'login' | 'register' = 'login';
 
+  isMenuOpen = false;
+
+  ngOnInit(){
+    this.authService.user$.subscribe(user => {
+      this.user = user;
+    });
+  }
+
   handleAuthClick(isLogin: boolean) {
     if (this.authService.isLogged()) return;
 
@@ -30,27 +38,9 @@ export class Navbar implements OnInit {
     this.showAuthModal = true;
   }
 
-  isMenuOpen = false;
-
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-    document.body.classList.add('menu-open');
-  }
-
-  closeMenu() {
-    this.isMenuOpen = false;
-    document.body.classList.remove('menu-open');
-  }
-
   constructor() {
     this.router.events.subscribe(() => {
       this.isMenuOpen = false;
-    });
-  }
-
-  ngOnInit(){
-    this.authService.user$.subscribe(user => {
-      this.user = user;
     });
   }
 
@@ -61,6 +51,16 @@ export class Navbar implements OnInit {
 
   getAvatarUrl(avatar: string): string {
     return `${this.backendUrl}/uploads/avatars/${avatar}`;
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+    document.body.classList.add('menu-open');
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+    document.body.classList.remove('menu-open');
   }
 
 }

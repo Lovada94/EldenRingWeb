@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { Team } from '../common/interface';
 
+/* Estado inicial vacío: todos los slots a null, sin id_team ni metadatos */
 export const EMPTY_TEAM: Team = {
   weapon_r1: null, weapon_r2: null, weapon_r3: null,
   weapon_l1: null, weapon_l2: null, weapon_l3: null,
@@ -16,6 +17,7 @@ export const EMPTY_TEAM: Team = {
   spell1: null, spell2: null, spell3: null, spell4: null, spell5: null,
 };
 
+/* Mapeo de categoría de favorito a los slots del equipo donde puede colocarse */
 export const CATEGORY_SLOTS: Record<string, string[]> = {
   weapons:      ['weapon_r1', 'weapon_r2', 'weapon_r3', 'weapon_l1', 'weapon_l2', 'weapon_l3'],
   shields:      ['weapon_l1', 'weapon_l2', 'weapon_l3'],
@@ -29,6 +31,7 @@ export const CATEGORY_SLOTS: Record<string, string[]> = {
   spirits:      ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10'],
 };
 
+/* Servicio de equipo: gestiona el equipo activo y la lista de equipos guardados del usuario */
 @Injectable({
   providedIn: 'root'
 })
@@ -37,9 +40,13 @@ export class TeamService {
   private readonly http = inject(HttpClient);
   private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
+  /* Signal con el equipo activo cargado en el tablero */
   team  = signal<Team>({ ...EMPTY_TEAM });
+
+  /* Signal con todos los equipos guardados del usuario */
   teams = signal<any[]>([]);
 
+  /* Cargar el equipo activo del usuario desde el backend */
   loadTeam(): Observable<any> {
     return this.http.get<{ status: number; team: Team }>(`${this.backendUrl}/team`).pipe(
       tap(res => {
@@ -50,6 +57,7 @@ export class TeamService {
     );
   }
 
+  /* Cargar la lista completa de equipos guardados del usuario */
   loadAllTeams(): Observable<any> {
     return this.http.get<{ status: number; teams: any[] }>(`${this.backendUrl}/team/all`).pipe(
       tap(res => {
@@ -58,6 +66,7 @@ export class TeamService {
     );
   }
 
+  /* Guardar el estado actual del equipo activo en el backend */
   saveTeam(): Observable<any> {
     const team = { ...this.team() } as any;
     if (!team.id_team) return of(null);
@@ -67,6 +76,7 @@ export class TeamService {
     return this.http.put(`${this.backendUrl}/team`, team);
   }
 
+  /* Guardar el equipo actual con un nuevo nombre, creando una entrada separada */
   saveTeamAs(name: string): Observable<any> {
   const teamData = { ...this.team() } as any;
   delete teamData.name;
@@ -80,6 +90,7 @@ export class TeamService {
   });
 }
 
+  /* Cargar un equipo guardado por ID y establecerlo como activo en el tablero */
   loadSavedTeam(teamId: number): Observable<any> {
     return this.http.post<{ team: Team }>(`${this.backendUrl}/team/load`, { id_team: teamId }).pipe(
       tap(res => {
@@ -88,12 +99,14 @@ export class TeamService {
     );
   }
 
+  /* Eliminar un equipo guardado y quitarlo del signal de lista */
   deleteTeam(teamId: number): Observable<any> {
     return this.http.delete(`${this.backendUrl}/team/${teamId}`).pipe(
       tap(() => this.teams.update(ts => ts.filter(t => t.id_team !== teamId)))
     );
   }
 
+  /* Renombrar un equipo guardado y actualizar el signal de lista y el equipo activo si corresponde */
   renameTeam(teamId: number, name: string): Observable<any> {
     return this.http.patch(`${this.backendUrl}/team/${teamId}`, { name }).pipe(
       tap(() => {
@@ -105,10 +118,12 @@ export class TeamService {
     );
   }
 
+  /* Vaciar un slot concreto del equipo activo en memoria */
   removeFromSlot(slot: string): void {
     this.team.update(t => ({ ...t, [slot]: null }));
   }
 
+  /* Comprobar si un elemento (por api_id) ya ocupa algún slot del equipo activo */
   isInTeam(apiId: string): boolean {
     const t = this.team() as any;
     return Object.values(t).includes(apiId);

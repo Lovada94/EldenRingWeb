@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/xampp/htdocs/tfc-elden-ring/elden_ring_backend/app/Filters/**)",
+      "Read(//c/xampp/htdocs/tfc-elden-ring/elden_ring_backend/app/Models/**)"
+    ]
+  }
+}

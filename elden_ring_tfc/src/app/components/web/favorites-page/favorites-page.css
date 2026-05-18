@@ -1,4 +1,4 @@
-/* ── Contenedor ───────────────────────────────────────────────────────── */
+/* Contenedor */
 .favorites-container {
   min-height: 100vh;
   background-color: #0e0e0e;
@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-/* ── Cabecera ─────────────────────────────────────────────────────────── */
+/* Cabecera */
 .page-header {
   display: flex;
   align-items: center;
@@ -44,7 +44,7 @@
   border-color: #c9a94b;
 }
 
-/* ── Loading ──────────────────────────────────────────────────────────── */
+/* Loading */
 .loading {
   text-align: center;
   padding: 4rem;
@@ -53,7 +53,7 @@
   letter-spacing: 2px;
 }
 
-/* ── Estado vacío ─────────────────────────────────────────────────────── */
+/* Estado vacío */
 .empty-state {
   text-align: center;
   padding: 4rem;
@@ -76,7 +76,7 @@
   color: black;
 }
 
-/* ── Grupo de categoría ───────────────────────────────────────────────── */
+/* Grupo de categoría */
 .category-group {
   margin-bottom: 2.5rem;
 }
@@ -96,7 +96,7 @@
   margin-bottom: 1rem;
 }
 
-/* ── Fila de favorito ─────────────────────────────────────────────────── */
+/* Fila de favorito */
 .fav-row {
   display: flex;
   align-items: center;
@@ -113,7 +113,7 @@
   box-shadow: 0 0 8px rgba(201, 169, 75, 0.15);
 }
 
-/* ── Imagen ───────────────────────────────────────────────────────────── */
+/* Imagen */
 .fav-image {
   width: 60px;
   height: 60px;
@@ -122,7 +122,7 @@
   filter: drop-shadow(0 0 4px rgba(201, 169, 75, 0.3));
 }
 
-/* ── Info ─────────────────────────────────────────────────────────────── */
+/* Info */
 .fav-info {
   flex: 1;
   min-width: 0;
@@ -143,7 +143,7 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* ── Estado misión NPCs ───────────────────────────────────────────────── */
+/* Estado misión NPCs */
 .quest-status {
   display: flex;
   gap: 0.4rem;
@@ -172,7 +172,7 @@
   color: #f5e6a3;
 }
 
-/* ── Botones de acción ────────────────────────────────────────────────── */
+/* Botones de acción */
 .fav-actions {
   display: flex;
   gap: 0.5rem;
@@ -212,7 +212,7 @@
   color: white;
 }
 
-/* ── Modal overlay ────────────────────────────────────────────────────── */
+/* Modal overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -354,11 +354,11 @@
 .stat-name { color: rgba(255, 255, 255, 0.6); }
 .stat-value { color: #f5e6a3; font-weight: bold; }
 
-/* ── Cursor pointer en elementos clicables ────────────────────────────── */
+/* Cursor pointer en elementos clicables */
 .fav-row { cursor: pointer; }
 .fav-info:hover .fav-name { color: #c9a94b; }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 768px) {
   .favorites-container {
     padding: 1rem;

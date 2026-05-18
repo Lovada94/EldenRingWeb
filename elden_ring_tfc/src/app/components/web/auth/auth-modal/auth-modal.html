@@ -1,10 +1,13 @@
+<!-- Overlay que cierra el modal al hacer clic fuera del contenido -->
 <div class="modal-overlay" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)">
   <div class="modal-box" (click)="$event.stopPropagation()">
 
+    <!-- Botón de cierre -->
     <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="close()"></button>
 
     <h2>{{ isLogin ? 'Login' : 'Regístrate' }}</h2>
 
+    <!-- Formulario de login -->
     @if (isLogin) {
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
 
@@ -13,6 +16,7 @@
           <p class="error">El usuario o email es obligatorio</p>
         }
 
+        <!-- Campo contraseña con toggle de visibilidad -->
         <div class="input-group">
           <input
             [type]="showConfirmPassword ? 'text' : 'password'"
@@ -37,7 +41,10 @@
 
         <button class="btn" type="submit">Login</button>
       </form>
+
     } @else {
+
+      <!-- Formulario de registro -->
       <form [formGroup]="registerForm" (ngSubmit)="submitRegister()">
 
         <input formControlName="username" placeholder="Username">
@@ -77,6 +84,7 @@
           <p class="error">Email inválido</p>
         }
 
+        <!-- Campo nueva contraseña con toggle de visibilidad -->
         <div class="input-group">
           <input
             [type]="showPassword ? 'text' : 'password'"
@@ -102,13 +110,13 @@
           <p class="error">Debe tener una mayúscula y un número</p>
         }
 
+        <!-- Campo confirmar contraseña con toggle de visibilidad -->
         <div class="input-group">
           <input
             [type]="showConfirmPassword ? 'text' : 'password'"
             formControlName="confirmPassword"
             placeholder="Confirm Password"
           >
-
           <span
             class="eye"
             (mousedown)="showConfirmPassword = true"
@@ -129,6 +137,7 @@
       </form>
     }
 
+    <!-- Enlace para cambiar entre login y registro -->
     <p class="switch">
       {{ isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}
       <span (click)="toggleMode()">
@@ -136,6 +145,7 @@
       </span>
     </p>
 
+    <!-- Mensaje de error general del servidor -->
     @if (errorMessage) {
       <p class="error">{{ errorMessage }}</p>
     }

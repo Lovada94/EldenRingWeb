@@ -1,4 +1,4 @@
-/* ── Contenedor ───────────────────────────────────────────────────────── */
+/* Contenedor */
 .blog-container {
   min-height: 100vh;
   background-color: #0e0e0e;
@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-/* ── Cabecera ─────────────────────────────────────────────────────────── */
+/* Cabecera */
 .page-header {
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@
   text-shadow: 0 0 10px rgba(201, 169, 75, 0.4);
 }
 
-/* ── Botones ──────────────────────────────────────────────────────────── */
+/* Botones */
 .btn-action {
   padding: 0.4rem 0.9rem;
   border: 1px solid #c9a94b;
@@ -91,7 +91,7 @@
 .btn-icon.btn-danger:hover { color: #e74c3c; }
 .btn-icon.sm               { font-size: 0.75rem; }
 
-/* ── Buscador ─────────────────────────────────────────────────────────── */
+/* Buscador */
 .search-bar {
   position: relative;
   margin-bottom: 1.5rem;
@@ -122,7 +122,7 @@
 .search-input::placeholder { color: rgba(255,255,255,0.25); }
 .search-input:focus         { border-color: rgba(201,169,75,0.5); }
 
-/* ── Formulario de creación ───────────────────────────────────────────── */
+/* Formulario de creación */
 .create-form {
   background: rgba(201,169,75,0.04);
   border: 1px solid rgba(201,169,75,0.2);
@@ -205,7 +205,7 @@
 
 .btn-clear-team:hover { color: #e74c3c; }
 
-/* ── Modal ────────────────────────────────────────────────────────────── */
+/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -282,7 +282,7 @@
 
 .modal-actions { display: flex; justify-content: flex-end; }
 
-/* ── Loading / Empty ──────────────────────────────────────────────────── */
+/* Loading / Empty */
 .loading {
   text-align: center;
   padding: 4rem;
@@ -297,14 +297,14 @@
   padding: 2rem 0;
 }
 
-/* ── Grid de posts ────────────────────────────────────────────────────── */
+/* Grid de posts */
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
 }
 
-/* ── Tarjeta de post ──────────────────────────────────────────────────── */
+/* Tarjeta de post */
 .post-card {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(201,169,75,0.15);
@@ -396,7 +396,7 @@
   gap: 0.5rem;
 }
 
-/* ── Vista detalle ────────────────────────────────────────────────────── */
+/* Vista detalle */
 .detail-header {
   margin-bottom: 1.5rem;
 }
@@ -439,7 +439,7 @@
   padding-left: 1rem;
 }
 
-/* ── Sección equipo ───────────────────────────────────────────────────── */
+/* Sección equipo */
 .team-section {
   border: 1px solid rgba(201,169,75,0.15);
   padding: 1.2rem;
@@ -458,7 +458,7 @@
   gap: 0.5rem;
 }
 
-/* ── Preview de equipo (reutiliza clases de team-page) ────────────────── */
+/* Preview de equipo (reutiliza clases de team-page) */
 .preview-area {
   display: flex;
   flex-direction: column;
@@ -555,7 +555,7 @@
 .img-row { display: flex; gap: 0.3rem; }
 .img-row.wrap { flex-wrap: wrap; justify-content: center; }
 
-/* ── Sección comentarios ──────────────────────────────────────────────── */
+/* Sección comentarios */
 .comments-section {
   display: flex;
   flex-direction: column;
@@ -598,7 +598,7 @@
   word-break: break-word;
 }
 
-/* ── Formulario de comentario ─────────────────────────────────────────── */
+/* Formulario de comentario */
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -608,7 +608,7 @@
   align-items: flex-end;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 768px) {
   .blog-container  { padding: 1rem; }
   .posts-grid      { grid-template-columns: 1fr; }

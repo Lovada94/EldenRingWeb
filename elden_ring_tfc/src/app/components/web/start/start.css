@@ -45,19 +45,38 @@
 }
 
 .btn {
-  padding: 0.8rem 1.8rem;
-  border: 1px solid #c9a94b;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.5rem;
   text-decoration: none;
-  color: #f5e6a3;
+  font-size: 0.88rem;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
+  border: none;
 }
 
-.btn:hover {
+.btn-primary-er {
+  background: rgba(201,169,75,0.15);
+  border: 1px solid #c9a94b;
+  color: #f5e6a3;
+}
+
+.btn-primary-er:hover {
   background: #c9a94b;
-  color: black;
-  box-shadow: 0 0 10px #c9a94b;
+  color: #0e0e0e;
+  box-shadow: 0 0 14px rgba(201,169,75,0.5);
+}
+
+.btn-secondary-er {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
+}
+
+.btn-secondary-er:hover {
+  border-color: #c9a94b;
+  color: #f5e6a3;
 }
 
 .primary {

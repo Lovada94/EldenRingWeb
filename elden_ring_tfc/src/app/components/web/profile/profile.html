@@ -7,7 +7,7 @@
   @if (user()) {
     <div class="profile-layout">
 
-      <!-- ── Columna izquierda: Avatar ─────────────────────────────────── -->
+      <!-- Columna izquierda: Avatar -->
       <div class="avatar-col">
         <div class="avatar-wrapper">
           <img [src]="getAvatarUrl(user()!.avatar)" [alt]="user()!.username" class="avatar-img"/>
@@ -19,7 +19,7 @@
         <p class="avatar-username">{{ user()!.username }}</p>
       </div>
 
-      <!-- ── Columna derecha ───────────────────────────────────────────── -->
+      <!-- Columna derecha -->
       <div class="forms-col">
 
         <!-- Datos de solo lectura -->

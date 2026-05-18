@@ -1,4 +1,4 @@
-/* ── Contenedor ───────────────────────────────────────────────────────── */
+/* Contenedor */
 .team-container {
   min-height: 100vh;
   background-color: #0e0e0e;
@@ -6,7 +6,7 @@
   padding: 2rem;
 }
 
-/* ── Cabecera ─────────────────────────────────────────────────────────── */
+/* Cabecera */
 .page-header {
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@
 .btn-action.btn-danger        { border-color: rgba(231,76,60,0.6); color: #e74c3c; }
 .btn-action.btn-danger:hover  { background: #e74c3c; color: white; border-color: #e74c3c; }
 
-/* ── Loading ──────────────────────────────────────────────────────────── */
+/* Loading */
 .loading {
   text-align: center;
   padding: 4rem;
@@ -55,7 +55,7 @@
   font-family: 'Cinzel', serif;
 }
 
-/* ── Stats bar ────────────────────────────────────────────────────────── */
+/* Stats bar */
 .stats-bar {
   display: flex;
   gap: 1rem;
@@ -91,7 +91,7 @@
   color: #f5e6a3;
 }
 
-/* ── Layout principal ─────────────────────────────────────────────────── */
+/* Layout principal */
 .team-layout {
   display: grid;
   grid-template-columns: 240px 1fr 220px;
@@ -99,7 +99,7 @@
   align-items: start;
 }
 
-/* ── Paneles laterales ────────────────────────────────────────────────── */
+/* Paneles laterales */
 .side-panel {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(201,169,75,0.15);
@@ -131,7 +131,7 @@
   padding: 1rem 0;
 }
 
-/* ── Lista de favoritos ───────────────────────────────────────────────── */
+/* Lista de favoritos */
 .fav-group { margin-bottom: 1rem; }
 
 .fav-group-title {
@@ -193,7 +193,7 @@
 .btn-slot:hover { background: #c9a94b; color: black; }
 .btn-slot.slot-used { opacity: 0.3; }
 
-/* ── Área de previsualización ─────────────────────────────────────────── */
+/* Área de previsualización */
 .preview-area {
   display: flex;
   flex-direction: column;
@@ -308,7 +308,7 @@
 
 .img-row.wrap { flex-wrap: wrap; justify-content: center; }
 
-/* ── Equipos guardados ────────────────────────────────────────────────── */
+/* Equipos guardados */
 .saved-team {
   border: 1px solid rgba(201,169,75,0.15);
   background: rgba(255,255,255,0.02);
@@ -402,7 +402,7 @@
   margin-bottom: 1rem;
 }
 
-/* ── Modal guardar como ───────────────────────────────────────────────── */
+/* Modal guardar como */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -446,7 +446,7 @@
 
 .modal-actions { display: flex; gap: 0.8rem; justify-content: flex-end; }
 
-/* ── Print ────────────────────────────────────────────────────────────── */
+/* Print */
 @media print {
   .no-print { display: none !important; }
 
@@ -515,7 +515,7 @@
   .preview-label    { color: #666 !important; }
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 1100px) {
   .team-layout { grid-template-columns: 220px 1fr; }
   .teams-panel { display: none; }

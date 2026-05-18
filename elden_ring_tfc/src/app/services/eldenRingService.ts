@@ -16,6 +16,7 @@ import {
 } from '../common/interface';
 
 
+/* Servicio que consume la API pública de Elden Ring para obtener listas y detalles de cada categoría */
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +25,7 @@ export class EldenRingApiService {
   private readonly httpClient: HttpClient = inject(HttpClient);
   private readonly baseUrl: string = 'https://eldenring.fanapis.com/api';
 
+  /* Obtener una lista paginada de cualquier categoría con filtro de nombre opcional */
   private getList<T>(
     category: string,
     page: number = 0,
@@ -43,6 +45,7 @@ export class EldenRingApiService {
     );
   }
 
+  /* Obtener un único elemento por ID; normaliza la respuesta si la API devuelve un array */
   private getOne<T>(category: string, id: string): Observable<T> {
     return this.httpClient.get<any>(`${this.baseUrl}/${category}/${id}`
     ).pipe(
@@ -50,7 +53,7 @@ export class EldenRingApiService {
     );
   }
 
-  // ── Weapons ──────────────────────────────────────────────────────────────
+  /* Weapons */
 
   getWeapons(page?: number, limit?: number, name?: string): Observable<ApiResponse<Weapon>> {
     return this.getList<Weapon>('weapons', page, limit, name);
@@ -60,7 +63,7 @@ export class EldenRingApiService {
     return this.getOne<Weapon>('weapons', id);
   }
 
-  // ── Ammos ────────────────────────────────────────────────────────────────
+  /* Ammos */
 
   getAmmos(page?: number, limit?: number, name?: string): Observable<ApiResponse<Ammo>> {
     return this.getList<Ammo>('ammos', page, limit, name);
@@ -70,7 +73,7 @@ export class EldenRingApiService {
     return this.getOne<Ammo>('ammos', id);
   }
 
-  // ── Armors ───────────────────────────────────────────────────────────────
+  /* Armors */
 
   getArmors(page?: number, limit?: number, name?: string): Observable<ApiResponse<Armor>> {
     return this.getList<Armor>('armors', page, limit, name);
@@ -80,7 +83,7 @@ export class EldenRingApiService {
     return this.getOne<Armor>('armors', id);
   }
 
-  // ── Ashes of War ─────────────────────────────────────────────────────────
+  /* Ashes of War */
 
   getAshes(page?: number, limit?: number, name?: string): Observable<ApiResponse<Ash>> {
     return this.getList<Ash>('ashes', page, limit, name);
@@ -90,7 +93,7 @@ export class EldenRingApiService {
     return this.getOne<Ash>('ashes', id);
   }
 
-  // ── Bosses ───────────────────────────────────────────────────────────────
+  /* Bosses */
 
   getBosses(page?: number, limit?: number, name?: string): Observable<ApiResponse<Boss>> {
     return this.getList<Boss>('bosses', page, limit, name);
@@ -100,7 +103,7 @@ export class EldenRingApiService {
     return this.getOne<Boss>('bosses', id);
   }
 
-  // ── Classes ──────────────────────────────────────────────────────────────
+  /* Classes */
 
   getClasses(page?: number, limit?: number, name?: string): Observable<ApiResponse<EldenClass>> {
     return this.getList<EldenClass>('classes', page, limit, name);
@@ -110,7 +113,7 @@ export class EldenRingApiService {
     return this.getOne<EldenClass>('classes', id);
   }
 
-  // ── Creatures ────────────────────────────────────────────────────────────
+  /* Creatures */
 
   getCreatures(page?: number, limit?: number, name?: string): Observable<ApiResponse<Creature>> {
     return this.getList<Creature>('creatures', page, limit, name);
@@ -120,7 +123,7 @@ export class EldenRingApiService {
     return this.getOne<Creature>('creatures', id);
   }
 
-  // ── Incantations ─────────────────────────────────────────────────────────
+  /* Incantations */
 
   getIncantations(page?: number, limit?: number, name?: string): Observable<ApiResponse<Incantation>> {
     return this.getList<Incantation>('incantations', page, limit, name);
@@ -130,7 +133,7 @@ export class EldenRingApiService {
     return this.getOne<Incantation>('incantations', id);
   }
 
-  // ── Items ────────────────────────────────────────────────────────────────
+  /* Items */
 
   getItems(page?: number, limit?: number, name?: string): Observable<ApiResponse<Item>> {
     return this.getList<Item>('items', page, limit, name);
@@ -140,7 +143,7 @@ export class EldenRingApiService {
     return this.getOne<Item>('items', id);
   }
 
-  // ── Locations ────────────────────────────────────────────────────────────
+  /* Locations */
 
   getLocations(page?: number, limit?: number, name?: string): Observable<ApiResponse<EldenLocation>> {
     return this.getList<EldenLocation>('locations', page, limit, name);
@@ -150,7 +153,7 @@ export class EldenRingApiService {
     return this.getOne<Location>('locations', id);
   }
 
-  // ── NPCs ─────────────────────────────────────────────────────────────────
+  /* NPCs */
 
   getNpcs(page?: number, limit?: number, name?: string): Observable<ApiResponse<Npc>> {
     return this.getList<Npc>('npcs', page, limit, name);
@@ -160,7 +163,7 @@ export class EldenRingApiService {
     return this.getOne<Npc>('npcs', id);
   }
 
-  // ── Shields ──────────────────────────────────────────────────────────────
+  /* Shields */
 
   getShields(page?: number, limit?: number, name?: string): Observable<ApiResponse<Shield>> {
     return this.getList<Shield>('shields', page, limit, name);
@@ -170,7 +173,7 @@ export class EldenRingApiService {
     return this.getOne<Shield>('shields', id);
   }
 
-  // ── Sorceries ────────────────────────────────────────────────────────────
+  /* Sorceries */
 
   getSorceries(page?: number, limit?: number, name?: string): Observable<ApiResponse<Sorcery>> {
     return this.getList<Sorcery>('sorceries', page, limit, name);
@@ -180,7 +183,7 @@ export class EldenRingApiService {
     return this.getOne<Sorcery>('sorceries', id);
   }
 
-  // ── Spirits ──────────────────────────────────────────────────────────────
+  /* Spirits */
 
   getSpirits(page?: number, limit?: number, name?: string): Observable<ApiResponse<Spirit>> {
     return this.getList<Spirit>('spirits', page, limit, name);
@@ -190,7 +193,7 @@ export class EldenRingApiService {
     return this.getOne<Spirit>('spirits', id);
   }
 
-  // ── Talismans ────────────────────────────────────────────────────────────
+  /* Talismans */
 
   getTalismans(page?: number, limit?: number, name?: string): Observable<ApiResponse<Talisman>> {
     return this.getList<Talisman>('talismans', page, limit, name);

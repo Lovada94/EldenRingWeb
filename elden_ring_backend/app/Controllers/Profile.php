@@ -5,9 +5,10 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
+/* Controlador de perfil: gestiona los datos personales, contraseña y avatar del usuario */
 class Profile extends ResourceController
 {
-    // GET /profile — obtener perfil del usuario
+    /* GET /profile — obtener los datos del usuario autenticado */
     public function index()
     {
         $request = service('request');
@@ -16,6 +17,7 @@ class Profile extends ResourceController
         $userModel = new UserModel();
         $user      = $userModel->find($userId);
 
+        /* Eliminar la contraseña antes de devolver los datos */
         unset($user['password']);
 
         return $this->respond([
@@ -24,7 +26,7 @@ class Profile extends ResourceController
         ], 200);
     }
 
-    // PUT /profile — actualizar datos del usuario
+    /* PUT /profile — actualizar los datos del perfil (username, email, etc.) */
     public function update($id = null)
     {
         $request = service('request');
@@ -34,6 +36,7 @@ class Profile extends ResourceController
         $userModel  = new UserModel();
         $validation = \Config\Services::validation();
 
+        /* Validar los campos editables, permitiendo que cada uno sea opcional */
         $rules = [
             'name'       => 'permit_empty|min_length[2]|max_length[50]',
             'surnames'   => 'permit_empty|min_length[2]|max_length[100]',
@@ -49,6 +52,7 @@ class Profile extends ResourceController
             ], 400);
         }
 
+        /* Impedir que se modifiquen campos sensibles desde este endpoint */
         unset($data['password'], $data['role'], $data['avatar']);
 
         $userModel->update($userId, $data);
@@ -63,7 +67,7 @@ class Profile extends ResourceController
         ], 200);
     }
 
-    // PUT /profile/password — cambiar contraseña
+    /* PUT /profile/password — cambiar la contraseña del usuario */
     public function updatePassword()
     {
         $request = service('request');
@@ -78,8 +82,9 @@ class Profile extends ResourceController
         }
 
         $userModel = new UserModel();
-        $user = (array) $userModel->find($userId);
+        $user      = (array) $userModel->find($userId);
 
+        /* Verificar que la contraseña actual introducida es correcta */
         if (!password_verify($data['current_password'], $user['password'])) {
             return $this->respond([
                 'status'  => 401,
@@ -94,6 +99,7 @@ class Profile extends ResourceController
             ], 400);
         }
 
+        /* Hashear y guardar la nueva contraseña */
         $userModel->update($userId, [
             'password' => password_hash($data['new_password'], PASSWORD_DEFAULT)
         ]);
@@ -104,7 +110,7 @@ class Profile extends ResourceController
         ], 200);
     }
 
-    // POST /profile/avatar — subir avatar
+    /* POST /profile/avatar — subir o reemplazar la imagen de avatar */
     public function updateAvatar()
     {
         $request = service('request');
@@ -119,7 +125,7 @@ class Profile extends ResourceController
             ], 400);
         }
 
-        // Validar tipo y tamaño
+        /* Validar tipo MIME y tamaño máximo de la imagen */
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!in_array($file->getMimeType(), $allowedTypes)) {
             return $this->respond([
@@ -135,13 +141,13 @@ class Profile extends ResourceController
             ], 400);
         }
 
-        // Generar nombre único y mover el archivo
+        /* Generar un nombre único y mover el archivo al directorio de avatares */
         $newName    = 'avatar_' . $userId . '_' . time() . '.' . $file->getExtension();
         $uploadPath = FCPATH . 'uploads/avatars/';
 
         $file->move($uploadPath, $newName);
 
-        // Borrar el avatar anterior si no es el predeterminado
+        /* Borrar el avatar anterior del disco si no es el predeterminado */
         $userModel   = new UserModel();
         $currentUser = $userModel->find($userId);
         $oldAvatar   = $currentUser['avatar'] ?? 'default.png';
@@ -153,6 +159,7 @@ class Profile extends ResourceController
             }
         }
 
+        /* Actualizar el nombre del avatar en la base de datos */
         $userModel->update($userId, ['avatar' => $newName]);
 
         return $this->respond([
@@ -162,7 +169,7 @@ class Profile extends ResourceController
         ], 200);
     }
 
-    // DELETE /profile — eliminar cuenta
+    /* DELETE /profile — eliminar la cuenta del usuario autenticado */
     public function delete($id = null)
     {
         $request = service('request');

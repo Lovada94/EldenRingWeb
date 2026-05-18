@@ -1,6 +1,6 @@
 <div class="team-container">
 
-  <!-- ── Cabecera ──────────────────────────────────────────────────────── -->
+  <!-- Cabecera -->
   <div class="page-header no-print">
     <h1 class="page-title">Mi Equipo</h1>
     <div class="header-actions">
@@ -24,7 +24,7 @@
 
   @if (loaded()) {
 
-    <!-- ── Stats arriba ───────────────────────────────────────────────── -->
+    <!-- Stats arriba -->
     <div class="stats-bar print-section">
       <div class="stat-item-bar">
         <span class="stat-icon-bar">⚖️</span>
@@ -51,7 +51,7 @@
 
     <div class="team-layout">
 
-      <!-- ── Col izquierda: Favoritos ───────────────────────────────── -->
+      <!-- Col izquierda: Favoritos -->
       <div class="side-panel favorites-panel no-print">
         <h3 class="panel-title">Favoritos</h3>
         @if (categories().length === 0) {
@@ -78,7 +78,7 @@
         }
       </div>
 
-      <!-- ── Col central: Previsualización ──────────────────────────── -->
+      <!-- Col central: Previsualización -->
       <div class="preview-area print-section">
 
         <!-- Armadura centrada -->
@@ -224,7 +224,7 @@
 
       </div>
 
-      <!-- ── Col derecha: Equipos guardados ─────────────────────────── -->
+      <!-- Col derecha: Equipos guardados -->
       <div class="side-panel teams-panel no-print">
         <h3 class="panel-title">Equipos</h3>
         @if (teamService.teams().length === 0) {
@@ -264,7 +264,7 @@
     </div>
   }
 
-  <!-- ── Modal guardar como ─────────────────────────────────────────────── -->
+  <!-- Modal guardar como -->
   @if (showSaveModal()) {
     <div class="modal-overlay" (click)="showSaveModal.set(false)">
       <div class="modal-box" (click)="$event.stopPropagation()">

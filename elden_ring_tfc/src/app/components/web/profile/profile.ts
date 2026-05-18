@@ -6,7 +6,7 @@ import { ProfileService } from '../../../services/profileService';
 import { FormValidators } from '../../../validators/formValidators';
 import { User } from '../../../common/interface';
 
-// Validator personalizado para el formulario de contraseña
+/* Validator de grupo: comprueba que nueva contraseña y confirmación coincidan */
 function passwordMatchProfile(form: FormGroup) {
   const np = form.get('new_password')?.value;
   const cp = form.get('confirm_password')?.value;
@@ -14,6 +14,7 @@ function passwordMatchProfile(form: FormGroup) {
   return np === cp ? null : { passwordMismatch: true };
 }
 
+/* Página de perfil: edición de datos personales, contraseña, avatar y eliminación de cuenta */
 @Component({
   selector: 'app-profile',
   imports: [ReactiveFormsModule],
@@ -27,35 +28,45 @@ export class Profile implements OnInit {
   private readonly router:         Router         = inject(Router);
   private readonly fb:             FormBuilder    = inject(FormBuilder);
 
+  /* Datos del usuario cargados desde el backend */
   user              = signal<User | null>(null);
+
+  /* Mensajes de éxito y error para el formulario de perfil */
   successMsg        = signal<string>('');
   errorMsg          = signal<string>('');
+
+  /* Mensajes de éxito y error para el formulario de contraseña */
   pwSuccessMsg      = signal<string>('');
   pwErrorMsg        = signal<string>('');
+
+  /* Controla la visibilidad del diálogo de confirmación antes de eliminar la cuenta */
   showDeleteConfirm = signal<boolean>(false);
 
+  /* Flags para alternar la visibilidad de los campos de contraseña */
   showPassword        = false;
   showNewPassword     = false;
   showConfirmPassword = false;
 
   private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
+  /* Formulario de edición de datos básicos del perfil */
   profileForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3), FormValidators.notOnlyWhiteSpace]],
     email:    ['', [Validators.required, Validators.email]],
   });
 
+  /* Formulario de cambio de contraseña con validación de coincidencia */
   passwordForm: FormGroup = this.fb.group({
     current_password: ['', [Validators.required]],
     new_password:     ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)]],
     confirm_password: ['', [Validators.required]],
   }, { validators: passwordMatchProfile });
 
-  // ── Getters profileForm ───────────────────────────────────────────────
+  /* Getters profileForm */
   get usernameCtrl(): any { return this.profileForm.get('username'); }
   get emailCtrl(): any    { return this.profileForm.get('email'); }
 
-  // ── Getters passwordForm ──────────────────────────────────────────────
+  /* Getters passwordForm */
   get currentPasswordCtrl(): any  { return this.passwordForm.get('current_password'); }
   get newPasswordCtrl(): any      { return this.passwordForm.get('new_password'); }
   get confirmPasswordCtrl(): any  { return this.passwordForm.get('confirm_password'); }
@@ -72,10 +83,12 @@ export class Profile implements OnInit {
     });
   }
 
+  /* Construir la URL completa del avatar a partir del nombre de fichero */
   getAvatarUrl(avatar: string): string {
     return `${this.backendUrl}/uploads/avatars/${avatar}`;
   }
 
+  /* Procesar la selección de un nuevo archivo de avatar y enviarlo al backend */
   onAvatarChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -88,6 +101,7 @@ export class Profile implements OnInit {
     });
   }
 
+  /* Enviar el formulario de perfil para actualizar username y email */
   submitProfile(): void {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
@@ -101,6 +115,7 @@ export class Profile implements OnInit {
     });
   }
 
+  /* Enviar el formulario de contraseña para actualizarla en el backend */
   submitPassword(): void {
     if (this.passwordForm.invalid) {
       this.passwordForm.markAllAsTouched();
@@ -118,6 +133,7 @@ export class Profile implements OnInit {
     });
   }
 
+  /* Eliminar la cuenta del usuario, cerrar sesión y redirigir al inicio */
   deleteAccount(): void {
     this.profileService.deleteAccount().subscribe({
       next: () => {

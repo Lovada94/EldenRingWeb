@@ -1,4 +1,4 @@
-//User interface
+/* Interfaz de usuario autenticado */
 export interface User {
   id_user: number;
   name: string;
@@ -12,7 +12,7 @@ export interface User {
   updated_at: string;
 }
 
-//Login interface
+/* Respuesta del endpoint de login: token JWT + datos del usuario */
 export interface LoginResponse {
   status: number;
   message: string;
@@ -20,20 +20,20 @@ export interface LoginResponse {
   token: string;
 }
 
-//Register interface
+/* Respuesta del endpoint de registro */
 export interface RegisterResponse {
   status: number;
   message: string;
 }
 
-//Login credentials interface
+/* Credenciales enviadas al endpoint de login */
 export interface LoginCredentials {
   email?: string;
   username?: string;
   password: string;
 }
 
-//Register credentials interface
+/* Datos enviados al endpoint de registro */
 export interface RegisterCredentials {
   name?: string;
   surnames?: string;
@@ -42,9 +42,8 @@ export interface RegisterCredentials {
   username?: string;
   password?: string;
 }
-// ============================================================
-// INTERFACES GENÉRICAS (respuesta base de la API)
-// ============================================================
+
+/* INTERFACES GENÉRICAS (respuesta base de la API) */
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -53,9 +52,7 @@ export interface ApiResponse<T> {
   data: T[];
 }
 
-// ============================================================
-// INTERFACES COMPARTIDAS
-// ============================================================
+/* INTERFACES COMPARTIDAS */
 
 export interface Stat {
   name: string;
@@ -72,9 +69,7 @@ export interface Requirement {
   amount: number;
 }
 
-// ============================================================
-// WEAPONS
-// ============================================================
+/* WEAPONS */
 
 export interface Weapon {
   id: string;
@@ -89,9 +84,7 @@ export interface Weapon {
   weight: number;
 }
 
-// ============================================================
-// AMMOS
-// ============================================================
+/* AMMOS */
 
 export interface Ammo {
   id: string;
@@ -103,9 +96,7 @@ export interface Ammo {
   passive: string;
 }
 
-// ============================================================
-// ARMORS
-// ============================================================
+/* ARMORS */
 
 export interface Armor {
   id: string;
@@ -118,9 +109,7 @@ export interface Armor {
   weight: number;
 }
 
-// ============================================================
-// ASHES OF WAR
-// ============================================================
+/* ASHES OF WAR */
 
 export interface Ash {
   id: string;
@@ -131,9 +120,7 @@ export interface Ash {
   skill: string;
 }
 
-// ============================================================
-// BOSSES
-// ============================================================
+/* BOSSES */
 
 export interface Boss {
   id: string;
@@ -146,9 +133,7 @@ export interface Boss {
   healthPoints: string;
 }
 
-// ============================================================
-// CLASSES
-// ============================================================
+/* CLASSES */
 
 export interface ClassStats {
   level: string;
@@ -170,9 +155,7 @@ export interface EldenClass {
   stats: ClassStats;
 }
 
-// ============================================================
-// CREATURES
-// ============================================================
+/* CREATURES */
 
 export interface Creature {
   id: string;
@@ -183,9 +166,7 @@ export interface Creature {
   drops: string[];
 }
 
-// ============================================================
-// INCANTATIONS
-// ============================================================
+/* INCANTATIONS */
 
 export interface Incantation {
   id: string;
@@ -199,9 +180,7 @@ export interface Incantation {
   requires: Requirement[];
 }
 
-// ============================================================
-// ITEMS
-// ============================================================
+/* ITEMS */
 
 export interface Item {
   id: string;
@@ -212,9 +191,7 @@ export interface Item {
   effect: string;
 }
 
-// ============================================================
-// LOCATIONS
-// ============================================================
+/* LOCATIONS */
 
 export interface EldenLocation {
   id: string;
@@ -224,9 +201,7 @@ export interface EldenLocation {
   region: string;
 }
 
-// ============================================================
-// NPCS
-// ============================================================
+/* NPCS */
 
 export interface Npc {
   id: string;
@@ -237,9 +212,7 @@ export interface Npc {
   role: string;
 }
 
-// ============================================================
-// SHIELDS
-// ============================================================
+/* SHIELDS */
 
 export interface Shield {
   id: string;
@@ -254,9 +227,7 @@ export interface Shield {
   weight: number;
 }
 
-// ============================================================
-// SORCERIES
-// ============================================================
+/* SORCERIES */
 
 export interface Sorcery {
   id: string;
@@ -270,9 +241,7 @@ export interface Sorcery {
   requires: Requirement[];
 }
 
-// ============================================================
-// SPIRITS
-// ============================================================
+/* SPIRITS */
 
 export interface Spirit {
   id: string;
@@ -284,9 +253,7 @@ export interface Spirit {
   effect: string;
 }
 
-// ============================================================
-// TALISMANS
-// ============================================================
+/* TALISMANS */
 
 export interface Talisman {
   id: string;
@@ -349,9 +316,7 @@ export interface Team {
   spell5: string | null;
 }
 
-// ============================================================
-// TIPOS DE RESPUESTA POR ENDPOINT (listos para usar en servicios)
-// ============================================================
+/* TIPOS DE RESPUESTA POR ENDPOINT (listos para usar en servicios) */
 
 export type WeaponsResponse   = ApiResponse<Weapon>;
 export type AmmosResponse     = ApiResponse<Ammo>;
@@ -368,4 +333,3 @@ export type ShieldsResponse   = ApiResponse<Shield>;
 export type SorceriesResponse = ApiResponse<Sorcery>;
 export type SpiritsResponse   = ApiResponse<Spirit>;
 export type TalismansResponse = ApiResponse<Talisman>;
-

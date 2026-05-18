@@ -9,6 +9,7 @@ import { EldenRingApiService } from '../../../services/eldenRingService';
 import { AuthService } from '../../../services/authService';
 import { TeamService } from '../../../services/teamService';
 
+/* Mapa de slots del equipo a su categoría de API, usado para resolver nombres de ítems en el detalle */
 const SLOT_DEFS: { slot: string; category: string }[] = [
   { slot: 'weapon_r1', category: 'weapons' }, { slot: 'weapon_r2', category: 'weapons' },
   { slot: 'weapon_r3', category: 'weapons' }, { slot: 'weapon_l1', category: 'weapons' },
@@ -31,6 +32,7 @@ const SLOT_DEFS: { slot: string; category: string }[] = [
   { slot: 'spell5', category: 'sorceries' },
 ];
 
+/* Página de blog: lista de posts de la comunidad y vista de detalle con comentarios */
 @Component({
   selector: 'app-blog-page',
   imports: [FormsModule, DatePipe],
@@ -44,25 +46,38 @@ export class BlogPage implements OnInit {
   private readonly authService    = inject(AuthService);
   private readonly route          = inject(ActivatedRoute);
 
+  /* Usuario autenticado actual, sincronizado con el BehaviorSubject del servicio */
   currentUser   = toSignal(this.authService.user$, { initialValue: this.authService.getUser() });
 
+  /* Vista activa: lista de posts o detalle de un post */
   view          = signal<'list' | 'detail'>('list');
+
+  /* Flags de carga para la lista, el detalle y los ítems del equipo adjunto */
   loaded        = signal(false);
   detailLoaded  = signal(false);
   teamLoaded    = signal(false);
+
+  /* Evita envíos duplicados mientras hay una petición en curso */
   submitting    = signal(false);
 
+  /* Controla la visibilidad del formulario de creación y el modal de selección de equipo */
   showCreateForm  = signal(false);
   showTeamModal   = signal(false);
+
+  /* Campos del formulario de nuevo post y del formulario de comentario */
   newTitle        = '';
   newContent      = '';
   newComment      = '';
   searchTerm      = '';
+
+  /* Equipo pendiente de adjuntar al nuevo post: id y nombre para mostrar en el badge */
   pendingTeamId:   number | null = null;
   pendingTeamName: string | null = null;
 
+  /* Caché de datos de la API de Elden Ring indexados por api_id, para el equipo del detalle */
   teamItemsData = signal<Record<string, any>>({});
 
+  /* Lista de posts filtrada en tiempo real según el término de búsqueda */
   filteredPosts = computed(() => {
     const term = this.searchTerm.toLowerCase().trim();
     if (!term) return this.blogService.posts();
@@ -70,10 +85,12 @@ export class BlogPage implements OnInit {
   });
 
   ngOnInit(): void {
+    /* Si se navega desde la página de equipo con ?team=id, preseleccionar ese equipo */
     const teamParam = this.route.snapshot.queryParamMap.get('team');
     this.teamService.loadAllTeams().subscribe(() => {
       if (teamParam) {
         this.pendingTeamId = +teamParam;
+        /* Comparar con Number() porque MySQL devuelve id_team como string en JSON */
         const found = this.teamService.teams().find(t => Number(t.id_team) === +teamParam);
         this.pendingTeamName = found?.name ?? null;
         this.showCreateForm.set(true);
@@ -85,6 +102,7 @@ export class BlogPage implements OnInit {
     });
   }
 
+  /* Abrir el detalle de un post y cargar los ítems de su equipo adjunto si existe */
   openPost(id: number): void {
     this.view.set('detail');
     this.detailLoaded.set(false);
@@ -105,11 +123,13 @@ export class BlogPage implements OnInit {
     });
   }
 
+  /* Volver a la lista de posts y limpiar el detalle en memoria */
   goBack(): void {
     this.view.set('list');
     this.blogService.detail.set(null);
   }
 
+  /* Alternar el formulario de nuevo post y resetear todos sus campos */
   toggleCreateForm(): void {
     this.showCreateForm.update(v => !v);
     this.newTitle        = '';
@@ -118,17 +138,20 @@ export class BlogPage implements OnInit {
     this.pendingTeamName = null;
   }
 
+  /* Confirmar la selección de equipo desde el modal y cerrar el modal */
   selectTeam(id: number, name: string): void {
     this.pendingTeamId   = id;
     this.pendingTeamName = name;
     this.showTeamModal.set(false);
   }
 
+  /* Quitar el equipo adjunto pendiente sin cerrar el formulario */
   clearPendingTeam(): void {
     this.pendingTeamId   = null;
     this.pendingTeamName = null;
   }
 
+  /* Enviar el nuevo post al backend y recargar la lista */
   submitPost(): void {
     if (!this.newTitle.trim() || this.submitting()) return;
     this.submitting.set(true);
@@ -146,16 +169,19 @@ export class BlogPage implements OnInit {
     });
   }
 
+  /* Eliminar un post desde la vista de lista */
   deletePost(id: number): void {
     this.blogService.deletePost(id).subscribe();
   }
 
+  /* Eliminar el post actualmente abierto en el detalle y volver a la lista */
   deletePostFromDetail(): void {
     const detail = this.blogService.detail();
     if (!detail) return;
     this.blogService.deletePost(detail.id_post).subscribe({ next: () => this.goBack() });
   }
 
+  /* Enviar un nuevo comentario al post abierto */
   submitComment(): void {
     if (!this.newComment.trim() || this.submitting()) return;
     const detail = this.blogService.detail();
@@ -167,10 +193,12 @@ export class BlogPage implements OnInit {
     });
   }
 
+  /* Eliminar un comentario por ID y actualizar el detalle en memoria */
   deleteComment(id: number): void {
     this.blogService.deleteComment(id).subscribe();
   }
 
+  /* Obtener los datos del ítem de la API para un slot concreto del equipo adjunto */
   getSlotItem(slot: string): any | null {
     const team = this.blogService.detail()?.team as any;
     if (!team) return null;
@@ -179,10 +207,12 @@ export class BlogPage implements OnInit {
     return this.teamItemsData()[apiId] ?? null;
   }
 
+  /* Construir la URL completa del avatar del autor */
   avatarUrl(avatar: string | null): string {
     return this.blogService.avatarUrl(avatar);
   }
 
+  /* Lanzar peticiones paralelas a la API externa para obtener todos los ítems del equipo adjunto */
   private loadTeamItems(team: Record<string, any>): void {
     const requests: Record<string, Observable<any>> = {};
     for (const def of SLOT_DEFS) {
@@ -198,6 +228,7 @@ export class BlogPage implements OnInit {
     });
   }
 
+  /* Seleccionar el método de la API adecuado según la categoría del slot */
   private getItemByCategory(category: string, id: string): Observable<any> {
     switch (category) {
       case 'weapons':   return this.apiService.getOneWeapon(id);

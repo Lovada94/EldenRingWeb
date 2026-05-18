@@ -5,8 +5,10 @@ namespace App\Controllers;
 use App\Models\TeamModel;
 use CodeIgniter\RESTful\ResourceController;
 
+/* Controlador de equipo: gestiona la creación, carga, guardado y eliminación de builds */
 class Team extends ResourceController
 {
+    /* Slots de equipamiento permitidos en el body de las peticiones */
     private array $allowedSlots = [
         'weapon_r1', 'weapon_r2', 'weapon_r3',
         'weapon_l1', 'weapon_l2', 'weapon_l3',
@@ -20,7 +22,7 @@ class Team extends ResourceController
         'spell1', 'spell2', 'spell3', 'spell4', 'spell5',
     ];
 
-    // GET /team — obtener equipo activo
+    /* GET /team — obtener el equipo activo del usuario */
     public function index()
     {
         $request   = service('request');
@@ -34,7 +36,7 @@ class Team extends ResourceController
         ], 200);
     }
 
-    // GET /team/all — obtener todos los equipos del usuario
+    /* GET /team/all — obtener todos los equipos guardados del usuario */
     public function all()
     {
         $request   = service('request');
@@ -48,38 +50,38 @@ class Team extends ResourceController
         ], 200);
     }
 
-    // PUT /team — guardar equipo activo
+    /* PUT /team — guardar el estado actual del equipo activo */
     public function update($id = null)
-{
-    $request = service('request');
-    $userId  = $request->user->id_user;
-    $data    = $this->request->getJSON(true);
-    
-    log_message('debug', 'PUT /team - id_team recibido: ' . ($data['id_team'] ?? 'NULL') . ' - userId: ' . $userId);
+    {
+        $request = service('request');
+        $userId  = $request->user->id_user;
+        $data    = $this->request->getJSON(true);
 
-    $filtered = [];
-    foreach ($this->allowedSlots as $slot) {
-        $filtered[$slot] = $data[$slot] ?? null;
-    }
-
-    $teamModel = new TeamModel();
-    
-    // Si viene id_team en el body, actualizar ese equipo específico
-    if (!empty($data['id_team'])) {
-        $team = $teamModel->where('id_user', $userId)
-                          ->where('id_team', $data['id_team'])
-                          ->first();
-        if ($team) {
-            $teamModel->update($data['id_team'], $filtered);
-            return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
+        /* Filtrar el body para conservar solo los slots permitidos */
+        $filtered = [];
+        foreach ($this->allowedSlots as $slot) {
+            $filtered[$slot] = $data[$slot] ?? null;
         }
+
+        $teamModel = new TeamModel();
+
+        /* Si llega id_team en el body, actualizar ese equipo específico */
+        if (!empty($data['id_team'])) {
+            $team = $teamModel->where('id_user', $userId)
+                              ->where('id_team', $data['id_team'])
+                              ->first();
+            if ($team) {
+                $teamModel->update($data['id_team'], $filtered);
+                return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
+            }
+        }
+
+        /* Si no hay id_team, hacer upsert sobre el equipo activo */
+        $teamModel->upsertActive((int)$userId, $filtered);
+        return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
     }
 
-    $teamModel->upsertActive((int)$userId, $filtered);
-    return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
-}
-
-    // POST /team/save-as — guardar equipo con nombre
+    /* POST /team/save-as — crear un equipo nuevo con nombre */
     public function saveAs()
     {
         $request = service('request');
@@ -94,6 +96,7 @@ class Team extends ResourceController
             ], 400);
         }
 
+        /* Filtrar solo los slots de equipamiento válidos */
         $filtered = [];
         foreach ($this->allowedSlots as $slot) {
             $filtered[$slot] = $data[$slot] ?? null;
@@ -101,7 +104,7 @@ class Team extends ResourceController
 
         $teamModel = new TeamModel();
 
-        // Desactivar todos los equipos del usuario antes de crear el nuevo
+        /* Desactivar todos los equipos del usuario antes de crear el nuevo */
         $teamModel->where('id_user', $userId)->set(['is_active' => 0])->update();
 
         $filtered['id_user']   = $userId;
@@ -116,7 +119,7 @@ class Team extends ResourceController
         ], 201);
     }
 
-    // POST /team/load — cargar un equipo como activo
+    /* POST /team/load — cargar un equipo guardado como activo */
     public function loadTeam()
     {
         $request = service('request');
@@ -141,6 +144,7 @@ class Team extends ResourceController
             ], 404);
         }
 
+        /* Devolver el equipo recién activado */
         $team = $teamModel->getActiveByUser((int)$userId);
 
         return $this->respond([
@@ -150,7 +154,7 @@ class Team extends ResourceController
         ], 200);
     }
 
-    // DELETE /team/:id — eliminar un equipo
+    /* DELETE /team/:id — eliminar un equipo guardado */
     public function delete($id = null)
     {
         $request   = service('request');
@@ -171,13 +175,13 @@ class Team extends ResourceController
         ], 200);
     }
 
-    // PATCH /team/:id — renombrar un equipo
+    /* PATCH /team/:id — renombrar un equipo guardado */
     public function rename($id = null)
     {
-        $request   = service('request');
-        $userId    = $request->user->id_user;
-        $data      = $this->request->getJSON(true);
-        $name      = trim($data['name'] ?? '');
+        $request = service('request');
+        $userId  = $request->user->id_user;
+        $data    = $this->request->getJSON(true);
+        $name    = trim($data['name'] ?? '');
 
         if (empty($name)) {
             return $this->respond([
@@ -187,6 +191,8 @@ class Team extends ResourceController
         }
 
         $teamModel = new TeamModel();
+
+        /* Verificar que el equipo pertenece al usuario autenticado */
         $team = $teamModel->where('id_user', $userId)
                           ->where('id_team', $id)
                           ->first();

@@ -5,13 +5,14 @@ namespace App\Controllers;
 use App\Models\FavoriteModel;
 use CodeIgniter\RESTful\ResourceController;
 
+/* Controlador de favoritos: gestiona los elementos que el usuario guarda */
 class Favorites extends ResourceController
 {
-    // GET /favorites — obtener favoritos del usuario autenticado
+    /* GET /favorites — obtener todos los favoritos del usuario autenticado */
     public function index()
     {
-        $request  = service('request');
-        $userId   = $request->user->id_user;
+        $request = service('request');
+        $userId  = $request->user->id_user;
 
         $favoriteModel = new FavoriteModel();
         $favorites     = $favoriteModel->getByUser($userId);
@@ -22,14 +23,14 @@ class Favorites extends ResourceController
         ], 200);
     }
 
-    // POST /favorites — añadir favorito
+    /* POST /favorites — añadir un elemento a favoritos */
     public function create()
     {
         $request = service('request');
         $userId  = $request->user->id_user;
         $data    = $this->request->getJSON(true);
 
-        // Validación
+        /* Validar que se envían los campos mínimos necesarios */
         $validation = \Config\Services::validation();
 
         $rules = [
@@ -47,7 +48,7 @@ class Favorites extends ResourceController
 
         $favoriteModel = new FavoriteModel();
 
-        // Comprobar si ya existe
+        /* Evitar duplicados: comprobar si el elemento ya está en favoritos */
         if ($favoriteModel->isFavorite($userId, $data['api_id'], $data['category'])) {
             return $this->respond([
                 'status'  => 409,
@@ -59,7 +60,7 @@ class Favorites extends ResourceController
             'id_user'     => $userId,
             'api_id'      => $data['api_id'],
             'category'    => $data['category'],
-            'subcategory' =>$data['subcategory'] ?? null,
+            'subcategory' => $data['subcategory'] ?? null,
             'name'        => $data['name'],
             'image'       => $data['image'] ?? null
         ]);
@@ -70,12 +71,12 @@ class Favorites extends ResourceController
         ], 201);
     }
 
-    // DELETE /favorites — eliminar favorito por api_id y category
+    /* DELETE /favorites — eliminar un favorito identificado por api_id y category */
     public function delete($id = null)
     {
-        $request  = service('request');
-        $userId   = $request->user->id_user;
-        $data     = $this->request->getJSON(true);
+        $request = service('request');
+        $userId  = $request->user->id_user;
+        $data    = $this->request->getJSON(true);
 
         if (empty($data['api_id']) || empty($data['category'])) {
             return $this->respond([
@@ -86,6 +87,7 @@ class Favorites extends ResourceController
 
         $favoriteModel = new FavoriteModel();
 
+        /* Verificar que el favorito existe antes de intentar eliminarlo */
         if (!$favoriteModel->isFavorite($userId, $data['api_id'], $data['category'])) {
             return $this->respond([
                 'status'  => 404,

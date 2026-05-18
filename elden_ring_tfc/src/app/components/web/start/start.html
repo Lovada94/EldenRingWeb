@@ -1,13 +1,19 @@
+<!-- Pantalla de inicio a pantalla completa con fondo y overlay oscuro -->
 <div class="start-container">
   <div class="overlay"></div>
 
   <div class="content">
+    <!-- Logo principal que enlaza a la home -->
     <a routerLink="home"><img src="/assets/images/logo.png" class="logo" alt="Elden Ring Web" /></a>
 
+    <!-- Botones de acceso: Entrar y Login/Register si no hay sesión -->
     <div class="buttons">
-      <a routerLink="/home" class="btn primary">Entrar</a>
+      <a routerLink="/home" class="btn btn-primary-er">Entrar</a>
       @if (!user) {
-        <a (click)="handleAuthClick(true)" class="btn secondary">Login / Register</a>
+        <a (click)="handleAuthClick(true)" class="btn btn-secondary-er">
+            <i class="bi bi-person"></i> Iniciar sesión
+          </a>
+        <!-- Modal de autenticación condicional -->
         @if (showAuthModal) {
           <app-auth-modal (closeModal)="showAuthModal = false"></app-auth-modal>
         }
