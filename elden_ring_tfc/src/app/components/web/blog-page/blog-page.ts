@@ -39,6 +39,7 @@ const SLOT_DEFS: { slot: string; category: string }[] = [
   templateUrl: './blog-page.html',
   styleUrl: './blog-page.css',
 })
+
 export class BlogPage implements OnInit {
   protected readonly blogService  = inject(BlogService);
   protected readonly teamService  = inject(TeamService);
