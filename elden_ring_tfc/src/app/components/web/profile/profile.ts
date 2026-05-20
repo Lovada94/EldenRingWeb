@@ -14,7 +14,6 @@ function passwordMatchProfile(form: FormGroup) {
   return np === cp ? null : { passwordMismatch: true };
 }
 
-/* Página de perfil: edición de datos personales, contraseña, avatar y eliminación de cuenta */
 @Component({
   selector: 'app-profile',
   imports: [ReactiveFormsModule],
@@ -138,7 +137,7 @@ export class Profile implements OnInit {
     this.profileService.deleteAccount().subscribe({
       next: () => {
         this.authService.logout();
-        this.router.navigate(['/start']);
+        this.router.navigate(['/home']);
       },
       error: (err) => this.errorMsg.set(err.error?.message || 'Error al eliminar la cuenta')
     });

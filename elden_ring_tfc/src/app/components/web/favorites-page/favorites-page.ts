@@ -31,7 +31,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   talismans:    'Talismanes',
 };
 
-/* Página de favoritos: lista los elementos guardados del usuario agrupados por categoría */
 @Component({
   selector: 'app-favorites-page',
   imports: [RouterLink],

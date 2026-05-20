@@ -20,9 +20,20 @@ export class Home implements OnInit {
 
   showAuthModal = false;
 
-  handleAuthClick(isLogin: boolean) {
+  /* Nombre de la tarjeta bloqueada que muestra el toast; null cuando está oculto */
+  lockedCard: string | null = null;
+  private toastTimer: any;
+
+  handleAuthClick(_isLogin: boolean) {
     if (this.authService.isLogged()) return;
     this.showAuthModal = true;
+  }
+
+  /* Mostrar el toast bajo la tarjeta bloqueada y ocultarlo tras 2,5 s */
+  onLockedClick(card: string): void {
+    clearTimeout(this.toastTimer);
+    this.lockedCard = card;
+    this.toastTimer = setTimeout(() => { this.lockedCard = null; }, 2500);
   }
 
   ngOnInit(){

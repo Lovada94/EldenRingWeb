@@ -6,6 +6,7 @@ use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
 /* Controlador de perfil: gestiona los datos personales, contraseña y avatar del usuario */
+
 class Profile extends ResourceController
 {
     /* GET /profile — obtener los datos del usuario autenticado */
@@ -38,9 +39,6 @@ class Profile extends ResourceController
 
         /* Validar los campos editables, permitiendo que cada uno sea opcional */
         $rules = [
-            'name'       => 'permit_empty|min_length[2]|max_length[50]',
-            'surnames'   => 'permit_empty|min_length[2]|max_length[100]',
-            'birth_date' => 'permit_empty|valid_date',
             'username'   => "permit_empty|min_length[3]|max_length[30]|is_unique[users.username,id_user,{$userId}]",
             'email'      => "permit_empty|valid_email|is_unique[users.email,id_user,{$userId}]",
         ];
@@ -99,6 +97,13 @@ class Profile extends ResourceController
             ], 400);
         }
 
+        if (!preg_match('/^(?=.*[A-Z])(?=.*\d).+$/', $data['new_password'])) {
+            return $this->respond([
+                'status'  => 400,
+                'message' => 'La contraseña debe contener al menos una mayúscula y un número'
+            ], 400);
+        }
+
         /* Hashear y guardar la nueva contraseña */
         $userModel->update($userId, [
             'password' => password_hash($data['new_password'], PASSWORD_DEFAULT)
@@ -126,7 +131,7 @@ class Profile extends ResourceController
         }
 
         /* Validar tipo MIME y tamaño máximo de la imagen */
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
         if (!in_array($file->getMimeType(), $allowedTypes)) {
             return $this->respond([
                 'status'  => 400,

@@ -12,10 +12,12 @@ export class ProfileService {
   private readonly authService: AuthService = inject(AuthService);
   private readonly backendUrl = 'http://localhost/tfc-elden-ring/elden_ring_backend/public';
 
+  /* Obtener el perfil completo del usuario desde el backend */
   getProfile(): Observable<any> {
     return this.http.get(`${this.backendUrl}/profile`);
   }
 
+  /* Actualizar username y email; sincroniza el usuario en localStorage tras la respuesta */
   updateProfile(data: any): Observable<any> {
     return this.http.put(`${this.backendUrl}/profile`, data).pipe(
       tap((res: any) => {
@@ -26,10 +28,12 @@ export class ProfileService {
     );
   }
 
+  /* Cambiar la contraseña del usuario en el backend */
   updatePassword(data: { current_password: string; new_password: string }): Observable<any> {
     return this.http.put(`${this.backendUrl}/profile/password`, data);
   }
 
+  /* Subir un nuevo avatar; actualiza el nombre de fichero en localStorage tras la respuesta */
   updateAvatar(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('avatar', file);
@@ -42,6 +46,7 @@ export class ProfileService {
     );
   }
 
+  /* Eliminar la cuenta del usuario en el backend */
   deleteAccount(): Observable<any> {
     return this.http.delete(`${this.backendUrl}/profile`);
   }

@@ -56,6 +56,17 @@
   margin: 0 auto;
 }
 
+/* Feature cards wrapper: flex column para que el .feature-card interior ocupe toda la altura del grid item */
+.card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-wrapper .feature-card {
+  flex: 1;
+}
+
 /* Feature cards */
 .features {
   display: grid;
@@ -71,12 +82,14 @@
   border: 1px solid rgba(201,169,75,0.2);
   padding: 1.4rem 1rem;
   transition: border-color 0.3s, background 0.3s;
+  cursor: pointer;
 }
 
 .feature-card:hover {
   border-color: rgba(201,169,75,0.55);
   background: rgba(201,169,75,0.06);
 }
+
 
 .feature-icon {
   font-size: 1.8rem;
@@ -99,6 +112,29 @@
   color: rgba(255,255,255,0.6);
   line-height: 1.6;
   margin: 0;
+}
+
+/* Toast que aparece bajo la tarjeta bloqueada al hacer clic sin sesión */
+.card-toast {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: rgba(201,169,75,0.92);
+  color: #0e0e0e;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 0.35rem 0.6rem;
+  pointer-events: none;
+  animation: toastFade 2.5s ease forwards;
+  z-index: 10;
+}
+
+@keyframes toastFade {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* Botones */

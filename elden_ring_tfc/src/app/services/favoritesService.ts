@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Favorite } from '../common/interface';
 
-/* Servicio de favoritos: gestiona la lista de elementos que el usuario ha guardado */
 @Injectable({
   providedIn: 'root'
 })

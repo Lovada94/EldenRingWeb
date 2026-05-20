@@ -31,7 +31,6 @@ export const CATEGORY_SLOTS: Record<string, string[]> = {
   spirits:      ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10'],
 };
 
-/* Servicio de equipo: gestiona el equipo activo y la lista de equipos guardados del usuario */
 @Injectable({
   providedIn: 'root'
 })
@@ -50,11 +49,19 @@ export class TeamService {
   loadTeam(): Observable<any> {
     return this.http.get<{ status: number; team: Team }>(`${this.backendUrl}/team`).pipe(
       tap(res => {
-        if (res.team && Object.keys(res.team).length > 0) {
-          this.team.set({ ...EMPTY_TEAM, ...res.team });
-        }
+        this.team.set(
+          res.team && Object.keys(res.team).length > 0
+            ? { ...EMPTY_TEAM, ...res.team }
+            : { ...EMPTY_TEAM }
+        );
       })
     );
+  }
+
+  /* Restablecer el estado en memoria del equipo y la lista de equipos guardados */
+  reset(): void {
+    this.team.set({ ...EMPTY_TEAM });
+    this.teams.set([]);
   }
 
   /* Cargar la lista completa de equipos guardados del usuario */

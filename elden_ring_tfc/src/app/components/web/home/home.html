@@ -11,27 +11,51 @@
       </p>
     </section>
 
-    <!-- Feature cards -->
+    <!-- Feature cards: weapons siempre navegable; el resto solo si hay sesión activa -->
     <section class="features">
-      <div class="feature-card">
-        <i class="bi bi-journal-text feature-icon"></i>
-        <h3>Enciclopedia completa</h3>
-        <p>Consulta armas, armaduras, hechizos, talismanes, cenizas de guerra, objetos, jefes, NPCs, criaturas y ubicaciones directamente desde la API oficial.</p>
+      <div class="card-wrapper">
+        <div routerLink="/weapons" class="feature-card">
+          <i class="bi bi-journal-text feature-icon"></i>
+          <h3>Enciclopedia completa</h3>
+          <p>Consulta armas, armaduras, hechizos, talismanes, cenizas de guerra, objetos, jefes, NPCs, criaturas y ubicaciones directamente desde la API oficial.</p>
+        </div>
       </div>
-      <div class="feature-card">
-        <i class="bi bi-bookmark-heart feature-icon"></i>
-        <h3>Favoritos</h3>
-        <p>Guarda los elementos que más te interesen para tenerlos siempre a mano y usarlos al construir tu equipo.</p>
+
+      <!-- Tarjeta bloqueada: toast aparece al hacer clic sin sesión -->
+      <div class="card-wrapper">
+        <div [routerLink]="user ? '/favorites' : null" class="feature-card"
+             (click)="!user && onLockedClick('favorites')">
+          <i class="bi bi-bookmark-heart feature-icon"></i>
+          <h3>Favoritos</h3>
+          <p>Guarda los elementos que más te interesen para tenerlos siempre a mano y usarlos al construir tu equipo.</p>
+        </div>
+        @if (lockedCard === 'favorites') {
+          <div class="card-toast"><i class="bi bi-lock"></i> Inicia sesión para acceder</div>
+        }
       </div>
-      <div class="feature-card">
-        <i class="bi bi-shield-shaded feature-icon"></i>
-        <h3>Constructor de builds</h3>
-        <p>Crea y guarda múltiples equipos con armas, armadura, talismanes, hechizos y objetos. Visualiza tu build, consulta las estadísticas e imprímela.</p>
+
+      <div class="card-wrapper">
+        <div [routerLink]="user ? '/team' : null" class="feature-card"
+             (click)="!user && onLockedClick('team')">
+          <i class="bi bi-shield-shaded feature-icon"></i>
+          <h3>Constructor de builds</h3>
+          <p>Crea y guarda múltiples equipos con armas, armadura, talismanes, hechizos y objetos. Visualiza tu build, consulta las estadísticas e imprímela.</p>
+        </div>
+        @if (lockedCard === 'team') {
+          <div class="card-toast"><i class="bi bi-lock"></i> Inicia sesión para acceder</div>
+        }
       </div>
-      <div class="feature-card">
-        <i class="bi bi-people feature-icon"></i>
-        <h3>Blog de la comunidad</h3>
-        <p>Publica tus builds, comenta las de otros jugadores y descubre nuevas formas de jugar gracias a la experiencia de la comunidad.</p>
+
+      <div class="card-wrapper">
+        <div [routerLink]="user ? '/blog' : null" class="feature-card"
+             (click)="!user && onLockedClick('blog')">
+          <i class="bi bi-people feature-icon"></i>
+          <h3>Blog de la comunidad</h3>
+          <p>Publica tus builds, comenta las de otros jugadores y descubre nuevas formas de jugar gracias a la experiencia de la comunidad.</p>
+        </div>
+        @if (lockedCard === 'blog') {
+          <div class="card-toast"><i class="bi bi-lock"></i> Inicia sesión para acceder</div>
+        }
       </div>
     </section>
 

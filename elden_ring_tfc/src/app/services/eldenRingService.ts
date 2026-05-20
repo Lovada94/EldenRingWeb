@@ -15,8 +15,6 @@ import {
   Weapon
 } from '../common/interface';
 
-
-/* Servicio que consume la API pública de Elden Ring para obtener listas y detalles de cada categoría */
 @Injectable({
   providedIn: 'root'
 })

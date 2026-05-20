@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginCredentials, LoginResponse, RegisterCredentials, RegisterResponse, User } from '../common/interface';
 import { FavoritesService } from './favoritesService';
+import { TeamService } from './teamService';
 
-/* Servicio de autenticación: gestiona el estado de sesión del usuario,
-   el token JWT y la sincronización con localStorage */
 @Injectable({
   providedIn: 'root',
 })
@@ -43,6 +42,11 @@ export class AuthService {
   /* Inyección diferida para evitar dependencia circular con FavoritesService */
   private getFavoritesService() {
     return this.injector.get(FavoritesService);
+  }
+
+  /* Inyección diferida de TeamService */
+  private getTeamService() {
+    return this.injector.get(TeamService);
   }
 
   /* Enviar credenciales al backend, guardar el token y actualizar el estado */
@@ -83,6 +87,7 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.userSubject.next(null);
+    this.getTeamService().reset();
   }
 
   /* Obtener el perfil completo del usuario desde el backend */

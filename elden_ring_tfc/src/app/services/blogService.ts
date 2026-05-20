@@ -32,7 +32,6 @@ export interface BlogPostDetail extends BlogPost {
   comments: BlogComment[];
 }
 
-/* Servicio del blog: gestiona posts y comentarios de la comunidad */
 @Injectable({ providedIn: 'root' })
 export class BlogService {
   private readonly http       = inject(HttpClient);
