@@ -43,42 +43,6 @@ export const EMPTY_TEAM: Team = {
   spell5: null,
 };
 
-/* Mapeo de categoría de favorito a los slots del equipo donde puede colocarse */
-export const CATEGORY_SLOTS: Record<string, string[]> = {
-  weapons: ['weapon_r1', 'weapon_r2', 'weapon_r3', 'weapon_l1', 'weapon_l2', 'weapon_l3'],
-  shields: ['weapon_l1', 'weapon_l2', 'weapon_l3'],
-  ammos: ['arrow1', 'arrow2', 'bolt1', 'bolt2'],
-  armors: ['armor_head', 'armor_chest', 'armor_hands', 'armor_legs'],
-  ashes: ['ash1', 'ash2', 'ash3'],
-  talismans: ['talisman1', 'talisman2', 'talisman3', 'talisman4'],
-  items: [
-    'item1',
-    'item2',
-    'item3',
-    'item4',
-    'item5',
-    'item6',
-    'item7',
-    'item8',
-    'item9',
-    'item10',
-  ],
-  sorceries: ['spell1', 'spell2', 'spell3', 'spell4', 'spell5'],
-  incantations: ['spell1', 'spell2', 'spell3', 'spell4', 'spell5'],
-  spirits: [
-    'item1',
-    'item2',
-    'item3',
-    'item4',
-    'item5',
-    'item6',
-    'item7',
-    'item8',
-    'item9',
-    'item10',
-  ],
-};
-
 @Injectable({
   providedIn: 'root',
 })

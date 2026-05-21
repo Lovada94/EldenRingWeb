@@ -189,7 +189,7 @@ export class TeamPage implements OnInit {
     }
 
     if (fav.category === 'ammos') {
-      const sub   = (fav.subcategory ?? fav.name).toLowerCase();
+      const sub = fav.name.toLowerCase();
       const slots = sub.includes('bolt') ? ['bolt1','bolt2'] : ['arrow1','arrow2'];
       const team  = this.teamService.team() as any;
       const occ   = slots.find(s => team[s] === fav.api_id);
@@ -276,7 +276,7 @@ export class TeamPage implements OnInit {
     this.showSaveModal.set(true);
   }
 
-  /* Confirmar el guardado: crea un nuevo equipo con los ítems actuales del tablero */
+  /* Crea un nuevo equipo con los ítems actuales del tablero */
   confirmSave(): void {
     if (!this.newTeamName.trim() || this.saving) return;
     this.saving = true;
