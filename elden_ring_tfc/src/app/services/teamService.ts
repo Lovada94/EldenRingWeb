@@ -106,10 +106,15 @@ export class TeamService {
     );
   }
 
-  /* Eliminar un equipo guardado y quitarlo del signal de lista */
+  /* Eliminar un equipo guardado, quitarlo de la lista y limpiar el activo si era el mismo */
   deleteTeam(teamId: number): Observable<any> {
     return this.http.delete(`${this.backendUrl}/team/${teamId}`).pipe(
-      tap(() => this.teams.update(ts => ts.filter(t => t.id_team !== teamId)))
+      tap(() => {
+        this.teams.update(ts => ts.filter(t => t.id_team !== teamId));
+        if ((this.team() as any).id_team === teamId) {
+          this.team.set({ ...EMPTY_TEAM });
+        }
+      })
     );
   }
 

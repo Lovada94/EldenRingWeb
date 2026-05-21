@@ -70,13 +70,14 @@ class Team extends ResourceController
             $team = $teamModel->where('id_user', $userId)
                               ->where('id_team', $data['id_team'])
                               ->first();
-            if ($team) {
-                $teamModel->update($data['id_team'], $filtered);
-                return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
+            if (!$team) {
+                return $this->respond(['status' => 404, 'message' => 'Equipo no encontrado'], 404);
             }
+            $teamModel->update($data['id_team'], $filtered);
+            return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
         }
 
-        /* Si no hay id_team, hacer upsert sobre el equipo activo */
+        /* Sin id_team: actualizar o crear el equipo activo */
         $teamModel->upsertActive((int)$userId, $filtered);
         return $this->respond(['status' => 200, 'message' => 'Equipo guardado'], 200);
     }

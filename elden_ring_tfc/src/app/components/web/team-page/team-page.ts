@@ -276,29 +276,34 @@ export class TeamPage implements OnInit {
     this.showSaveModal.set(true);
   }
 
-  /* Confirmar el guardado: persiste el equipo activo, limpia el tablero y crea uno nuevo */
+  /* Confirmar el guardado del equipo con el nombre introducido en el modal */
   confirmSave(): void {
     if (!this.newTeamName.trim() || this.saving) return;
     this.saving = true;
     const name = this.newTeamName.trim();
     this.showSaveModal.set(false);
 
-    /* 1. Guarda el estado actual del equipo activo (si existe)
-       2. Limpia el tablero localmente (sin id_team → no habrá auto-guardado)
-       3. Crea el nuevo equipo vacío como activo en el backend */
+    /* Sin equipo previo: crear uno directamente con los ítems actuales del tablero */
+    if (!this.teamService.team().id_team) {
+      this.teamService.saveTeamAs(name).subscribe({
+        next: (res: any) => {
+          this.teamService.team.update(t => ({ ...t, id_team: res.id_team, name, is_active: 1 }));
+          this.teamService.loadAllTeams().subscribe();
+          this.saving = false;
+        },
+        error: () => { this.saving = false; },
+      });
+      return;
+    }
+
+    /* Con equipo existente: guardar el estado actual, limpiar el tablero y crear uno nuevo vacío */
     this.teamService.saveTeam().subscribe({
       next: () => {
         this.teamService.team.set({ ...EMPTY_TEAM });
         this.itemsData.set({});
-
         this.teamService.saveTeamAs(name).subscribe({
           next: (res: any) => {
-            this.teamService.team.update(t => ({
-              ...t,
-              id_team:   res.id_team,
-              name,
-              is_active: 1,
-            }));
+            this.teamService.team.update(t => ({ ...t, id_team: res.id_team, name, is_active: 1 }));
             this.teamService.loadAllTeams().subscribe();
             this.saving = false;
           },
