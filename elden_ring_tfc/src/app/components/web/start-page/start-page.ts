@@ -7,10 +7,10 @@ import {User} from '../../../common/interface';
 @Component({
   selector: 'app-start',
   imports: [RouterLink, AuthModal],
-  templateUrl: './start.html',
-  styleUrl: './start.css',
+  templateUrl: './start-page.html',
+  styleUrl: './start-page.css',
 })
-export class Start {
+export class StartPage {
 
   private readonly authService: AuthService = inject(AuthService);
   user: User | null = null;

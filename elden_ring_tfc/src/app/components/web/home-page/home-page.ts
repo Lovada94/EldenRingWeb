@@ -10,10 +10,10 @@ import {User} from '../../../common/interface';
     RouterLink,
     AuthModal
   ],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './home-page.html',
+  styleUrl: './home-page.css',
 })
-export class Home implements OnInit {
+export class HomePage implements OnInit {
 
   private readonly authService: AuthService = inject(AuthService);
   user: User | null = null;

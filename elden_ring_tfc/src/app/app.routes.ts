@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { Home } from './components/web/home/home';
-import { Start } from './components/web/start/start';
+import { HomePage } from './components/web/home-page/home-page';
+import { StartPage } from './components/web/start-page/start-page';
 import { authGuard } from './guards/auth-guard';
-import { Profile } from './components/web/profile/profile';
+import { ProfilePage } from './components/web/profile-page/profile-page';
 import { WeaponsPage } from './components/web/categories/weapons/weapons';
 import { AmmosPage } from './components/web/categories/ammos/ammos';
 import { ArmorsPage } from './components/web/categories/armors/armors';
@@ -30,11 +30,11 @@ export const routes: Routes = [
   },
   {
     path: 'start',
-    component: Start,
+    component: StartPage,
   },
   {
     path: 'home',
-    component: Home,
+    component: HomePage,
   },
   {
     path: 'weapons',
@@ -98,7 +98,7 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: Profile,
+    component: ProfilePage,
     canActivate: [authGuard]
   },
   {

@@ -17,10 +17,10 @@ function passwordMatchProfile(form: FormGroup) {
 @Component({
   selector: 'app-profile',
   imports: [ReactiveFormsModule],
-  templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  templateUrl: './profile-page.html',
+  styleUrl: './profile-page.css',
 })
-export class Profile implements OnInit {
+export class ProfilePage implements OnInit {
 
   private readonly authService:    AuthService    = inject(AuthService);
   private readonly profileService: ProfileService = inject(ProfileService);
