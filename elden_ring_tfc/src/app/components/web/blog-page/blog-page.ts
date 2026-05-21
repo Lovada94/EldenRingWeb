@@ -91,7 +91,6 @@ export class BlogPage implements OnInit {
     this.teamService.loadAllTeams().subscribe(() => {
       if (teamParam) {
         this.pendingTeamId = +teamParam;
-        /* Comparar con Number() porque MySQL devuelve id_team como string en JSON */
         const found = this.teamService.teams().find(t => Number(t.id_team) === +teamParam);
         this.pendingTeamName = found?.name ?? null;
         this.showCreateForm.set(true);

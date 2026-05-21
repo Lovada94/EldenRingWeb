@@ -252,15 +252,6 @@ export class TeamPage implements OnInit {
     this.teamService.saveTeam().subscribe();
   }
 
-  /* Guardar el equipo activo; si no hay equipo creado, abre el modal para nombrarlo */
-  saveActive(): void {
-    if (!this.teamService.team().id_team) {
-      this.openSaveModal();
-      return;
-    }
-    this.teamService.saveTeam().subscribe();
-  }
-
   /* Limpiar todos los slots del equipo activo manteniendo su id_team */
   clearTeam(): void {
     const id = this.teamService.team().id_team;

@@ -7,6 +7,7 @@ use App\Models\CommentModel;
 use CodeIgniter\RESTful\ResourceController;
 
 /* Controlador del blog: gestiona los posts y los comentarios de la comunidad */
+
 class Posts extends ResourceController
 {
     /* GET /posts — obtener todos los posts con metadatos (autor, avatar, nº comentarios) */
