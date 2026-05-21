@@ -276,39 +276,18 @@ export class TeamPage implements OnInit {
     this.showSaveModal.set(true);
   }
 
-  /* Confirmar el guardado del equipo con el nombre introducido en el modal */
+  /* Confirmar el guardado: crea un nuevo equipo con los ítems actuales del tablero */
   confirmSave(): void {
     if (!this.newTeamName.trim() || this.saving) return;
     this.saving = true;
     const name = this.newTeamName.trim();
     this.showSaveModal.set(false);
 
-    /* Sin equipo previo: crear uno directamente con los ítems actuales del tablero */
-    if (!this.teamService.team().id_team) {
-      this.teamService.saveTeamAs(name).subscribe({
-        next: (res: any) => {
-          this.teamService.team.update(t => ({ ...t, id_team: res.id_team, name, is_active: 1 }));
-          this.teamService.loadAllTeams().subscribe();
-          this.saving = false;
-        },
-        error: () => { this.saving = false; },
-      });
-      return;
-    }
-
-    /* Con equipo existente: guardar el estado actual, limpiar el tablero y crear uno nuevo vacío */
-    this.teamService.saveTeam().subscribe({
-      next: () => {
-        this.teamService.team.set({ ...EMPTY_TEAM });
-        this.itemsData.set({});
-        this.teamService.saveTeamAs(name).subscribe({
-          next: (res: any) => {
-            this.teamService.team.update(t => ({ ...t, id_team: res.id_team, name, is_active: 1 }));
-            this.teamService.loadAllTeams().subscribe();
-            this.saving = false;
-          },
-          error: () => { this.saving = false; },
-        });
+    this.teamService.saveTeamAs(name).subscribe({
+      next: (res: any) => {
+        this.teamService.team.update(t => ({ ...t, id_team: res.id_team, name, is_active: 1 }));
+        this.teamService.loadAllTeams().subscribe();
+        this.saving = false;
       },
       error: () => { this.saving = false; },
     });
