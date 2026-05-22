@@ -59,7 +59,6 @@
 .btn-pick-team:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn-danger        { border-color: rgba(231,76,60,0.6); color: #e74c3c; }
-.btn-danger:hover  { background: #e74c3c; color: white; border-color: #e74c3c; }
 
 .btn-back {
   border: none;
